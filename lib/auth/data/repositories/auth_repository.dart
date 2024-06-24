@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
@@ -14,7 +14,6 @@ class AuthRepository {
 
   Future<UserModel> getUser() async {
     Response response = await dio.get('/user/');
-    debugPrint("response darrel $response");
     return UserModel.fromJson(response.data);
   }
 
@@ -29,6 +28,8 @@ class AuthRepository {
         "password": password,
       },
     );
+    print(response.toString());
+    print("ök");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', response.data['token']);
     return await getUser();
@@ -53,7 +54,7 @@ class AuthRepository {
         "phone": phone,
       },
     );
-    
+
     log(response.data.toString());
     return await login(
       email: email,

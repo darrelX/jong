@@ -21,10 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      if (email == "admin@gmail.com" && password == "admin") {
-        print("Dada est la");
-        emit(LoginSuccess(user: user));
-      }
       emit(LoginSuccess(user: user));
     } catch (e) {
       emit(LoginFailure(message: Utils.extractErrorMessage(e)));

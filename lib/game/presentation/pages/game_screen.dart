@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/jong_app_bar.dart';
 
@@ -350,7 +351,10 @@ class GameResultDialog extends StatelessWidget {
                         bgColor: AppColors.primary,
                         text: 'New part',
                         onPressed: () {
-                          context.router.popUntilRoot();
+                          context.router.pushAndPopUntil(
+                            const HomeRoute(),
+                            predicate: (route) => false,
+                          );
                         },
                       ),
                     ),

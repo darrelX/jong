@@ -45,6 +45,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
     on<StartCrashGameEvent>(
       (event, emit) {
         var crashPoint = Random().nextDouble() * 10;
+        // var crash
         var multiplier = 0.0;
 
         timer = Timer.periodic(

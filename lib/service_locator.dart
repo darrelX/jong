@@ -24,7 +24,7 @@ void setupLocator() {
   // Dio
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
-      baseUrl: 'http://85.31.232.97:8000/api',
+      baseUrl: 'https://test.api.jongame.sc3jsgw2086.universe.wf/',
       headers: {
         'Accept': 'application/json',
       },
