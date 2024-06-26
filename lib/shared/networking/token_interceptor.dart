@@ -21,15 +21,15 @@ class TokenInterceptor extends QueuedInterceptor {
       options.headers["Authorization"] = "token $token";
     }
 
-    try {
-      options.data ??= <String, dynamic>{};
-      if (options.method != "GET") {
-        options.data['_method'] = options.method;
-        options.method = 'POST';
-      }
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    //   options.data ??= <String, dynamic>{};
+    //   if (options.method != "GET") {
+    //     options.data['_method'] = options.method;
+    //     options.method = 'POST';
+    //   }
+    // } catch (e) {
+    //   print(e);
+    // }
 
     return handler.next(options);
   }

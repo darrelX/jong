@@ -80,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            double.parse(state.user!.solde).toStringAsFixed(1),
+                            double.parse(state.user!.balance).toStringAsFixed(1),
                             style: context.textTheme.headlineMedium?.copyWith(),
                           ),
                           const Gap(4),

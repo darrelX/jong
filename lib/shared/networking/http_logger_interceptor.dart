@@ -18,6 +18,7 @@ class HttpLoggerInterceptor extends Interceptor {
           "params": options.queryParameters,
           "body": options.data,
           'headers': options.headers.toString(),
+          "all": options.uri.toString()
         });
       } catch (e) {
         appLogger.e(e.toString());

@@ -1,29 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:jong/application.dart';
+final getIt = GetIt.instance;
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(Application());
+void main() async {
+  configureDependencies(); // Configurer les dépendances
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  final dio = getIt<Dio>(); // Utiliser getIt directement
+  try {
+    final response = await dio.post(
+      '/login',
+      data: {
+        'email': 'darrel@gmail.com',
+        'password': 'arafat',
+      },
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Utilisez la réponse
+    print(response.data);
+  } catch (error) {
+    // Gérez les erreurs
+    print(error.toString());
+  }
+}
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+void configureDependencies() {
+  getIt.registerSingleton<Dio>(Dio(BaseOptions(
+    baseUrl: 'https://be04-145-224-72-79.ngrok-free.app/api',
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 3),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  )));
 }

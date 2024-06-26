@@ -24,9 +24,11 @@ void setupLocator() {
   // Dio
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
-      baseUrl: 'https://test.api.jongame.sc3jsgw2086.universe.wf/',
+      baseUrl: 'https://6c7e-145-224-72-79.ngrok-free.app/api',
+      connectTimeout: const Duration(seconds: 5000),
+      receiveTimeout: const Duration(seconds: 3000),
       headers: {
-        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
     ))
       ..interceptors.addAll(

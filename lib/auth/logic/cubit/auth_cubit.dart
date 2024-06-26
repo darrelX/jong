@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      emit(LoginSuccess(user: user));
+      emit(LoginSuccess(user: user!));
     } catch (e) {
       emit(LoginFailure(message: Utils.extractErrorMessage(e)));
     }
@@ -45,7 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
         phone: phone,
         password: password,
       );
-      emit(RegisterSuccess(user: user));
+      emit(RegisterSuccess(user: user!));
     } catch (e) {
       print(e);
       emit(RegisterFailure(message: Utils.extractErrorMessage(e)));
@@ -56,7 +56,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(CheckAuthStateLoading());
       var user = await repository.getUser();
-      emit(CheckAuthStateSuccess(user: user));
+      emit(CheckAuthStateSuccess(user: user!));
     } catch (e) {
       emit(CheckAuthStateFailure(message: Utils.extractErrorMessage(e)));
     }

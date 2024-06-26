@@ -9,6 +9,8 @@
 .history
 .svn/
 migrate_working_dir/
+/node/
+/node_modules/
 
 # IntelliJ related
 *.iml

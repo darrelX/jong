@@ -31,6 +31,7 @@ class _AppInitScreenState extends State<AppInitScreen> {
 
   @override
   void dispose() {
+    cubit.close();
     super.dispose;
   }
 
