@@ -16,9 +16,9 @@ class AuthRepository {
   });
 
   Future<UserModel?> getUser() async {
-    String? token =  prefs?.getString('token');
+    String? token = prefs?.getString('token');
     try {
-      Response response = await dio.get('/userss/',
+      Response response = await dio.get('/users/',
           options: Options(headers: {'Authorization': 'Bearer $token'}));
       if (response.statusCode == 200) {
         return UserModel.fromJson(response.data);
@@ -30,7 +30,7 @@ class AuthRepository {
       print(e);
     }
     return null;
-    // Utiliser la valeur du SharedPreferences
+    // Utiliser la valeur du Shared Preferences
     // Faites quelque chose avec le token
   }
 
@@ -52,7 +52,7 @@ class AuthRepository {
     } else {
       prefs?.remove('token');
     }
-    return await getUser();
+    return null;
   }
 
   Future<UserModel?> register({
@@ -80,5 +80,6 @@ class AuthRepository {
       email: email,
       password: password,
     );
+    return null;
   }
 }

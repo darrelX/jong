@@ -49,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     Text(
-                      "${state.user?.username}",
+                      "${state.user?.name}",
                       style: context.textTheme.titleLarge?.copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.w600,

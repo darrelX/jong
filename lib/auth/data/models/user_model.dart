@@ -9,7 +9,7 @@ class UserModel {
   @JsonKey(required: true)
   final String id;
   @JsonKey(required: true)
-  final String username;
+  final String name;
   @JsonKey(required: true)
   final String email;
   // @JsonKey(required: true)
@@ -18,7 +18,7 @@ class UserModel {
 
   UserModel({
     required this.id,
-    required this.username,
+    required this.name,
     required this.email,
     required this.balance,
   });

@@ -24,9 +24,9 @@ void setupLocator() {
   // Dio
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
-      baseUrl: 'https://6c7e-145-224-72-79.ngrok-free.app/api',
-      connectTimeout: const Duration(seconds: 5000),
-      receiveTimeout: const Duration(seconds: 3000),
+      baseUrl: 'http://localhost:3000',
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 3000),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -48,3 +48,5 @@ void setupLocator() {
     ApplicationCubit(),
   );
 }
+
+

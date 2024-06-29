@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jong/auth/logic/cubit/auth_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/routing/app_router.dart';
@@ -12,6 +14,7 @@ import 'package:jong/shared/utils/const.dart';
 import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/app_input.dart';
 import 'package:jong/shared/widget/app_snackbar.dart';
+import 'package:jong/shared/widget/button.dart';
 
 import '../../../service_locator.dart';
 import '../../../shared/application/cubit/application_cubit.dart';
@@ -30,10 +33,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final AuthCubit cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://cdc4-145-224-75-85.ngrok-free.app/api/auth/google',
+    ],
+  );
   @override
   void initState() {
     super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      // Utilisateur connecté
+      if (account != null) {
+        // Gérer l'authentification réussie ici
+        print('Utilisateur connecté : ${account.displayName}');
+      }
+    } as void Function(GoogleSignInAccount? event)?);
   }
 
   @override
@@ -41,6 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _signInWithGoogle() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print('Erreur lors de la connexion Google : $error');
+    }
   }
 
   @override
@@ -58,13 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
               message: state.message,
               context: context,
             );
-// //////////////////////////
-//             // getIt.get<ApplicationCubit>().setUser(state.user);
-//             context.router.push(
-//               const ApplicationRoute(),
-//               // predicate: (route) => false,
-//             );
-// //////////////////////
+//////////////////////////
+            // getIt.get<ApplicationCubit>().setUser(state.user);
+            context.router.push(
+              const ApplicationRoute(),
+              // predicate: (route) => false,
+            );
+//////////////////////
           }
 
           if (state is LoginSuccess) {
@@ -158,7 +181,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           },
                         ),
-                        const Spacer(flex: 4),
+                        const Spacer(flex: 3),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Button(
+                            onPressed: _signInWithGoogle,
+                            icon: SvgPicture.asset(
+                              'assets/icons/google.svg',
+                              width: 30,
+                              height: 30,
+                              // color: Colors.transparent,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const Spacer(flex: 3),
                         Center(
                           child: Text.rich(
                             TextSpan(

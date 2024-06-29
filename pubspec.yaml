@@ -23,7 +23,6 @@ dependencies:
   flutter_svg: ^2.0.10+1
   gap: ^3.0.1
   animate_do: ^3.3.4
-  # form_builder_validators: ^9.1.0
   draggable_bottom_sheet:
     git:
       url: https://github.com/Brughth/draggable_bottom_sheet_package.git
@@ -42,6 +41,8 @@ dependencies:
   crypto: ^3.0.3
   convert: ^3.1.1
   json_annotation: ^4.9.0
+  google_sign_in: ^6.2.1
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

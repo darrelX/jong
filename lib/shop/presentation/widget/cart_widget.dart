@@ -8,6 +8,7 @@ import 'product_widget.dart';
 
 class CartWidget extends StatelessWidget {
   const CartWidget({super.key});
+  // final int value;
 
   @override
   Widget build(BuildContext context) {
@@ -30,31 +31,31 @@ class CartWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: padding24),
               children: const [
                 ProductWidget(
-                  image: 'assets/images/500.png',
-                  title: "Boisson de 500",
-                  price: '500',
-                  isInCart: true,
+                  image: 'assets/images/1000.png',
+                  title: "Boisson de 650",
+                  price: 650,
+                  quantity: 5,
                 ),
                 Gap(20),
                 ProductWidget(
                   image: 'assets/images/1000.png',
                   title: "Boisson de 650",
-                  price: '650',
-                  isInCart: true,
+                  price: 650,
+                  quantity: 5,
                 ),
                 Gap(20),
                 ProductWidget(
                   image: 'assets/images/1000.png',
-                  title: "Boisson de 700",
-                  price: '700',
-                  isInCart: true,
+                  title: "Boisson de 650",
+                  price: 650,
+                  quantity: 5,
                 ),
                 Gap(20),
                 ProductWidget(
                   image: 'assets/images/1000.png',
-                  title: "Boisson de 1000",
-                  price: '1000',
-                  isInCart: true,
+                  title: "Boisson de 650",
+                  price: 650,
+                  quantity: 5,
                 ),
               ],
             ),

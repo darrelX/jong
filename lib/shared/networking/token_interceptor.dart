@@ -18,7 +18,7 @@ class TokenInterceptor extends QueuedInterceptor {
     log("Current token $token", name: "TokenInterceptor+onRequest");
 
     if (token != null) {
-      options.headers["Authorization"] = "token $token";
+      options.headers["Authorization"] = "Bearer $token";
     }
 
     // try {

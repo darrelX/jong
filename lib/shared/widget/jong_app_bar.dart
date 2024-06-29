@@ -23,32 +23,34 @@ class JongAppBar extends StatelessWidget {
           child: Text(title),
         ),
         Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Image.asset(
               'assets/images/wallet2.png',
-              width: 25,
-              height: 25,
+              width: 10,
+              height: 10,
             ),
-            Row(
-              children: [
-                BlocBuilder<ApplicationCubit, ApplicationState>(
-                  bloc: getIt.get<ApplicationCubit>(),
-                  builder: (context, state) {
-                    return Text(
-                      double.parse(state.user!.balance).toStringAsFixed(1),
-                    );
-                  },
-                ),
-                const Gap(4),
-                Text(
-                  "nkap",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.white,
+            Expanded(
+              child: Row(
+                children: [
+                  BlocBuilder<ApplicationCubit, ApplicationState>(
+                    bloc: getIt.get<ApplicationCubit>(),
+                    builder: (context, state) {
+                      return Text(
+                        double.parse(state.user!.balance).toStringAsFixed(1),
+                      );
+                    },
                   ),
-                )
-              ],
+                  const Gap(1),
+                  Text(
+                    "nkap",
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.white,
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         )
