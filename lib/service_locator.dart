@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jong/auth/data/repositories/auth_repository.dart';
 import 'package:jong/shared/application/cubit/application_cubit.dart';
+import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:logger/logger.dart';
 
 import 'shared/networking/http_logger_interceptor.dart';
@@ -44,9 +45,13 @@ void setupLocator() {
     ),
   );
 
+    getIt.registerSingleton<ProductRepository>(
+    ProductRepository(
+      dio: getIt.get<Dio>(),
+    ),
+  );
+
   getIt.registerSingleton<ApplicationCubit>(
     ApplicationCubit(),
   );
 }
-
-

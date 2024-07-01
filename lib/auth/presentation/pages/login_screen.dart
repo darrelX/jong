@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: context.height - 50,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: padding16,
+                  horizontal: 20,
                 ),
                 child: AutofillGroup(
                   child: Form(

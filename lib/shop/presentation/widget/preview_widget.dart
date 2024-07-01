@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/widget/app_dialog.dart';
+import 'package:jong/shop/logic/courter_model.dart';
 import 'package:jong/shop/presentation/widget/checkout_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/const.dart';
@@ -17,6 +19,8 @@ class PreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final instance = context.read<CounterModel>();
+
     return Container(
       padding: padding,
       decoration: const BoxDecoration(
@@ -60,7 +64,7 @@ class PreviewWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "2500",
+                    '${instance.getTotalPrice()}',
                     style: context.textTheme.displaySmall?.copyWith(
                       color: AppColors.white,
                     ),

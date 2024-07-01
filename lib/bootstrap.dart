@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jong/service_locator.dart';
+import 'package:jong/shop/data/models/product_model.dart';
+import 'package:jong/shop/logic/courter_model.dart';
+import 'package:jong/shop/presentation/pages/shop_screen.dart';
+import 'package:provider/provider.dart';
 
 _setupApplication() {
   /// Hide status bar for splash screen
@@ -24,7 +28,11 @@ bootstrap({
       WidgetsFlutterBinding.ensureInitialized();
       _setupApplication();
       setupLocator();
-      runApp(await builder.call());
+
+      runApp(ChangeNotifierProvider(
+        create: (context) => CounterModel(),
+        child: await builder.call(),
+      ));
     },
     (error, stack) {
       if (kDebugMode) {

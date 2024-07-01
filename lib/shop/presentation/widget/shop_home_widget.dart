@@ -3,57 +3,56 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/utils/const.dart';
+import 'package:jong/shop/logic/courter_model.dart';
 import 'package:jong/shop/presentation/widget/product_widget.dart';
+import 'package:provider/provider.dart';
 
 class ShopHomeWidget extends StatelessWidget {
   const ShopHomeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final instance = context.read<CounterModel>();
     return Scaffold(
-      body: ListView(
+      body: Padding(
         padding: EdgeInsets.only(
           left: padding16,
           right: padding16,
           top: padding16,
           bottom: 180.h,
         ),
-        children: [
-          Text(
-            "boisson disponible",
-            style: context.textTheme.headlineMedium?.copyWith(
-              fontSize: 22,
+        child: Column(
+          children: [
+            Text(
+              "Boissons disponibles",
+              style: context.textTheme.headlineMedium?.copyWith(
+                fontSize: 22,
+              ),
             ),
-          ),
-          Gap(30.h),
-          const ProductWidget(
-            image: 'assets/images/500.png',
-            title: "Boisson de 500",
-            price: 500,
-            quantity: 2,
-          ),
-          const Gap(20),
-          const ProductWidget(
-            image: 'assets/images/1000.png',
-            title: "Boisson de 650",
-            price: 650,
-            quantity: 5,
-          ),
-          const Gap(20),
-          const ProductWidget(
-            image: 'assets/images/1000.png',
-            title: "Boisson de 700",
-            price: 700,
-            quantity: 6,
-          ),
-          const Gap(20),
-          const ProductWidget(
-            image: 'assets/images/1000.png',
-            title: "Boisson de 1000",
-            price: 1000,
-            quantity: 10,
-          ),
-        ],
+            Gap(30.h),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: ListView.builder(
+                          itemBuilder: (BuildContext contexxt, int _) {
+                            return ProductWidget(
+                              id: instance.articles['items'][_]['id'],
+                              isShop: false,
+                              image: 'assets/images/1000.png',
+                              title: instance.articles['items'][_]['title'],
+                              quantity: instance.articles['items'][_]
+                                  ['quantity'],
+                              price: instance.articles['items'][_]['price'],
+                            );
+                          },
+                          itemCount: instance.articles['items'].length)),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
