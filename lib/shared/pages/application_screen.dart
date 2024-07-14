@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
@@ -28,18 +29,21 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               title: const JongAppBar(
                 title: "Home",
               ),
+              toolbarHeight: 70.h,
             );
           case 1:
             return AppBar(
               title: const JongAppBar(
                 title: "Jong shop",
               ),
+              toolbarHeight: 70.h,
             );
           case 2:
             return AppBar(
               title: const JongAppBar(
                 title: "History",
               ),
+              toolbarHeight: 70.h,
             );
           case 3:
             return AppBar(
@@ -66,7 +70,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
           selectedIndex: tabsRouter.activeIndex,
           showElevation: true,
           onItemSelected: tabsRouter.setActiveIndex,
-          backgroundColor: context.theme.scaffoldBackgroundColor,
+          backgroundColor: _.theme.scaffoldBackgroundColor,
           items: [
             FlashyTabBarItem(
               icon: SvgPicture.asset(
@@ -83,14 +87,6 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               inactiveColor: AppColors.icon,
             ),
             FlashyTabBarItem(
-              // icon: SvgPicture.asset('assets/icons/shop.svg'),
-              // title: SvgPicture.asset(
-              //   'assets/icons/shop.svg',
-              //   colorFilter: const ColorFilter.mode(
-              //     AppColors.primary,
-              //     BlendMode.srcIn,
-              //   ),
-              // ),
               icon: Image.asset(
                 'assets/icons/shop.png',
                 height: 25,

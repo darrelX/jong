@@ -41,7 +41,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
         title: const Text("Popup acount"),
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: padding16,
         ),
         child: Column(

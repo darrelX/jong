@@ -13,81 +13,81 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(
-          padding16,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(
+            padding16,
+          ),
+          child: Column(
+            children: [
+              Text(
+                "Tiquet non traiter",
+                style: context.textTheme.headlineMedium?.copyWith(
+                  fontSize: 22,
+                ),
+              ),
+              Gap(30.h),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+              ),
+              Gap(30.h),
+              Text(
+                "Tiquet traiter",
+                style: context.textTheme.headlineMedium?.copyWith(
+                  fontSize: 22,
+                ),
+              ),
+              Gap(30.h),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+                isTreated: true,
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+                isTreated: true,
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+                isTreated: true,
+              ),
+              const Gap(20),
+              const TicketWidget(
+                title: 'Tiquet 583xde7',
+                price: '2500',
+                date: '26 .11 .2021  -  5:15 AM',
+                isTreated: true,
+              ),
+            ],
+          ),
         ),
-        children: [
-          Text(
-            "Tiquet non traiter",
-            style: context.textTheme.headlineMedium?.copyWith(
-              fontSize: 22,
-            ),
-          ),
-          Gap(30.h),
-          ...[
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-            ),
-          ],
-          Gap(30.h),
-          Text(
-            "Tiquet traiter",
-            style: context.textTheme.headlineMedium?.copyWith(
-              fontSize: 22,
-            ),
-          ),
-          Gap(30.h),
-          ...[
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-              isTreated: true,
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-              isTreated: true,
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-              isTreated: true,
-            ),
-            const Gap(20),
-            const TicketWidget(
-              title: 'Tiquet 583xde7',
-              price: '2500',
-              date: '26 .11 .2021  -  5:15 AM',
-              isTreated: true,
-            ),
-          ],
-        ],
       ),
     );
   }
