@@ -30,9 +30,7 @@ bootstrap({
       setupLocator();
 
       runApp(ChangeNotifierProvider(
-        create: (context) => CounterModel(),
-        child: await builder.call(),
-      ));
+          create: (context) => CounterModel(), child: await builder.call()));
     },
     (error, stack) {
       if (kDebugMode) {

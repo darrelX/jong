@@ -10,7 +10,6 @@ import 'package:jong/auth/logic/cubit/auth_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';
-import 'package:jong/shared/utils/const.dart';
 import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/app_input.dart';
 import 'package:jong/shared/widget/app_snackbar.dart';
@@ -29,9 +28,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final AuthCubit cubit = AuthCubit();
+  final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
-        bloc: cubit,
+        bloc: _cubit,
         listener: (context, state) {
           if (state is LoginFailure) {
             AppSnackBar.showError(
@@ -83,10 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
             );
 //////////////////////////
             // getIt.get<ApplicationCubit>().setUser(state.user);
-            context.router.push(
-              const ApplicationRoute(),
-              // predicate: (route) => false,
-            );
+            // context.router.push(
+            //   const ApplicationRoute(),
+            //   // predicate: (route) => false,
+            // );
 //////////////////////
           }
 
@@ -125,18 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const Spacer(),
                         AppInput(
-                          controller: _emailController,
-                          label: 'E-mail',
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: const [
-                            AutofillHints.email,
-                          ],
+                          controller: _phoneController,
+                          label: 'Tel',
+                          keyboardType: TextInputType.phone,
                           validators: [
                             FormBuilderValidators.required(
-                              errorText: 'E-mail is required',
-                            ),
-                            FormBuilderValidators.email(
-                              errorText: 'E-mail is required',
+                              errorText: 'Phone number is required',
                             ),
                           ],
                         ),
@@ -174,8 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: "Login",
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              cubit.login(
-                                email: _emailController.text,
+                              _cubit.login(
+                                phone: _phoneController.text,
                                 password: _passwordController.text,
                               );
                             }

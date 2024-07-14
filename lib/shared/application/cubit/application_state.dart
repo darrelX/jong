@@ -7,11 +7,11 @@ class ApplicationState extends Equatable {
   @override
   List<Object?> get props => [user];
 
-  ApplicationState copyWith({
-    UserModel? user,
-  }) {
-    return ApplicationState(
-      user: user ?? this.user,
-    );
-  }
+  // ApplicationState copyWith({
+  //   UserModel? user,
+  // }) {
+  //   return ApplicationState(
+  //     user: user ?? this.user,
+  //   );
+  // }
 }

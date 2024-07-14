@@ -30,6 +30,7 @@ class AppSnackBar {
       backgroundColor: AppColors.red,
       duration: duration,
     );
+    if (!context.mounted) return;
     return _flushbar!.show(context);
   }
 
@@ -76,6 +77,7 @@ class AppSnackBar {
       backgroundColor: AppColors.green,
       duration: duration,
     );
+    if (!context.mounted) return;
     return _flushbar!.show(context);
   }
 }

@@ -81,18 +81,17 @@ class PlaceABetWidget extends StatefulWidget {
 }
 
 class _PlaceABetWidgetState extends State<PlaceABetWidget> {
-  late TextEditingController amountController;
+  final TextEditingController _amountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    amountController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    amountController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -112,7 +111,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
               ),
             ),
             AppInput(
-              controller: amountController,
+              controller: _amountController,
               label: 'Amount',
               labelColors: AppColors.primary,
               hint: "Min: 300",
@@ -134,7 +133,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
                 if (_formKey.currentState?.validate() ?? false) {
                   context.router.popAndPush(
                     GameRoute(
-                      bet: double.parse(amountController.text),
+                      bet: double.parse(_amountController.text),
                     ),
                   );
                 }

@@ -4,6 +4,7 @@ import 'package:jong/auth/data/repositories/auth_repository.dart';
 import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'shared/networking/http_logger_interceptor.dart';
 import 'shared/networking/token_interceptor.dart';
@@ -22,10 +23,14 @@ void setupLocator() {
     ),
   );
 
+  // SharedPreferences
+  getIt.registerLazySingleton<Future<SharedPreferences>>(
+      () async => SharedPreferences.getInstance());
+
   // Dio
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
-      baseUrl: 'http://localhost:3000',
+      baseUrl: 'https://jong-api.symphonisocial.com/api',
       connectTimeout: const Duration(milliseconds: 5000),
       receiveTimeout: const Duration(milliseconds: 3000),
       headers: {
@@ -39,13 +44,13 @@ void setupLocator() {
         ],
       ),
   );
+
   getIt.registerSingleton<AuthRepository>(
     AuthRepository(
-      dio: getIt.get<Dio>(),
-    ),
+        dio: getIt.get<Dio>(), prefs: getIt.get<Future<SharedPreferences>>()),
   );
 
-    getIt.registerSingleton<ProductRepository>(
+  getIt.registerSingleton<ProductRepository>(
     ProductRepository(
       dio: getIt.get<Dio>(),
     ),

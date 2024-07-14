@@ -20,7 +20,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
         ) {
     on<InitializeCrashGameEvent>(
       (event, emit) async {
-        int countDown = 5;
+        int countDown = 3;
         emit(
           CrashGameInitial(
             bet: bet,
@@ -51,7 +51,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
         timer = Timer.periodic(
           const Duration(milliseconds: 100),
           (_) async {
-            // dev.log("multiplier = $multiplier : crashPoint = $crashPoint");
+            dev.log("multiplier = $multiplier : crashPoint = $crashPoint");
 
             if (multiplier >= crashPoint) {
               dev.log("Game Crash ");

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CounterModel extends ChangeNotifier {
-  Map<String, dynamic> _articles = {
+  final Map<String, dynamic> _articles = {
     "id": "",
     "items": [
       {
@@ -89,19 +89,21 @@ class CounterModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Map<String, dynamic>> getBasketItems() {
-    List<Map<String, dynamic>> basketItems = [];
+  Map<String, dynamic> getBasketItems(String token) {
+    final List basketItems = _articles['items']
+        .where((article) =>
+            _counters.containsKey(article['id']) &&
+            _counters[article['id']]! > 0)
+        .map((article) => {
+              'id': article['id'],
+              'quantity': _counters[article['id']],
+            })
+        .toList();
 
-    for (var article in _articles['items']) {
-      String id = article['id'];
-      if (_counters.containsKey(id) && _counters[id]! > 0) {
-        var basketItem = Map<String, dynamic>.from(article);
-        basketItem['quantity'] = _counters[id];
-        basketItems.add(basketItem);
-      }
-    }
-
-    return basketItems;
+    return {
+      'user_id': token,
+      'products': basketItems,
+    };
   }
 
   double getTotalPrice() {

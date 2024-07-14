@@ -38,4 +38,3 @@ final class CashOutCrashGameWinningsEvent extends CrashGameEvent {
   List<Object> get props => [multiplier];
 }
 
-// final class StartCrashGameEvent extends CrashGameBloc {}

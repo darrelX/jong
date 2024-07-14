@@ -7,33 +7,26 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   @JsonKey(required: true)
-  final String id;
+  final int? id;
   @JsonKey(required: true)
-  final String name;
+  final String? name;
   @JsonKey(required: true)
-  final String email;
-  // @JsonKey(required: true)
-  final String balance;
-
+  final String? email;
+  @JsonKey(required: true)
+  final String? balance;
+  @JsonKey(required: true)
+  final String? phoneNumber;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.balance,
+    required this.phoneNumber,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
-      
+
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
-
-  String toJsonString() {
-    return json.encode(toJson());
-  }
-
-  factory UserModel.fromJsonString(String jsonString) {
-    final jsonData = json.decode(jsonString);
-    return UserModel.fromJson(jsonData);
-  }
 }

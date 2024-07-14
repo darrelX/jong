@@ -7,44 +7,53 @@ import '../models/user_model.dart';
 
 class AuthRepository {
   final Dio dio;
-  SharedPreferences? prefs;
+  final Future<SharedPreferences>? prefs;
 
   AuthRepository({
     required this.dio,
     this.prefs,
   });
 
-  Future<UserModel?> getUser() async {
-    String? token = prefs?.getString('token');
+  Future<UserModel?> getUser(String phone) async {
+    SharedPreferences storage = await prefs!;
+    String? token = storage.getString('token');
 
-    Response response = await dio.get('/users/',
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
-    return UserModel.fromJson(response.data);
-
-    // return null;
-    // Utiliser la valeur du Shared Preferences
-    // Faites quelque chose avec le token
+    try {
+      Response response = await dio.get(
+        '/users',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        queryParameters: {'phone_number': phone},
+      );
+      return UserModel.fromJson(response.data['data'][0]);
+    } catch (error) {
+      print(
+          "Une erreur s'est produite lors de la récupération de l'utilisateur : $error");
+      return null;
+    }
   }
 
   Future<UserModel?> login({
-    required String email,
+    required String phone,
     required String password,
   }) async {
+    SharedPreferences storage = await prefs!;
+    // final String token;
+
     Response response = await dio.post(
-      '/login',
+      '/auth/login',
       data: {
-        "email": email,
+        "phone_number": phone,
         "password": password,
       },
     );
 
     // print(response.data);
     if (response.data != null) {
-      prefs?.setString('token', response.data['token']);
-    } else {
-      prefs?.remove('token');
+      storage.setString('token', response.data['token'] ?? '');
     }
-    return getUser();
+    // token = storage.getString('token') ?? '';
+
+    return getUser(phone);
   }
 
   Future<UserModel?> register({
@@ -56,22 +65,22 @@ class AuthRepository {
     required String password,
   }) async {
     final Response response = await dio.post(
-      '/register',
+      '/auth/register',
       data: {
         "name": username,
         "password": password,
-        "email": email,
+        // "email": email,
         // "birthDate": birthDate.toIso8601String(),
         // "gender": gender,
-        // "phone": phone,
+        "phone_number": phone,
       },
     );
 
     log(response.data.toString());
     await login(
-      email: email,
+      phone: phone,
       password: password,
     );
-    return getUser();
+    return getUser(phone);
   }
 }

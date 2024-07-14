@@ -20,77 +20,78 @@ class AppInitScreen extends StatefulWidget {
 }
 
 class _AppInitScreenState extends State<AppInitScreen> {
-  late AuthCubit cubit;
+  final AuthCubit _cubit = AuthCubit();
 
   @override
   void initState() {
-    cubit = AuthCubit()..checkAuthState();
-
     super.initState();
+    _cubit.checkAuthState();
   }
 
   @override
   void dispose() {
-    cubit.close();
-    super.dispose;
+    _cubit.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.light,
-        statusBarColor: AppColors.primary,
-        systemNavigationBarColor: AppColors.primary,
-        systemNavigationBarDividerColor: AppColors.primary,
-      ),
-      child: BlocListener<AuthCubit, AuthState>(
-        bloc: cubit,
-        listener: (context, state) {
-          if (state is CheckAuthStateFailure) {
-            context.router.pushAndPopUntil(
-              const LoginRoute(),
-              predicate: (route) => false,
-            );
-          }
-
-          if (state is CheckAuthStateSuccess) {
-            getIt.get<ApplicationCubit>().setUser(state.user);
-            context.router.pushAndPopUntil(
-              const ApplicationRoute(),
-              predicate: (route) => false,
-            );
-          }
-        },
-        child: Scaffold(
-          backgroundColor: AppColors.primary,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: ZoomIn(
-                  duration: const Duration(milliseconds: 3200),
-                  from: 1.5,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/icons/jong.svg',
-                        width: 180,
-                        height: 127,
-                        color: AppColors.white,
+    return Scaffold(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.light,
+          statusBarColor: AppColors.primary,
+          systemNavigationBarColor: AppColors.primary,
+          systemNavigationBarDividerColor: AppColors.primary,
+        ),
+        child: BlocListener<AuthCubit, AuthState>(
+          bloc: _cubit,
+          listener: (context, state) {
+            if (state is CheckAuthStateFailure) {
+              context.router.pushAndPopUntil(
+                const LoginRoute(),
+                predicate: (route) => false,
+              );
+            }
+      
+            if (state is CheckAuthStateSuccess) {
+              getIt.get<ApplicationCubit>().setUser(state.user);
+              context.router.pushAndPopUntil(
+                const ApplicationRoute(),
+                predicate: (route) => false,
+              );
+            }
+          },
+          child: Scaffold(
+            backgroundColor: AppColors.primary,
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: ZoomIn(
+                    duration: const Duration(milliseconds: 3200),
+                    from: 1.5,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgPicture.asset(
+                          'assets/icons/jong.svg',
+                          width: 180,
+                          height: 127,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

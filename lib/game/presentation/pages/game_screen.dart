@@ -28,13 +28,14 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late CrashGameBloc crashGameBloc;
+  late CrashGameBloc crashGameBloc = CrashGameBloc(bet: widget.bet);
 
   @override
   void initState() {
     crashGameBloc = CrashGameBloc(bet: widget.bet);
     super.initState();
   }
+
 
   @override
   void dispose() {
@@ -183,7 +184,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding:  const EdgeInsets.symmetric(
                     horizontal: padding24,
                   ),
                   child: AppButton(
@@ -213,7 +214,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding:  const EdgeInsets.symmetric(
                     horizontal: padding16,
                   ),
                   child: Row(
@@ -240,7 +241,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding:  const EdgeInsets.symmetric(
                     horizontal: padding24,
                   ),
                   child: AppButton(
@@ -265,7 +266,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding:  const EdgeInsets.symmetric(
                   horizontal: padding16,
                 ),
                 child: Row(
@@ -313,7 +314,7 @@ class GameResultDialog extends StatelessWidget {
       builder: (context, state) {
         if (state is CrashGameLost) {
           return Padding(
-            padding: const EdgeInsets.all(padding16),
+            padding:  const EdgeInsets.all(padding16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -376,7 +377,7 @@ class GameResultDialog extends StatelessWidget {
         }
         if (state is CrashGameWon) {
           return Padding(
-            padding: const EdgeInsets.all(padding16),
+            padding:  const EdgeInsets.all(padding16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -414,7 +415,10 @@ class GameResultDialog extends StatelessWidget {
                         bgColor: AppColors.primary,
                         text: 'New part',
                         onPressed: () {
-                          context.router.popUntilRoot();
+                          context.router.pushAndPopUntil(
+                            const HomeRoute(),
+                            predicate: (route) => false,
+                          );
                         },
                       ),
                     ),

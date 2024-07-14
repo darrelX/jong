@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jong/shop/logic/cubit/product_cubit.dart';
+import 'package:provider/provider.dart';
 
 import 'service_locator.dart';
 import 'shared/routing/app_router.dart';

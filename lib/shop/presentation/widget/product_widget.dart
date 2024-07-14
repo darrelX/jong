@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
@@ -41,7 +40,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           ? (instance.counters[widget.id]! < 1 ? false : true)
           : true,
       child: Container(
-        height: 90,
+        height: 90.h,
         width: double.infinity,
         decoration: BoxDecoration(
           color: context.theme.scaffoldBackgroundColor,
@@ -55,8 +54,8 @@ class _ProductWidgetState extends State<ProductWidget> {
             ),
           ],
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 8.h),
+        margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 10.h),
         child: Row(
           children: [
             Image.asset(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
@@ -22,7 +23,7 @@ class TicketWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 90.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: context.theme.scaffoldBackgroundColor,
@@ -36,7 +37,7 @@ class TicketWidget extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(10.h),
       child: Row(
         children: [
           Container(
@@ -57,7 +58,7 @@ class TicketWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(8),
+          Gap(19.h),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -5,7 +5,7 @@ import 'package:jong/shared/extensions/context_extensions.dart';
 import '../utils/const.dart';
 
 class AppDialog {
-  static showDialog({
+  static dynamic showDialog({
     required BuildContext context,
     required Widget child,
     double height = 350,
@@ -16,7 +16,7 @@ class AppDialog {
     Alignment alignment = Alignment.center,
     EdgeInsets padding = EdgeInsets.zero,
   }) {
-    showGeneralDialog(
+    return showGeneralDialog(
       barrierLabel: barrierLabel,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor.withOpacity(0.5),

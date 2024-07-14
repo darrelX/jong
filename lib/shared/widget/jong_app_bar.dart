@@ -38,7 +38,7 @@ class JongAppBar extends StatelessWidget {
                     bloc: getIt.get<ApplicationCubit>(),
                     builder: (context, state) {
                       return Text(
-                        double.parse(state.user!.balance).toStringAsFixed(1),
+                        double.parse(state.user!.balance.toString()).toStringAsFixed(1),
                       );
                     },
                   ),

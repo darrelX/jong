@@ -18,8 +18,8 @@ class TopUpScreen extends StatefulWidget {
 }
 
 class _TopUpScreenState extends State<TopUpScreen> {
-  late TextEditingController phoneController;
-  late TextEditingController amountController;
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   PhoneNumber? number;
   var pm = 'momo';
@@ -27,14 +27,10 @@ class _TopUpScreenState extends State<TopUpScreen> {
   @override
   void initState() {
     super.initState();
-    phoneController = TextEditingController();
-    amountController = TextEditingController();
   }
 
   @override
   void dispose() {
-    phoneController.dispose();
-    amountController.dispose();
     super.dispose();
   }
 
@@ -45,7 +41,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
         title: const Text("Popup acount"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding:  EdgeInsets.symmetric(
           horizontal: padding16,
         ),
         child: Column(
@@ -88,7 +84,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                     ignoreBlank: false,
                     autoValidateMode: AutovalidateMode.disabled,
                     selectorTextStyle: const TextStyle(color: Colors.black),
-                    textFieldController: phoneController,
+                    textFieldController: _phoneController,
                     formatInput: true,
                     keyboardType: const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
@@ -96,7 +92,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                   ),
                   const Gap(20),
                   AppInput(
-                    controller: amountController,
+                    controller: _amountController,
                     label: 'Amount',
                     keyboardType: TextInputType.number,
                     suffixIcon: const Column(

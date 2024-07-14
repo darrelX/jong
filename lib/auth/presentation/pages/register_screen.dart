@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String pwd = '';
   int gender = 1;
 
-  final AuthCubit cubit = AuthCubit();
+  final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -50,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         centerTitle: true,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
-        bloc: cubit,
+        bloc: _cubit,
         listener: (context, state) {
           if (state is RegisterFailure) {
             AppSnackBar.showError(
@@ -75,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Expanded(
                     child: ListView(
-                      padding: const EdgeInsets.symmetric(
+                      padding:  const EdgeInsets.symmetric(
                         horizontal: padding16,
                       ),
                       children: [
@@ -219,7 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const Gap(8),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding:  const EdgeInsets.symmetric(
                       horizontal: padding16,
                     ),
                     child: AppButton(
@@ -227,20 +228,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       bgColor: AppColors.primary,
                       text: "Sign In",
                       onPressed: () {
+                         
                         if (_formKey.currentState!.validate()) {
-                          cubit.register(
-                            username: _nameController.text,
+                          _cubit.register(
+                            name: _nameController.text,
                             email: _emailController.text,
                             birthDate: DateTime.now(),
                             gender: gender,
-                            phone: _phoneController.text,
+                            phoneNumber: _phoneController.text,
                             password: _passwordController.text,
                           );
                         }
                       },
                     ),
                   ),
-                  const Gap(8),
+                  Gap(8.h),
                 ],
               ),
             ),

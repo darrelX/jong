@@ -98,6 +98,7 @@ class AppInput extends StatefulWidget {
 
 class _AppInputState extends State<AppInput> {
   bool _isObscure = true;
+
   @override
   void initState() {
     setState(() {

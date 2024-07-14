@@ -2,18 +2,19 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jong/service_locator.dart';
 
 class TokenInterceptor extends QueuedInterceptor {
-  String? accessToken;
+  final prefs = getIt.get<Future<SharedPreferences>>();
 
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storage = await prefs;
 
-    var token = prefs.getString('token');
+    var token = storage.getString('token');
 
     log("Current token $token", name: "TokenInterceptor+onRequest");
 

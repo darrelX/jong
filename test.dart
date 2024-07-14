@@ -1,28 +1,27 @@
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
-void main() {
-  const token = '2000'; // Remplacez par votre propre token
+void main() async {
+  final url = Uri.parse('http://localhost:3000/register');
 
-  const url = 'http://localhost:3000/register';
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'email': '',
-    'password': '',
-    'name': ''
-  };
+  try {
+    // Les données à envoyer dans la requête POST
+    final data = {
+      'name': 'John',
+      'password': 'Doe',
+      'email': 'john.doe@example.com',
+    };
 
-  Dio().post(url, options: Options(headers: headers)).then((response) {
-    print(response.headers);
-    if (response.statusCode == 200) {
-      final data = response.data;
-      print(data);
-      // Traitez la réponse de la requête ici
-    } else {
-      throw Exception('Erreur de requête');
-    }
-  }).catchError((error) {
-    print(error);
-    // Traitez les erreurs de requête ici
-  });
+    // Faire la requête POST
+    final response = await http.post(
+      url,
+      body: data,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    // Traiter la réponse
+    print(response.body);
+  } catch (error) {
+    // Gérer les erreurs
+    print('Erreur lors de la requête POST : $error');
+  }
 }
