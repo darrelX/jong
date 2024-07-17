@@ -37,26 +37,19 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
             ),
             Gap(30.h),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                          itemBuilder: (BuildContext contexxt, int _) {
-                            return ProductWidget(
-                              isShop: false,
-                              id: "${instance.listProductModel[_].id}",
-                              image: 'assets/images/1000.png',
-                              title: instance.listProductModel[_].name!,
-                              price: instance.listProductModel[_].price!,
-                              quantity: 10,
-                              // controller: controller['id'],
-                            );
-                          },
-                          itemCount: instance.listProductModel.length)),
-                ],
-              ),
-            ),
+                child: ListView.builder(
+                    itemBuilder: (BuildContext contexxt, int _) {
+                      return ProductWidget(
+                        isShop: false,
+                        id: "${instance.listProductModel[_].id}",
+                        image: 'assets/images/1000.png',
+                        title: instance.listProductModel[_].name!,
+                        price: instance.listProductModel[_].price!,
+                        quantity: 10,
+                        // controller: controller['id'],
+                      );
+                    },
+                    itemCount: instance.listProductModel.length)),
           ],
         ),
       ),

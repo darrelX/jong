@@ -24,8 +24,6 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     final instance = context.read<ProductProvider>();
-    print("dadada ${instance.listProductModel}");
-    print("ab");
 
     return Container(
       padding: const EdgeInsets.all(16),
