@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
-import 'package:jong/shop/logic/courter_model.dart';
+import 'package:jong/shop/logic/product_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/theme/app_colors.dart';
@@ -22,7 +22,7 @@ class ProductWidget extends StatefulWidget {
   final String image;
   final String id;
   final String title;
-  final int price;
+  final double price;
   final int quantity;
   final bool isShop;
 
@@ -33,7 +33,10 @@ class ProductWidget extends StatefulWidget {
 class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
-    final instance = context.read<CounterModel>();
+    final instance = context.read<ProductProvider>();
+    print('babadi');
+    print('babadi ${instance.counters}');
+    print("babadi ${instance.counters[widget.id]!}");
 
     return Visibility(
       visible: widget.isShop

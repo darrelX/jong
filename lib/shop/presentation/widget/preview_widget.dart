@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/widget/app_dialog.dart';
-import 'package:jong/shop/logic/courter_model.dart';
+import 'package:jong/shop/logic/product_provider.dart';
 import 'package:jong/shop/presentation/widget/checkout_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +14,13 @@ class PreviewWidget extends StatelessWidget {
   const PreviewWidget({
     super.key,
     this.padding = const EdgeInsets.all(padding16),
+
   });
   final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
-    final instance = context.read<CounterModel>();
+    final instance = context.read<ProductProvider>();
 
     return Container(
       padding: padding,

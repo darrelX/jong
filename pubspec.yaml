@@ -45,6 +45,7 @@ dependencies:
   http: ^1.2.1
   provider: ^6.1.2
   bloc: ^8.1.4
+  fluttertoast: ^8.2.6
 
 dev_dependencies:
   flutter_test:

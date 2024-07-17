@@ -62,7 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(CheckAuthStateLoading());
 
       if (token != null || token!.isEmpty) {
-        var user = await repository.getUser('610000000');
+        var user = await repository.getUser(token);
         emit(CheckAuthStateSuccess(user: user!));
       } else {
         emit(CheckAuthStateFailure(

@@ -6,20 +6,18 @@ part 'product_model.g.dart';
 
 @JsonSerializable()
 class ProductModel {
-  final String id;
-  final String title;
-  final double price;
-  final String image;
-  final int quantity;
-  final bool isShop;
+  final String? id;
+  final String? name;
+  final int? productCategoryId;
+  final double? price;
+  final String? createdAt;
 
   ProductModel({
-    this.isShop = false,
     required this.id,
-    required this.title,
+    required this.name,
+    required this.productCategoryId,
     required this.price,
-    required this.image,
-    required this.quantity,
+    required this.createdAt,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
@@ -34,23 +32,5 @@ class ProductModel {
   factory ProductModel.fromJsonString(String jsonString) {
     final jsonData = json.decode(jsonString);
     return ProductModel.fromJson(jsonData);
-  }
-
-  ProductModel copyWith({
-    String? id,
-    String? title,
-    double? price,
-    String? image,
-    int? quantity,
-    bool? isShop,
-  }) {
-    return ProductModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      price: price ?? this.price,
-      image: image ?? this.image,
-      quantity: quantity ?? this.quantity,
-      isShop: isShop ?? this.isShop,
-    );
   }
 }

@@ -81,13 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
               message: state.message,
               context: context,
             );
-//////////////////////////
+////////////////////////
             // getIt.get<ApplicationCubit>().setUser(state.user);
             // context.router.push(
             //   const ApplicationRoute(),
             //   // predicate: (route) => false,
             // );
-//////////////////////
+////////////////////
           }
 
           if (state is LoginSuccess) {

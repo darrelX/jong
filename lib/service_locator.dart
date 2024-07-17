@@ -31,10 +31,10 @@ void setupLocator() {
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
       baseUrl: 'https://jong-api.symphonisocial.com/api',
-      connectTimeout: const Duration(milliseconds: 5000),
-      receiveTimeout: const Duration(milliseconds: 3000),
+      connectTimeout: const Duration(seconds: 6),
+      receiveTimeout: const Duration(seconds: 6),
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
     ))
       ..interceptors.addAll(

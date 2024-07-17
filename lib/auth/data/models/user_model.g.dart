@@ -12,11 +12,11 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['id', 'name', 'email', 'balance', 'phone_number'],
   );
   return UserModel(
-    id: json['id'] as int?,
-    name: json['name'] as String? ?? '',
-    email: json['email'] as String? ?? '',
-    balance: json['balance'] as String? ?? '',
-    phoneNumber: json['phone_number'] as String? ?? '',
+    id: (json['id'] as num?)?.toInt(),
+    name: json['name'] as String?,
+    email: json['email'] as String?,
+    balance: json['balance'] as String?,
+    phoneNumber: json['phone_number'] as String?,
   );
 }
 
@@ -25,5 +25,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'name': instance.name,
       'email': instance.email,
       'balance': instance.balance,
-      'phone_number': instance.phoneNumber,
+      'phoneNumber': instance.phoneNumber,
     };

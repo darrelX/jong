@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jong/service_locator.dart';
 import 'package:jong/shop/data/models/product_model.dart';
-import 'package:jong/shop/logic/courter_model.dart';
+import 'package:jong/shop/logic/product_provider.dart';
 import 'package:jong/shop/presentation/pages/shop_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +30,7 @@ bootstrap({
       setupLocator();
 
       runApp(ChangeNotifierProvider(
-          create: (context) => CounterModel(), child: await builder.call()));
+          create: (context) => ProductProvider(), child: await builder.call()));
     },
     (error, stack) {
       if (kDebugMode) {

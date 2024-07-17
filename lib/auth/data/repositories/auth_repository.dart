@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:jong/shared/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
@@ -14,20 +15,19 @@ class AuthRepository {
     this.prefs,
   });
 
-  Future<UserModel?> getUser(String phone) async {
+  Future<UserModel?> getUser(String token) async {
     SharedPreferences storage = await prefs!;
     String? token = storage.getString('token');
 
     try {
       Response response = await dio.get(
-        '/users',
+        '/auth/user',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
-        queryParameters: {'phone_number': phone},
       );
-      return UserModel.fromJson(response.data['data'][0]);
-    } catch (error) {
-      print(
-          "Une erreur s'est produite lors de la récupération de l'utilisateur : $error");
+      log(response.data.toString());
+      return UserModel.fromJson(response.data);
+    } catch (e) {
+      log(e.toString());
       return null;
     }
   }
@@ -37,7 +37,7 @@ class AuthRepository {
     required String password,
   }) async {
     SharedPreferences storage = await prefs!;
-    // final String token;
+    final String token;
 
     Response response = await dio.post(
       '/auth/login',
@@ -47,13 +47,12 @@ class AuthRepository {
       },
     );
 
-    // print(response.data);
     if (response.data != null) {
       storage.setString('token', response.data['token'] ?? '');
     }
-    // token = storage.getString('token') ?? '';
+    token = storage.getString('token') ?? '';
 
-    return getUser(phone);
+    return getUser(token);
   }
 
   Future<UserModel?> register({

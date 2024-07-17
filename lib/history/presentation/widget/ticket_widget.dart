@@ -10,29 +10,37 @@ class TicketWidget extends StatelessWidget {
   const TicketWidget({
     super.key,
     required this.title,
-    required this.price,
+    required this.totalAmount,
     required this.date,
-    this.isTreated = false,
+    this.status = false,
   });
 
   final String title;
-  final String price;
+  final double totalAmount;
   final String date;
-  final bool isTreated;
+  final bool status;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 90.h,
       width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: context.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
+        // border: Border.all(width: 0.04),
         boxShadow: const [
           BoxShadow(
             color: Color(0x1A191C32),
-            offset: Offset(0, 20),
-            blurRadius: 30,
+            offset: Offset(3, 0),
+            blurRadius: 2,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Color(0x1A191C32),
+            offset: Offset(-5, 10),
+            blurRadius: 2,
             spreadRadius: 0,
           ),
         ],
@@ -42,14 +50,14 @@ class TicketWidget extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: isTreated ? null : AppColors.primary,
+              color: status ? null : AppColors.primary,
               shape: BoxShape.circle,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Image.asset(
-                  isTreated
+                  status
                       ? 'assets/images/ticket_confirmed.png'
                       : 'assets/images/ticket.png',
                   width: 28,
@@ -88,7 +96,7 @@ class TicketWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "2500",
+                totalAmount.toStringAsFixed(2),
                 style: context.textTheme.headlineMedium?.copyWith(
                   color: AppColors.primary,
                   fontSize: 24,

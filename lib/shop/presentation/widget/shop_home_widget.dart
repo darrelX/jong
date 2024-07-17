@@ -3,16 +3,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/utils/const.dart';
-import 'package:jong/shop/logic/courter_model.dart';
+import 'package:jong/shop/logic/product_provider.dart';
 import 'package:jong/shop/presentation/widget/product_widget.dart';
 import 'package:provider/provider.dart';
 
-class ShopHomeWidget extends StatelessWidget {
+class ShopHomeWidget extends StatefulWidget {
   const ShopHomeWidget({super.key});
 
   @override
+  State<ShopHomeWidget> createState() => _ShopHomeWidgetState();
+}
+
+class _ShopHomeWidgetState extends State<ShopHomeWidget> {
+  @override
   Widget build(BuildContext context) {
-    final instance = context.read<CounterModel>();
+    final instance = context.read<ProductProvider>();
+    print("dada ${instance.listProductModel.length}");
+    print("dada ${instance.listProductModel[2].id}");
+    print("dada ${instance.listProductModel[2].name}");
+    print("dada ${instance.listProductModel[2].createdAt}");
+    print("dada ${instance.listProductModel[2].price}");
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
@@ -37,17 +48,18 @@ class ShopHomeWidget extends StatelessWidget {
                   Expanded(
                       child: ListView.builder(
                           itemBuilder: (BuildContext contexxt, int _) {
+                            print("a1");
                             return ProductWidget(
-                              id: instance.articles['items'][_]['id'],
-                              isShop: false,
+                              isShop: true,
+                              id: "${instance.listProductModel[_].id}",
                               image: 'assets/images/1000.png',
-                              title: instance.articles['items'][_]['title'],
-                              quantity: instance.articles['items'][_]
-                                  ['quantity'],
-                              price: instance.articles['items'][_]['price'],
+                              title: instance.listProductModel[_].name!,
+                              price: instance.listProductModel[_].price!,
+                              quantity: 10,
+                              // controller: controller['id'],
                             );
                           },
-                          itemCount: instance.articles['items'].length)),
+                          itemCount: instance.listProductModel.length)),
                 ],
               ),
             ),

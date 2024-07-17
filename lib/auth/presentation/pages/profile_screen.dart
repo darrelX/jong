@@ -24,10 +24,10 @@ class ProfileScreen extends StatelessWidget {
           return ListView(
             children: [
               Container(
-                padding:  const EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: padding24,
                 ),
-                decoration:  const BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(radius20),
@@ -49,8 +49,8 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     Text(
-                      // "${state.user?.name}",
-                      "Marcel",
+                      "${state.user?.name}",
+                      // "Marcel",
                       style: context.textTheme.titleLarge?.copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.w600,
@@ -58,7 +58,8 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     Text(
                       // "${state.user?.email}",
-                      "marcelkop@gmail.com",
+                      "${state.user?.email}",
+
                       style: context.textTheme.bodyLarge?.copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.w300,
@@ -74,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
-                      margin:  const EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         horizontal: padding24,
                       ),
                       child: Row(
@@ -84,7 +85,8 @@ class ProfileScreen extends StatelessWidget {
                           Text(
                             // double.parse(state.user!.balance)
                             //     .toStringAsFixed(1),
-                            "12",
+                            "${state.user?.balance}",
+
                             style: context.textTheme.headlineMedium?.copyWith(),
                           ),
                           const Gap(4),

@@ -7,9 +7,11 @@ class TicketRepository {
   TicketRepository({required this.dio});
 
   Future<TicketModel> createTicket(String userId, String quantity) async {
-    Response response = await dio.get(
-      '/users/',
+    Response response = await dio.post(
+      '/users/', data: {}
     );
     return TicketModel.fromJson(response.data);
   }
+
+
 }
