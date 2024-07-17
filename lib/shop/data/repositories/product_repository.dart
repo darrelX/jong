@@ -14,22 +14,10 @@ class ProductRepository {
     this.prefs,
   });
 
-  Future<ProductModel?> fetchProduct() async {
-    try {
-      Response response = await dio.get(
-        '/products',
-      );
-      return ProductModel.fromJson(response.data);
-    } catch (e) {
-      print('An error occurred: $e');
-      return null; // Retourne null en cas d'erreur
-    }
-  }
-
   Future<List<ProductModel>> fetchProductsList() async {
     try {
       Response response = await dio.get('/products');
-      var productsJson = response.data['data'] as List<dynamic>;
+      List<dynamic> productsJson = response.data['data'] as List<dynamic>;
 
       List<ProductModel> products = productsJson.map((item) {
         return ProductModel.fromJson(item as Map<String, dynamic>);

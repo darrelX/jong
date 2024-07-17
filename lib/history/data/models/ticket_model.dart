@@ -1,6 +1,6 @@
 class TicketModel {
-  final int? id;
-  final int? userId;
+  final String? id;
+  final String? userId;
   final int? totalAmount;
   final bool? status;
   final DateTime? createdAt; // New property
@@ -18,12 +18,12 @@ class TicketModel {
 
   factory TicketModel.fromJson(Map<String, dynamic> json) {
     return TicketModel(
-        id: json['id'] as int?,
+        id: (json['id'] as int).toString() as String?,
         totalAmount: json['total_amount'] as int?,
-        userId: json['user_id'] as int?,
+        userId: (json['user_id'] as int).toString() as String?,
         status: json['status'] as bool?,
-        createdAt: json['crated_at'] as DateTime?,
-        updatedAt: json['updated_at'] as DateTime?,
+        createdAt: (json['created_at'] as String) as DateTime?,
+        updatedAt: (json['updated_at'] as String) as DateTime?,
         products: json['products'] as List<Map<String, dynamic>>?);
   }
 
@@ -36,8 +36,7 @@ class TicketModel {
         'products': products
       };
 
-
-  static final Map<String,dynamic> ticket = {
+  static final Map<String, dynamic> ticket = {
     "current_page": 1,
     "data": [
       {

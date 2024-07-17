@@ -10,7 +10,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repository = getIt.get<AuthRepository>();
-  final prefs = getIt.get<Future<SharedPreferences>>();
+  // final prefs = getIt.get<Future<SharedPreferences>>();
 
   AuthCubit() : super(AuthInitial());
 
@@ -56,12 +56,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> checkAuthState() async {
-    final storage = await prefs;
+    final storage = await repository.prefs!;
     final token = storage.getString('token');
     try {
       emit(CheckAuthStateLoading());
 
-      if (token != null || token!.isEmpty) {
+      if (token != null || token!.isEmpty) { 
         var user = await repository.getUser(token);
         emit(CheckAuthStateSuccess(user: user!));
       } else {

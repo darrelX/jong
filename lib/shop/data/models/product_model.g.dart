@@ -11,7 +11,7 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) {
   return ProductModel(
     id: (json['id']).toString() as String?,
     name: json['name'] as String?,
-    createdAt: json['created_at'] as String?,
+    createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,
     productCategoryId: json['product_category_id'] as int?,
     price: double.parse(json['price'] as String) as double?,
   );

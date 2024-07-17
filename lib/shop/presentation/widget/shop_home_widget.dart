@@ -18,11 +18,6 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
   @override
   Widget build(BuildContext context) {
     final instance = context.read<ProductProvider>();
-    print("dada ${instance.listProductModel.length}");
-    print("dada ${instance.listProductModel[2].id}");
-    print("dada ${instance.listProductModel[2].name}");
-    print("dada ${instance.listProductModel[2].createdAt}");
-    print("dada ${instance.listProductModel[2].price}");
 
     return Scaffold(
       body: Padding(
@@ -48,9 +43,8 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
                   Expanded(
                       child: ListView.builder(
                           itemBuilder: (BuildContext contexxt, int _) {
-                            print("a1");
                             return ProductWidget(
-                              isShop: true,
+                              isShop: false,
                               id: "${instance.listProductModel[_].id}",
                               image: 'assets/images/1000.png',
                               title: instance.listProductModel[_].name!,

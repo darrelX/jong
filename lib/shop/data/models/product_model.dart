@@ -10,7 +10,7 @@ class ProductModel {
   final String? name;
   final int? productCategoryId;
   final double? price;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   ProductModel({
     required this.id,

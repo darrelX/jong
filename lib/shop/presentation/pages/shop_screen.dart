@@ -19,15 +19,14 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  final ProductProvider _provider = ProductProvider();
-  Future<void> a() async {
+  Future<void> refresh() async {
     await Provider.of<ProductProvider>(context, listen: false).fetchProducts();
   }
 
   @override
   void initState() {
     super.initState();
-    a();
+    refresh();
   }
 
   @override
@@ -35,7 +34,7 @@ class _ShopScreenState extends State<ShopScreen> {
     return Consumer<ProductProvider>(builder: (context, value, child) {
       return Scaffold(
           body: RefreshIndicator(
-        onRefresh: a,
+        onRefresh: refresh,
         child: DraggableBottomSheet(
           minExtent: 175,
           useSafeArea: false,

@@ -53,6 +53,7 @@ void setupLocator() {
   getIt.registerSingleton<ProductRepository>(
     ProductRepository(
       dio: getIt.get<Dio>(),
+      prefs: getIt.get<Future<SharedPreferences>>()
     ),
   );
 

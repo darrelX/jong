@@ -7,22 +7,27 @@ import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductProvider extends ChangeNotifier {
-  final repository = ProductRepository(
-      dio: getIt.get<Dio>(), prefs: getIt.get<Future<SharedPreferences>>());
+  final ProductRepository repository;
   Map<String, int> counters = {};
 
   List<ProductModel> _listProductModel = [];
   List<ProductModel> get listProductModel => _listProductModel;
 
   // Initialise le compteur de tous les articles à 0
-  ProductProvider();
+  ProductProvider()
+      : repository = ProductRepository(
+          dio: getIt.get<Dio>(),
+          prefs: getIt.get<Future<SharedPreferences>>(),
+        );
 
   Future<void> fetchProducts() async {
     _listProductModel = await repository.fetchProductsList();
-    for (var article in listProductModel) {
-      counters[article.id!] = 0;
+    if (counters.isEmpty) {
+      for (var article in listProductModel) {
+        counters[article.id!] = 0;
+      }
     }
-    print(listProductModel);
+
     notifyListeners();
   }
 
@@ -66,6 +71,6 @@ class ProductProvider extends ChangeNotifier {
         totalPrice += article.price! * counters[id]!;
       }
     }
-    return totalPrice;
+    return double.parse(totalPrice.toStringAsFixed(2));
   }
 }

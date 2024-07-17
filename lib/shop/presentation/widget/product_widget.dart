@@ -34,9 +34,6 @@ class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
     final instance = context.read<ProductProvider>();
-    print('babadi');
-    print('babadi ${instance.counters}');
-    print("babadi ${instance.counters[widget.id]!}");
 
     return Visibility(
       visible: widget.isShop
