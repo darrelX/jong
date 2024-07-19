@@ -46,6 +46,7 @@ dependencies:
   provider: ^6.1.2
   bloc: ^8.1.4
   fluttertoast: ^8.2.6
+  modal_bottom_sheet: ^3.0.0
 
 dev_dependencies:
   flutter_test:

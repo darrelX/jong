@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jong/auth/data/repositories/auth_repository.dart';
 import 'package:jong/service_locator.dart';
 import 'package:jong/shared/utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
@@ -12,7 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repository = getIt.get<AuthRepository>();
   // final prefs = getIt.get<Future<SharedPreferences>>();
 
-  AuthCubit() : super(AuthInitial());
+  AuthCubit() : super(const AuthInitial());
 
   login({
     required String phone,

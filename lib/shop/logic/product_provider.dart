@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/models/product_model.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductProvider extends ChangeNotifier {
   final ProductRepository repository;
   Map<String, int> counters = {};
-
-  List<ProductModel> _listProductModel = [];
-  List<ProductModel> get listProductModel => _listProductModel;
-
+  List<ProductModel> listProductModel = [];
+  final ApplicationCubit application = getIt.get<ApplicationCubit>();
   // Initialise le compteur de tous les articles à 0
   ProductProvider()
       : repository = ProductRepository(
@@ -21,7 +20,8 @@ class ProductProvider extends ChangeNotifier {
         );
 
   Future<void> fetchProducts() async {
-    _listProductModel = await repository.fetchProductsList();
+    listProductModel =
+        await repository.fetchProductsList(application.state.user!.id!);
     if (counters.isEmpty) {
       for (var article in listProductModel) {
         counters[article.id!] = 0;
@@ -45,7 +45,7 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> getBasketItems(String token) {
+  Future<void> getBasketItems() async {
     final List basketItems = listProductModel
         .where((article) =>
             counters.containsKey("${article.id}") &&
@@ -56,10 +56,11 @@ class ProductProvider extends ChangeNotifier {
             })
         .toList();
 
-    return {
-      'user_id': token,
+    final result = {
+      'user_id': application.state.user!.id!,
       'products': basketItems,
     };
+    await repository.createTicket(result, application.state.user!.id!);
   }
 
   double getTotalPrice() {

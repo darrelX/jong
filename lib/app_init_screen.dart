@@ -54,7 +54,7 @@ class _AppInitScreenState extends State<AppInitScreen> {
                 predicate: (route) => false,
               );
             }
-      
+
             if (state is CheckAuthStateSuccess) {
               getIt.get<ApplicationCubit>().setUser(state.user);
               context.router.pushAndPopUntil(

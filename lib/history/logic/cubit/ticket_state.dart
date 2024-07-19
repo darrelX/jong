@@ -7,22 +7,48 @@ sealed class TicketState extends Equatable {
   List<Object> get props => [];
 }
 
-class TicketStateInitial extends TicketState {
+final class TicketStateInitial extends TicketState {
   const TicketStateInitial();
 }
 
-class TicketStateTreated extends TicketState {
-  final bool status;
-  const TicketStateTreated({required this.status});
-
-    @override
-  List<Object> get props => [status];
+final class TicketStateLoading extends TicketState {
+    final List<TicketModel> treatedTickets;
+  final List<TicketModel> notTreatedTickets;
+  const TicketStateLoading({required this.treatedTickets, required this.notTreatedTickets});
 }
 
-class TicketStateNotTreated extends TicketState {
-  final bool status;
-  const TicketStateNotTreated({required this.status});
+final class TicketStateSuccess extends TicketState {
+    final List<TicketModel> treatedTickets;
+  final List<TicketModel> notTreatedTickets;
+  const TicketStateSuccess({required this.treatedTickets, required this.notTreatedTickets});
+}
 
-    @override
-  List<Object> get props => [status];
+
+final class TicketStateTreated extends TicketState {
+  final bool status;
+  final List<TicketModel> tickets;
+  final int total;
+  const TicketStateTreated(
+      {required this.tickets, required this.total, required this.status});
+
+  @override
+  List<Object> get props => [status, tickets, total];
+}
+
+final class TicketStateNotTreated extends TicketState {
+  final bool status;
+  final List<TicketModel> tickets;
+  final int total;
+  const TicketStateNotTreated(
+      {required this.tickets, required this.total, required this.status});
+
+  @override
+  List<Object> get props => [status, tickets, total];
+}
+
+final class TicketFailure extends TicketState {
+  final String message;
+  const TicketFailure({required this.message});
+  @override
+  List<Object> get props => [message];
 }

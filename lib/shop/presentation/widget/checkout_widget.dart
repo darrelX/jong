@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/widget/app_button.dart';
 
@@ -28,7 +29,10 @@ class CheckoutWidget extends StatelessWidget {
           bgColor: AppColors.primary,
           text: 'see my ticket',
           onPressed: () {
-            context.router.maybePop();
+            context.router.pushAndPopUntil(
+              const HistoryRoute(),
+              predicate: (route) => false,
+            );
           },
         ),
         AppButton(

@@ -1,11 +1,12 @@
 class ProductTicketModel {
   final String? id;
   final String? name;
-  final int? price;
+  final double? price;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? quantity;
   final String? productCategoryId;
+
 
   const ProductTicketModel(
       {required this.id,
@@ -19,11 +20,11 @@ class ProductTicketModel {
   factory ProductTicketModel.fromJson(Map<String, dynamic> json) {
     return ProductTicketModel(
       id: (json['id'] as int).toString() as String?,
-      price: int.parse(json['price'] as String) as int?,
+      price: double.parse(json['price'] as String) as double?,
       quantity: json['quantity'] as int?,
       name: json['name'] as String?,
-      createdAt: (json['created_at'] as String) as DateTime?,
-      updatedAt: (json['updated_at'] as String) as DateTime?,
+      createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,
+      updatedAt: DateTime.parse(json['updated_at'] as String) as DateTime?,
       productCategoryId:
           (json['product_category_id'] as int).toString() as String?,
     );

@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/utils/const.dart';
 
 class ProductsOfTicket extends StatelessWidget {
   const ProductsOfTicket(
-      {super.key,
-      required this.name,
-      required this.price,
-      required this.image,
-      required this.quantity});
+      {super.key, required this.product, required this.image});
 
-  final String name;
-  final int quantity;
-  final int price;
+  final ProductTicketModel product;
   final String image;
 
   @override
@@ -51,22 +46,22 @@ class ProductsOfTicket extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Beer $name',
+                product.name!,
                 style: context.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
-                "$price nkap",
+                "${product.price} nkap",
                 style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
-          Gap(150.h),
+          Gap(100.h),
           Text(
-            "$quantity",
+            "${product.quantity}",
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20,

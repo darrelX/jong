@@ -42,13 +42,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      // Utilisateur connecté
-      if (account != null) {
-        // Gérer l'authentification réussie ici
-        print('Utilisateur connecté : ${account.displayName}');
-      }
-    } as void Function(GoogleSignInAccount? event)?);
+    // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+    //   // Utilisateur connecté
+    //   if (account != null) {
+    //     // Gérer l'authentification réussie ici
+    //     print('Utilisateur connecté : ${account.displayName}');
+    //   }
+    // } as void Function(GoogleSignInAccount? event)?);
   }
 
   @override

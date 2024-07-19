@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:jong/history/presentation/widget/products_of_ticket.dart';
-import 'package:jong/history/presentation/widget/ticket_widget.dart';
+import 'package:jong/history/data/models/product_ticket_model.dart';
+import 'package:jong/history/data/models/ticket_model.dart';
+import 'package:jong/history/presentation/widgets/products_of_ticket.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 
 class BottomSheetWiget extends StatelessWidget {
   const BottomSheetWiget(
       {super.key,
-      required this.qunatity,
-      required this.totalAmount,
-      required this.ticketId});
-  final int qunatity;
-  final int totalAmount;
-  final String ticketId;
+      required this.ticket,
+      required this.products,
+      required this.total});
+  final TicketModel ticket;
+  final int total;
+  final List<ProductTicketModel> products;
 
   @override
   Widget build(BuildContext context) {
@@ -64,18 +65,18 @@ class BottomSheetWiget extends StatelessWidget {
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w600,
                               ),
-                              children: const [
-                            TextSpan(
-                              text: 'Tiquet Numero :',
+                              children: [
+                            const TextSpan(
+                              text: 'Tiquet Numero : ',
                             ),
                             TextSpan(
-                                text: ' 3203h2',
-                                style: TextStyle(
+                                text: ' ${ticket.userId!}',
+                                style: const TextStyle(
                                     fontSize: 19, fontWeight: FontWeight.w800)),
                           ])),
                       Gap(5.h),
                       Text(
-                        "Nombre de bouteilles : 8",
+                        "Nombre de bouteilles : $total",
                         textAlign: TextAlign.start,
                         style: context.textTheme.titleMedium?.copyWith(
                           color: AppColors.white,
@@ -89,10 +90,11 @@ class BottomSheetWiget extends StatelessWidget {
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w600,
                               ),
-                              children: const [
+                              children: [
                             TextSpan(
-                                text: '2850', style: TextStyle(fontSize: 30)),
-                            TextSpan(text: '  Nkap'),
+                                text: '${ticket.totalAmount}',
+                                style: const TextStyle(fontSize: 30)),
+                            const TextSpan(text: '  Nkap'),
                           ])),
                     ],
                   ),
@@ -120,13 +122,11 @@ class BottomSheetWiget extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount: 25,
+                  itemCount: products.length,
                   itemBuilder: (context, index) {
-                    return const ProductsOfTicket(
-                        name: 'name',
-                        price: 4,
+                    return ProductsOfTicket(
                         image: 'assets/images/1000.png',
-                        quantity: 7);
+                        product: products[index]);
                   },
                 ),
               ),

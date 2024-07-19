@@ -14,7 +14,6 @@ class PreviewWidget extends StatelessWidget {
   const PreviewWidget({
     super.key,
     this.padding = const EdgeInsets.all(padding16),
-
   });
   final EdgeInsetsGeometry? padding;
 
@@ -86,6 +85,7 @@ class PreviewWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(radius20 - 1),
                 ),
                 onTap: () {
+                  instance.getBasketItems();
                   AppDialog.showDialog(
                     context: context,
                     height: 300,

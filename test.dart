@@ -38,20 +38,17 @@ void main() async {
   // print("$b $c");
   // PartA part = PartA(a: 0);
   // print(part.b );
+  Parent parent = Parent(parent: 'parent');
+  Child child = Child('child');
+  
+}
 
-  final Map a = {
-    '1': 1,
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-  };
+class Parent {
+  final String? parent;
+  Parent({this.parent});
+}
 
-  final dd = a.values.where((a) {
-    return a > 0;
-  }).map((i) {
-    return i;
-  });
-
-  print(dd);
+class Child extends Parent {
+  final String child;
+  Child(this.child);
 }

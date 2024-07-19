@@ -28,6 +28,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
           bottom: 180.h,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Boissons disponibles",

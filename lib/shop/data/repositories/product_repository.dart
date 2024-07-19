@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:jong/auth/data/models/user_model.dart';
+import 'package:jong/auth/data/repositories/auth_repository.dart';
+import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/models/product_model.dart';
 import 'package:jong/shop/logic/product_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,15 +12,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductRepository {
   final Dio dio;
   Future<SharedPreferences>? prefs;
+  // final ApplicationCubit repository;
 
   ProductRepository({
     required this.dio,
     this.prefs,
   });
 
-  Future<List<ProductModel>> fetchProductsList() async {
+  Future<List<ProductModel>> fetchProductsList(int userId) async {
     try {
-      Response response = await dio.get('/products');
+      Response response = await dio.get('/products', queryParameters: {"user_id": userId});
       List<dynamic> productsJson = response.data['data'] as List<dynamic>;
 
       List<ProductModel> products = productsJson.map((item) {
@@ -29,20 +34,20 @@ class ProductRepository {
     }
   }
 
-  // createTicket(String token) async {
-  //   final List basketItems = _articles['items']
-  //       .where((article) =>
-  //           _counters.containsKey(article['id']) &&
-  //           _counters[article['id']]! > 0)
-  //       .map((article) => {
-  //             'id': article['id'],
-  //             'quantity': _counters[article['id']],
-  //           })
-  //       .toList();
+  Future<bool> createTicket(Map<String, dynamic> json, int userId) async {
+    try {
+      Response response = await dio.post('/tickets',
+          queryParameters: {"user_id": userId}, data: json);
+      log(response.data.toString());
+      if (response.data["status"]) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('An error occurred: $e');
 
-  //   return {
-  //     'user_id': token,
-  //     'products': basketItems,
-  //   };
-  // }
+      return false;
+    }
+  }
 }
