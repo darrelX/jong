@@ -13,7 +13,7 @@ class UserModel {
   @JsonKey(required: true)
   final String? email;
   @JsonKey(required: true)
-  final String? balance;
+  final double? balance;
   @JsonKey(required: true)
   final String? phoneNumber;
 
@@ -24,6 +24,23 @@ class UserModel {
     required this.balance,
     required this.phoneNumber,
   });
+
+    UserModel copyWith({
+    int? id,
+    String? name,
+    String? email,
+    double? balance,
+   String? phoneNumber
+
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      balance: balance ?? this.balance,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

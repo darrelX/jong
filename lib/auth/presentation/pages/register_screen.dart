@@ -74,6 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         builder: (context, state) {
           return SingleChildScrollView(
             child: Container(
+              height: context.height - 83.h,
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius:
@@ -240,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                    Gap(20.h),
+                    Gap(10.h),
                   ],
                 ),
               ),

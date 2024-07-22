@@ -15,7 +15,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     id: (json['id'] as num?)?.toInt(),
     name: json['name'] as String?,
     email: json['email'] as String?,
-    balance: json['balance'] as String?,
+    balance: double.parse(json['balance'].toString()) as double?,
     phoneNumber: json['phone_number'] as String?,
   );
 }

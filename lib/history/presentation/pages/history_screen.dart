@@ -5,10 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/history/logic/cubit/ticket_cubit.dart';
 import 'package:jong/history/presentation/widgets/bottom_sheet_wiget.dart';
-import 'package:jong/history/presentation/widgets/drop_down_category_tickets.dart';
+import 'package:jong/history/presentation/widgets/category_selector_widget.dart';
 import 'package:jong/history/presentation/widgets/ticket_widget.dart';
+import 'package:jong/history/presentation/widgets/validation_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
+import 'package:jong/shared/widget/app_dialog.dart';
 
 @RoutePage()
 class HistoryScreen extends StatefulWidget {
@@ -56,9 +58,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return BlocConsumer<TicketCubit, TicketState>(
       bloc: cubit,
       listener: (context, state) {
-        if (state is TicketStateToggle) {
-          
-        }
+        if (state is TicketStateToggle) {}
       },
       builder: (context, state) {
         print("state $state");
@@ -85,7 +85,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 child: Column(
                   children: [
                     Gap(20.h),
-                    DropDownCategoryTickets(
+
+                    TicketCategoryDropdown(
                       onPressed: _toggleFirstDropdown,
                       title: "Tickets non traités",
                       isDropOpen: _isFirstDropdownOpen,
@@ -94,7 +95,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       status: false,
                     ),
                     Gap(30.h),
-                    DropDownCategoryTickets(
+                    TicketCategoryDropdown(
                       onPressed: _toggleSecondDropdown,
                       title: "Tickets traités",
                       status: true,

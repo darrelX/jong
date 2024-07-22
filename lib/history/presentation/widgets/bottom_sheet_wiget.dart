@@ -4,8 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/history/data/models/ticket_model.dart';
 import 'package:jong/history/presentation/widgets/products_of_ticket.dart';
+import 'package:jong/history/presentation/widgets/validation_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
+import 'package:jong/shared/widget/app_dialog.dart';
 
 class BottomSheetWiget extends StatelessWidget {
   const BottomSheetWiget(
@@ -88,6 +90,16 @@ class BottomSheetWiget extends StatelessWidget {
                       ],
                     ),
                     InkWell(
+                      onTap: () {
+                        AppDialog.showDialog(
+                          width: 300,
+                          height: 300,
+                          context: context,
+                          child: ValidationWidget(
+                            id: ticket.id!,
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         width: 110.w,

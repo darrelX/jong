@@ -7,8 +7,8 @@ import 'package:jong/history/presentation/widgets/ticket_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 
-class DropDownCategoryTickets extends StatelessWidget {
-  const DropDownCategoryTickets(
+class TicketCategoryDropdown extends StatelessWidget {
+  const TicketCategoryDropdown(
       {super.key,
       required this.isDropOpen,
       required this.title,
