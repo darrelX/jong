@@ -37,9 +37,12 @@ void main() async {
   // print(dateTime); // Affiche : 2024-07-09 03:35:22.000Z
   // print("$b $c");
   // PartA part = PartA(a: 0);
-  // print(part.b );
-  Parent parent = Parent(parent: 'parent');
-  Child child = Child('child');
+  Future<int> futureA = Future.delayed(Duration(seconds: 2), () => 1);
+  Future<String> futureB = Future.delayed(Duration(seconds: 3), () => "Hello");
+  Future<double> futureC = Future.delayed(Duration(seconds: 4), () => 3.14);
+
+  var result = await Future.any([futureA, futureB, futureC]);
+  print(result.runtimeType);
   
 }
 

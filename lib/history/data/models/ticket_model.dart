@@ -24,7 +24,7 @@ class TicketModel {
     // print("dada ${json['total_amount'].runtimeType} ${json['total_amount']}");
     return TicketModel(
       id: (json['id'] as int).toString() as String?,
-      totalAmount: double.parse(json['total_amount'] as String) ,
+      totalAmount: double.parse(json['total_amount'].toString()) as double?,
       userId: (json['user_id'] as int).toString() as String?,
       status: json['status'] as bool?,
       createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,

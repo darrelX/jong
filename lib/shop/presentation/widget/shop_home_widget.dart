@@ -39,7 +39,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
             Gap(30.h),
             Expanded(
                 child: ListView.builder(
-                    itemBuilder: (BuildContext contexxt, int _) {
+                    itemBuilder: (BuildContext context, int _) {
                       return ProductWidget(
                         isShop: false,
                         id: "${instance.listProductModel[_].id}",

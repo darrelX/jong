@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
@@ -69,9 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
-        title: const Text("Log In"),
-        centerTitle: true,
+        title: Text(
+          "  Log In",
+          style: context.textTheme.headlineSmall!
+              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+        ),
+        toolbarHeight: 60.h,
+        // centerTitle: true,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: _cubit,
@@ -100,125 +107,120 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            child: SizedBox(
-              height: context.height - 50,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
+            child: Container(
+              height: context.height - 80.h,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
                 ),
-                child: AutofillGroup(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Spacer(flex: 2),
-                        Center(
-                          child: Text(
-                            "Log In to jong game",
-                            style: context.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
-                            textAlign: TextAlign.center,
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25.w,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gap(40.h),
+                      Text(
+                        "Welcome Back!",
+                        style: context.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(8.h),
+                      Text(
+                        "To keep connected with us please login with your personal info",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                      Gap(40.h),
+                      AppInput(
+                        controller: _phoneController,
+                        label: 'Tel',
+                        keyboardType: TextInputType.phone,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Phone number is required',
+                          ),
+                        ],
+                      ),
+                      Gap(20.h),
+                      AppInput(
+                        controller: _passwordController,
+                        label: 'Password',
+                        keyboardType: TextInputType.visiblePassword,
+                        autofillHints: const [
+                          AutofillHints.password,
+                        ],
+                        showEyes: true,
+                        obscureText: true,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Password is required',
+                          ),
+                        ],
+                      ),
+                      Gap(20.h),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: const Text(
+                            "Forgot Password",
+                            textAlign: TextAlign.end,
                           ),
                         ),
-                        const Spacer(),
-                        AppInput(
-                          controller: _phoneController,
-                          label: 'Tel',
-                          keyboardType: TextInputType.phone,
-                          validators: [
-                            FormBuilderValidators.required(
-                              errorText: 'Phone number is required',
-                            ),
-                          ],
-                        ),
-                        const Gap(20),
-                        AppInput(
-                          controller: _passwordController,
-                          label: 'Password',
-                          keyboardType: TextInputType.visiblePassword,
-                          autofillHints: const [
-                            AutofillHints.password,
-                          ],
-                          showEyes: true,
-                          obscureText: true,
-                          validators: [
-                            FormBuilderValidators.required(
-                              errorText: 'Password is required',
-                            ),
-                          ],
-                        ),
-                        const Gap(20),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: const Text(
-                              "Forgot Password",
-                              textAlign: TextAlign.end,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        AppButton(
-                          loading: state is LoginLoading,
-                          bgColor: AppColors.primary,
-                          text: "Login",
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _cubit.login(
-                                phone: _phoneController.text,
-                                password: _passwordController.text,
-                              );
-                            }
-                          },
-                        ),
-                        const Spacer(flex: 3),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Button(
-                            onPressed: _signInWithGoogle,
-                            icon: SvgPicture.asset(
-                              'assets/icons/google.svg',
-                              width: 30,
-                              height: 30,
-                              // color: Colors.transparent,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const Spacer(flex: 3),
-                        Center(
-                          child: Text.rich(
-                            TextSpan(
-                              text: 'Dont have an\n',
-                              children: [
-                                const TextSpan(text: "account ?  "),
-                                TextSpan(
-                                  text: "Signup",
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.primary,
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      context.router
-                                          .push(const RegisterRoute());
-                                    },
+                      ),
+                      Gap(50.h),
+                      AppButton(
+                        loading: state is LoginLoading,
+                        bgColor: AppColors.primary,
+                        text: "Login",
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _cubit.login(
+                              phone: _phoneController.text,
+                              password: _passwordController.text,
+                            );
+                          }
+                        },
+                      ),
+                      Gap(80.h),
+                      Center(
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Dont have an\n',
+                            children: [
+                              const TextSpan(text: "account ?  "),
+                              TextSpan(
+                                text: "Signup",
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: AppColors.primary,
                                 ),
-                              ],
-                            ),
-                            textAlign: TextAlign.center,
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    context.router.push(const RegisterRoute());
+                                  },
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
-                        const Spacer(flex: 4),
-                      ],
-                    ),
+                      ),
+                      // Gap(4.h),
+                    ],
                   ),
                 ),
               ),

@@ -53,14 +53,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TicketCubit, TicketState>(
+    return BlocConsumer<TicketCubit, TicketState>(
       bloc: cubit,
+      listener: (context, state) {
+        if (state is TicketStateToggle) {
+          
+        }
+      },
       builder: (context, state) {
         print("state $state");
 
         if (state is TicketStateLoading) {
-          return const CircularProgressIndicator(
-            value: 30,
+          return Center(
+            child: Transform.scale(
+              scale: 2, // Réduire de moitié la taille du widget
+              child: const CircularProgressIndicator(),
+            ),
           );
         }
         if (state is TicketStateSuccess) {
@@ -129,7 +137,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           );
         }
-        return const CircularProgressIndicator();
+        return Center(
+          child: Transform.scale(
+            scale: 2, // Réduire de moitié la taille du widget
+            child: const CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }

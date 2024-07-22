@@ -50,7 +50,7 @@ class DropDownCategoryTickets extends StatelessWidget {
         children: [
           if (isDropOpen) Gap(10.h),
           InkWell(
-            onTap: onPressed,
+            onTap: totalTickets == 0 ? null : onPressed,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -105,11 +105,10 @@ class DropDownCategoryTickets extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ...tickets.map((item) => TicketWidget(
-                    total: tickets.length,
-                      width: 410.h,
-                     
-                      ticket: item,
-               )),
+                        total: tickets.length,
+                        width: 410.h,
+                        ticket: item,
+                      )),
                 ],
               ),
             ),

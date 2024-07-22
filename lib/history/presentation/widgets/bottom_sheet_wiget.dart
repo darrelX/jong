@@ -19,121 +19,111 @@ class BottomSheetWiget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.7,
-      minChildSize: 0.2,
-      maxChildSize: 1,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20.0),
-            ),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 20.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Gap(30.h),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 20.h,
-                  ),
-                  child: Container(
-                    height: 10.h,
-                    width: 80.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
+    // final ScrollController _scrollController = ScrollController();
+    return SizedBox(
+      height: 400.h,
+      child: DraggableScrollableSheet(
+        initialChildSize: 1,
+        minChildSize: 0.1,
+        maxChildSize: 1,
+        builder: (context, scrollController) {
+          return Container(
+            height: 180.h,
+            decoration: const BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20.0),
               ),
-              Gap(10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                          text: TextSpan(
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w600,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Gap(20.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                            text: TextSpan(
+                                style: context.textTheme.bodyMedium!.copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: [
+                              const TextSpan(
+                                text: 'Tiquet Numero : ',
                               ),
-                              children: [
-                            const TextSpan(
-                              text: 'Tiquet Numero : ',
-                            ),
-                            TextSpan(
-                                text: ' ${ticket.userId!}',
-                                style: const TextStyle(
-                                    fontSize: 19, fontWeight: FontWeight.w800)),
-                          ])),
-                      Gap(5.h),
-                      Text(
-                        "Nombre de bouteilles : $total",
-                        textAlign: TextAlign.start,
-                        style: context.textTheme.titleMedium?.copyWith(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Gap(5.h),
-                      RichText(
-                          text: TextSpan(
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              children: [
-                            TextSpan(
-                                text: '${ticket.totalAmount}',
-                                style: const TextStyle(fontSize: 30)),
-                            const TextSpan(text: '  Nkap'),
-                          ])),
-                    ],
-                  ),
-                  InkWell(
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      width: 130.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white),
-                      child: Center(
-                        child: Text(
-                          'Traiter',
+                              TextSpan(
+                                  text: ' ${ticket.id!}',
+                                  style: context.textTheme.bodyLarge!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ])),
+                        Gap(5.h),
+                        Text(
+                          "Nombre de bouteilles : $total",
+                          textAlign: TextAlign.start,
                           style: context.textTheme.titleMedium?.copyWith(
-                            color: AppColors.primary,
+                            color: AppColors.white,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ),
+                        Gap(5.h),
+                        RichText(
+                            text: TextSpan(
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: [
+                              TextSpan(
+                                  text: '${ticket.totalAmount}',
+                                  style: context.textTheme.titleLarge!
+                                      .copyWith(color: Colors.white)),
+                            ])),
+                      ],
                     ),
-                  )
-                ],
-              ),
-              Gap(10.h),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return ProductsOfTicket(
-                        image: 'assets/images/1000.png',
-                        product: products[index]);
-                  },
+                    InkWell(
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        width: 110.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white),
+                        child: Center(
+                          child: Text(
+                            'Traiter',
+                            style: context.textTheme.titleMedium?.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+                Gap(10.h),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return ProductsOfTicket(
+                          image: 'assets/images/1000.png',
+                          product: products[index]);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

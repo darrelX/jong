@@ -15,8 +15,6 @@ class AuthRepository {
     this.prefs,
   });
 
-
-
   Future<UserModel?> getUser(String token) async {
     SharedPreferences storage = await prefs!;
     String? token = storage.getString('token');
@@ -30,7 +28,7 @@ class AuthRepository {
       return UserModel.fromJson(response.data);
     } catch (e) {
       log(e.toString());
-      return null;
+      rethrow;
     }
   }
 

@@ -19,6 +19,7 @@ class Application extends StatelessWidget {
       designSize: const Size(375, 812),
       child: MaterialApp.router(
         title: 'Jong',
+        
         debugShowCheckedModeBanner: false,
         theme: buildLightTheme(),
         darkTheme: buildLightTheme(),

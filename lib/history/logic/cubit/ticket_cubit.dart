@@ -20,13 +20,9 @@ class TicketCubit extends Cubit<TicketState> {
         application = getIt.get<ApplicationCubit>(),
         super(const TicketStateInitial());
 
-  // toggleToTreated(bool status) {
-  //   if (status = true) {
-  //     emit(TicketStateTreated(status: status));
-  //   } else {
-  //     emit(TicketStateNotTreated(status: status));
-  //   }
-  // }
+  toggleToTreated(int id) {
+    emit(const TicketStateToggle());
+  }
 
   Future<void> fetchTicketsList() async {
     treatedTickets.clear();

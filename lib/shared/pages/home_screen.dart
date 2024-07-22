@@ -124,8 +124,11 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
               validators: [
                 FormBuilderValidators.required(),
                 FormBuilderValidators.numeric(),
+                FormBuilderValidators.min(300,
+                    errorText: "La valeur entree est inferieur a 300"),
               ],
             ),
+            
             AppButton(
               bgColor: AppColors.primary,
               text: "Start the game",

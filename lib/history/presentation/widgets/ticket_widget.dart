@@ -3,11 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/history/data/models/ticket_model.dart';
 import 'package:jong/history/presentation/widgets/bottom_sheet_wiget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
-
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../shared/theme/app_colors.dart';
 
 class TicketWidget extends StatelessWidget {
@@ -29,6 +28,7 @@ class TicketWidget extends StatelessWidget {
       onTap: () {
         showModalBottomSheet(
           context: context,
+          backgroundColor: Colors.transparent,
           builder: (context) {
             return BottomSheetWiget(
               total: total,
@@ -115,7 +115,7 @@ class TicketWidget extends StatelessWidget {
               children: [
                 Text(
                   // ticket..toStringAsFixed(2),
-                  "4",
+                  ticket!.totalAmount!.toStringAsFixed(2),
                   style: context.textTheme.headlineMedium?.copyWith(
                     color: AppColors.primary,
                     fontSize: 24,

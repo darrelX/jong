@@ -36,11 +36,11 @@ class ProductsOfTicket extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Gap(10.h),
+          Gap(10.w),
           Image.asset(
             image,
           ),
-          Gap(30.h),
+          Gap(20.w),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +59,7 @@ class ProductsOfTicket extends StatelessWidget {
               ),
             ],
           ),
-          Gap(100.h),
+          Gap(50.w),
           Text(
             "${product.quantity}",
             style: context.textTheme.bodyLarge?.copyWith(
@@ -67,7 +67,6 @@ class ProductsOfTicket extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          Gap(10.h)
         ],
       ),
     );

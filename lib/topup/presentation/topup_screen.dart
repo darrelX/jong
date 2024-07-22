@@ -22,7 +22,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
   final TextEditingController _amountController = TextEditingController();
 
   PhoneNumber? number;
-  var pm = 'momo';
+  String pm = 'momo';
 
   @override
   void initState() {
@@ -117,15 +117,16 @@ class _TopUpScreenState extends State<TopUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Mobile money",
+                          "Mobile Money",
                           style: context.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Image.asset(
                           "assets/images/momo.jpeg",
-                          width: 55,
-                          height: 25,
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.fill,
                         )
                       ],
                     ),
@@ -143,7 +144,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Orange money",
+                          "Orange Money",
                           style: context.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),

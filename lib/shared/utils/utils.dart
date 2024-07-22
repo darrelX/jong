@@ -7,16 +7,13 @@ class Utils {
         return error;
       }
       if (error is DioException) {
-        var data = error.response?.data;
+        Response response = error.response!;
+        final Map<String, dynamic> data = response.data as Map<String, dynamic>;
         if (data is String) {
-          return data;
+          return data.toString();
         }
-        if (data is Map) {
-          var msg = data['detail'];
-          if (msg is String) {
-            return msg;
-          }
-        }
+        // print('data1 ${data.runtimeType} ${data['message']}');
+        return data['message'].toString();
       }
 
       return error.toString();

@@ -26,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(LoginSuccess(user: user!));
     } catch (e) {
       emit(LoginFailure(message: Utils.extractErrorMessage(e)));
+      rethrow;
     }
   }
 
@@ -60,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(CheckAuthStateLoading());
 
-      if (token != null || token!.isEmpty) { 
+      if (token != null || token!.isEmpty) {
         var user = await repository.getUser(token);
         emit(CheckAuthStateSuccess(user: user!));
       } else {

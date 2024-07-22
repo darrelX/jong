@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +9,16 @@ import 'package:jong/shop/data/models/product_model.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum LoadingState { initial, loading, success, error }
+
 class ProductProvider extends ChangeNotifier {
   final ProductRepository repository;
   Map<String, int> counters = {};
   List<ProductModel> listProductModel = [];
+  LoadingState state = LoadingState.initial;
+  Timer? timer;
   final ApplicationCubit application = getIt.get<ApplicationCubit>();
+
   // Initialise le compteur de tous les articles à 0
   ProductProvider()
       : repository = ProductRepository(
@@ -20,15 +27,28 @@ class ProductProvider extends ChangeNotifier {
         );
 
   Future<void> fetchProducts() async {
-    listProductModel =
-        await repository.fetchProductsList(application.state.user!.id!);
-    if (counters.isEmpty) {
-      for (var article in listProductModel) {
-        counters[article.id!] = 0;
-      }
-    }
-
+    listProductModel.clear();
+    counters.clear();
+    if (state == LoadingState.loading) return;
+    state = LoadingState.loading;
     notifyListeners();
+    try {
+      listProductModel =
+          await repository.fetchProductsList(application.state.user!.id!);
+      if (counters.isEmpty && listProductModel.isNotEmpty) {
+        for (var article in listProductModel) {
+          counters[article.id!] = 0;
+        }
+
+        state = LoadingState.success;
+        notifyListeners();
+      }
+    } catch (e) {
+      state = LoadingState.error;
+      notifyListeners();
+    } finally {
+      notifyListeners();
+    }
   }
 
   void increment(String id, int quantity) {

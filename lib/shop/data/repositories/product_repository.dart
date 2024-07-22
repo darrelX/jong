@@ -21,7 +21,8 @@ class ProductRepository {
 
   Future<List<ProductModel>> fetchProductsList(int userId) async {
     try {
-      Response response = await dio.get('/products', queryParameters: {"user_id": userId});
+      Response response =
+          await dio.get('/products', queryParameters: {"user_id": userId});
       List<dynamic> productsJson = response.data['data'] as List<dynamic>;
 
       List<ProductModel> products = productsJson.map((item) {
@@ -30,7 +31,7 @@ class ProductRepository {
       return products;
     } catch (e) {
       print('An error occurred: $e');
-      return [];
+      rethrow;
     }
   }
 
@@ -47,7 +48,7 @@ class ProductRepository {
     } catch (e) {
       print('An error occurred: $e');
 
-      return false;
+      rethrow;
     }
   }
 }

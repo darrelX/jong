@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 
-String fontFamily = 'Poppins';
-String fontHeader = 'Poppins';
+String fontFamily = 'Roboto';
+String fontHeader = 'Roboto';
 
 TextTheme buildTextTheme(
   TextTheme base,

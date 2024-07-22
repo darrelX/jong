@@ -6,7 +6,7 @@
         android:label="jong"
         android:enableOnBackInvokedCallback="true"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/jongicon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -44,10 +44,12 @@ class AppInput extends StatefulWidget {
   final Widget? eyeClosed;
   final Widget? labelRight;
   final bool isItalic;
+  final int? maxValue;
 
   const AppInput({
     super.key,
     this.controller,
+    this.maxValue,
     this.hint,
     this.initialValue,
     this.label,
@@ -144,6 +146,7 @@ class _AppInputState extends State<AppInput> {
         TextFormField(
           controller: widget.controller,
           style: TextStyle(
+            height: 1.4.h,
             fontWeight: FontWeight.w500,
             fontSize: 17.sp,
             color: AppColors.black,
