@@ -62,14 +62,14 @@ class _TopUpScreenState extends State<TopUpScreen> {
                   Expanded(
                     child: ListView(
                       children: [
-                        Gap(context.padding.top),
+                        Gap(20.h),
                         Text(
                           "Enter Your Phone Number",
                           style: context.textTheme.headlineMedium?.copyWith(
                             fontSize: 28.sp,
                           ),
                         ),
-                        const Gap(20),
+                        Gap(30.h),
                         Text(
                           "Phone number",
                           style: context.textTheme.labelLarge?.copyWith(
@@ -84,6 +84,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                             setState(() {});
                           },
                           hintText: '',
+                          initialValue: PhoneNumber(isoCode: 'CM'),
                           selectorConfig: const SelectorConfig(
                             selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                             useBottomSheetSafeArea: true,
@@ -105,11 +106,12 @@ class _TopUpScreenState extends State<TopUpScreen> {
                           inputBorder:
                               context.theme.inputDecorationTheme.border,
                         ),
-                        const Gap(20),
+                        Gap(40.h),
                         AppInput(
                           controller: _amountController,
                           label: 'Amount',
                           keyboardType: TextInputType.number,
+                          width: 350.w,
                           suffixIcon: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,9 +142,9 @@ class _TopUpScreenState extends State<TopUpScreen> {
                           value: 'mtn',
                           groupValue: pm,
                           onChanged: (value) {
-                            if (value == null) return;
+                            // if (value == null) return;
                             setState(() {
-                              pm = value;
+                              pm = value!;
                             });
                           },
                           title: Row(
@@ -167,10 +169,9 @@ class _TopUpScreenState extends State<TopUpScreen> {
                           value: 'orange',
                           groupValue: pm,
                           onChanged: (value) {
-                            if (value == null) return;
-                            print('value $value');
+                            // if (value == null) return;
                             setState(() {
-                              pm = value;
+                              pm = value!;
                             });
                           },
                           title: Row(

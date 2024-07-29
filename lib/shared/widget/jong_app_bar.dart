@@ -29,8 +29,8 @@ class JongAppBar extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/wallet2.png',
-              width: 30,
-              height: 30,
+              width: 30.w,
+              height: 30.h,
             ),
             Row(
               children: [
@@ -39,7 +39,7 @@ class JongAppBar extends StatelessWidget {
                   builder: (context, state) {
                     return Text(
                       double.parse(state.user!.balance.toString())
-                          .toStringAsFixed(1),
+                          .toStringAsFixed(2),
                     );
                   },
                 ),
@@ -54,40 +54,6 @@ class JongAppBar extends StatelessWidget {
             )
           ],
         ),
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   crossAxisAlignment: CrossAxisAlignment.end,
-        //   mainAxisSize: MainAxisSize.min,
-        //   children: [
-        //     Image.asset(
-        //       'assets/images/wallet2.png',
-        //       width: 10,
-        //       height: 10,
-        //     ),
-        //     Expanded(
-        //       child: Row(
-        //         children: [
-        //           BlocBuilder<ApplicationCubit, ApplicationState>(
-        //             bloc: getIt.get<ApplicationCubit>(),
-        //             builder: (context, state) {
-        //               return Text(
-        //                 double.parse(state.user!.balance.toString())
-        //                     .toStringAsFixed(1),
-        //               );
-        //             },
-        //           ),
-        //           const Gap(1),
-        //           Text(
-        //             "nkap",
-        //             style: context.textTheme.bodyMedium?.copyWith(
-        //               color: AppColors.white,
-        //             ),
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // )
       ],
     );
   }

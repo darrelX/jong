@@ -126,6 +126,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
                 FormBuilderValidators.numeric(),
                 FormBuilderValidators.min(300,
                     errorText: "La valeur entree est inferieur a 300"),
+                    
               ],
             ),
             

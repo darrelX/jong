@@ -45,6 +45,8 @@ class AppInput extends StatefulWidget {
   final Widget? labelRight;
   final bool isItalic;
   final int? maxValue;
+  final double? width;
+  final bool border;
 
   const AppInput({
     super.key,
@@ -92,6 +94,8 @@ class AppInput extends StatefulWidget {
     this.labelRight,
     this.isItalic = false,
     this.labelColors,
+    this.width,
+    this.border = true,
   });
 
   @override
@@ -143,96 +147,116 @@ class _AppInputState extends State<AppInput> {
               ],
             ),
           ),
-        TextFormField(
-          controller: widget.controller,
-          style: TextStyle(
-            height: 1.4.h,
-            fontWeight: FontWeight.w500,
-            fontSize: 17.sp,
-            color: AppColors.black,
-            fontStyle: widget.isItalic ? FontStyle.italic : null,
+        Container(
+          width: widget.width ?? 320.w,
+          decoration: BoxDecoration(
+            // color: const Color.fromRGBO(240, 244, 245, 10),
+            // Couleur de fond souhaitée
+            borderRadius: BorderRadius.circular(40.0), // Rayon des bords
           ),
-          buildCounter: !widget.showHelper
-              ? (
-                  context, {
-                  required currentLength,
-                  required isFocused,
-                  maxLength,
-                }) =>
-                  Container()
-              : null,
-          onTap: widget.onTap,
-          initialValue: widget.initialValue,
-          enabled: widget.enable,
-          validator: FormBuilderValidators.compose(widget.validators),
-          inputFormatters: widget.inputFormatters,
-          readOnly: widget.readOnly,
-          maxLength: widget.maxLength,
-          onChanged: widget.onChange,
-          minLines: widget.minLines,
-          maxLines: widget.maxLines,
-          focusNode: widget.focusNode,
-          autovalidateMode: widget.autoValidate,
-          keyboardType: widget.keyboardType,
-          autofillHints: widget.autofillHints,
-          cursorColor: widget.cursorColor,
-          textAlign: widget.textAlign,
-          obscureText: widget.obscureText ? _isObscure : false,
-          textInputAction: widget.nextNode != null
-              ? TextInputAction.next
-              : (widget.textInputAction ?? TextInputAction.done),
-          onFieldSubmitted: widget.nextNode == null
-              ? widget.onSubmitted
-              : (value) {
-                  FocusScope.of(context).requestFocus(widget.nextNode);
-                  if (widget.onSubmitted != null) {
-                    widget.onSubmitted!(value);
-                  }
-                },
-          decoration: InputDecoration(
-            hintText: widget.hint,
-            hintStyle: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: 15.sp,
+          child: TextFormField(
+            controller: widget.controller,
+            style: TextStyle(
+              height: 1.8.h,
+              fontWeight: FontWeight.w500,
+              fontSize: 17.sp,
+              color: AppColors.black,
               fontStyle: widget.isItalic ? FontStyle.italic : null,
             ),
-            suffixIcon: (widget.showEyes == true && widget.obscureText == true)
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isObscure = !_isObscure;
-                      });
-                    },
-                    child: _isObscure
-                        ? widget.eye ??
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 8.h,
-                              ),
-                              child: const Icon(
-                                Icons.visibility_outlined,
-                                size: 25,
-                                //color: AppColors.textColor,
-                              ),
-                            )
-                        : widget.eyeClosed ??
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 8.h,
-                              ),
-                              child: const Icon(
-                                Icons.visibility_off_outlined,
-                                size: 25,
+            buildCounter: !widget.showHelper
+                ? (
+                    context, {
+                    required currentLength,
+                    required isFocused,
+                    maxLength,
+                  }) =>
+                    Container()
+                : null,
+            onTap: widget.onTap,
+            initialValue: widget.initialValue,
+            enabled: widget.enable,
+            validator: FormBuilderValidators.compose(widget.validators),
+            inputFormatters: widget.inputFormatters,
+            readOnly: widget.readOnly,
+            maxLength: widget.maxLength,
+            onChanged: widget.onChange,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
+            focusNode: widget.focusNode,
+            autovalidateMode: widget.autoValidate,
+            keyboardType: widget.keyboardType,
+            autofillHints: widget.autofillHints,
+            cursorColor: widget.cursorColor,
+            textAlign: widget.textAlign,
+            obscureText: widget.obscureText ? _isObscure : false,
+            textInputAction: widget.nextNode != null
+                ? TextInputAction.next
+                : (widget.textInputAction ?? TextInputAction.done),
+            onFieldSubmitted: widget.nextNode == null
+                ? widget.onSubmitted
+                : (value) {
+                    FocusScope.of(context).requestFocus(widget.nextNode);
+                    if (widget.onSubmitted != null) {
+                      widget.onSubmitted!(value);
+                    }
+                  },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0), // Rayon des bords
+              ),
 
-                                ///color: AppColors.textColor,
-                              ),
-                            ),
-                  )
-                : widget.suffixIcon,
-            contentPadding: widget.contentPadding,
-            prefixIcon: widget.prefix,
+              focusedBorder: null,
+              // enabledBorder: widget.border ? InputBorder.none : null,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0), // Rayon des bords
+                  borderSide: BorderSide(color: Colors.transparent)),
+              filled: true,
+              fillColor: Color.fromRGBO(240, 244, 245, 10),
+              hintText: widget.hint,
+              hintStyle: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 15.sp,
+                fontStyle: widget.isItalic ? FontStyle.italic : null,
+              ),
+              suffixIcon:
+                  (widget.showEyes == true && widget.obscureText == true)
+                      ? GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          child: _isObscure
+                              ? widget.eye ??
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w,
+                                      vertical: 8.h,
+                                    ),
+                                    child: const Icon(
+                                      Icons.visibility_off_outlined,
+                                      size: 25,
+                                      //color: AppColors.textColor,
+                                    ),
+                                  )
+                              : widget.eyeClosed ??
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w,
+                                      vertical: 8.h,
+                                    ),
+                                    child: const Icon(
+                                      Icons.visibility_outlined,
+                                      size: 25,
+
+                                      ///color: AppColors.textColor,
+                                    ),
+                                  ),
+                        )
+                      : widget.suffixIcon,
+              contentPadding: widget.contentPadding,
+              prefixIcon: widget.prefix,
+            ),
           ),
         ),
       ],

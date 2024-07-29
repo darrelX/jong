@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 
 class Utils {
@@ -8,18 +9,18 @@ class Utils {
       }
       if (error is DioException) {
         Response response = error.response!;
+        print('darrel ${response.toString()}');
         final Map<String, dynamic> data = response.data as Map<String, dynamic>;
         if (data is String) {
           return data.toString();
         }
-        // print('data1 ${data.runtimeType} ${data['message']}');
+        print('data1 ${data.runtimeType} ${data['message']}');
         return data['message'].toString();
       }
 
       return error.toString();
     } catch (e) {
-      print(e);
-      return e.toString();
+      return 'Not connected to internet';
     }
   }
 }

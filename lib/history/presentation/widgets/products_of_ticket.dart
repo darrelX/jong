@@ -52,7 +52,7 @@ class ProductsOfTicket extends StatelessWidget {
                 ),
               ),
               Text(
-                "${product.price} nkap",
+                "${product.price!.toStringAsFixed(2)} nkap",
                 style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
                 ),

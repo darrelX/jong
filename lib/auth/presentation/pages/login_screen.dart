@@ -14,7 +14,6 @@ import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/app_input.dart';
 import 'package:jong/shared/widget/app_snackbar.dart';
-import 'package:jong/shared/widget/button.dart';
 
 import '../../../service_locator.dart';
 import '../../../shared/application/cubit/application_cubit.dart';
@@ -34,12 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://cdc4-145-224-75-85.ngrok-free.app/api/auth/google',
-    ],
-  );
+  bool _isChecked = false;
+
   @override
   void initState() {
     super.initState();
@@ -59,14 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _signInWithGoogle() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print('Erreur lors de la connexion Google : $error');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,10 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text(
           "  Log In",
-          style: context.textTheme.headlineSmall!
+          style: context.textTheme.displaySmall!
               .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
         ),
-        toolbarHeight: 60.h,
+        toolbarHeight: 110.h,
         // centerTitle: true,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
@@ -108,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, state) {
           return SingleChildScrollView(
             child: Container(
-              height: context.height - 80.h,
+              height: context.height - 135.h,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
@@ -128,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Gap(40.h),
                       Text(
                         "Welcome Back!",
-                        style: context.textTheme.headlineMedium?.copyWith(
+                        style: context.textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.w900,
                         ),
                         textAlign: TextAlign.center,
@@ -136,26 +123,32 @@ class _LoginScreenState extends State<LoginScreen> {
                       Gap(8.h),
                       Text(
                         "To keep connected with us please login with your personal info",
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w900,
-                        ),
+                        style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.black.withOpacity(0.6)),
                         textAlign: TextAlign.start,
                       ),
                       Gap(40.h),
                       AppInput(
                         controller: _phoneController,
-                        label: 'Tel',
+                        // label: 'Tel',
+                        border: false,
+                        hint: 'Numero de telephone',
+                        labelColors: AppColors.black.withOpacity(0.7),
                         keyboardType: TextInputType.phone,
                         validators: [
                           FormBuilderValidators.required(
                             errorText: 'Phone number is required',
                           ),
+                          FormBuilderValidators.numeric()
                         ],
                       ),
                       Gap(20.h),
                       AppInput(
                         controller: _passwordController,
-                        label: 'Password',
+                        // label: 'Password',
+                        hint: 'Mot de passe',
+                        labelColors: AppColors.black.withOpacity(0.7),
                         keyboardType: TextInputType.visiblePassword,
                         autofillHints: const [
                           AutofillHints.password,
@@ -169,15 +162,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       Gap(20.h),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            "Forgot Password",
-                            textAlign: TextAlign.end,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                  value: _isChecked,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isChecked = value!;
+                                    });
+                                  }),
+                              Text(
+                                'Remenber me',
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.black.withOpacity(0.6)),
+                              )
+                            ],
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "Forgot Password",
+                                style: context.textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.primary),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Gap(50.h),
                       AppButton(
@@ -198,8 +216,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text.rich(
                           TextSpan(
                             text: 'Dont have an\n',
+                            style: TextStyle(
+                                color: AppColors.black.withOpacity(0.6)),
                             children: [
-                              const TextSpan(text: "account ?  "),
+                              TextSpan(
+                                text: "account ?  ",
+                                style: TextStyle(
+                                    color: AppColors.black.withOpacity(0.6)),
+                              ),
                               TextSpan(
                                 text: "Signup",
                                 style: context.textTheme.bodyLarge?.copyWith(

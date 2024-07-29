@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/pages/home_screen.dart';
 import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/jong_app_bar.dart';
@@ -28,14 +29,13 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late CrashGameBloc crashGameBloc = CrashGameBloc(bet: widget.bet);
+  late CrashGameBloc crashGameBloc;
 
   @override
   void initState() {
     crashGameBloc = CrashGameBloc(bet: widget.bet);
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -50,7 +50,10 @@ class _GameScreenState extends State<GameScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            context.router.maybePop();
+            context.router.pushAndPopUntil(
+              const HomeRoute(),
+              predicate: (route) => false,
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -184,7 +187,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding:  const EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: padding24,
                   ),
                   child: AppButton(
@@ -214,7 +217,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:  const EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: padding16,
                   ),
                   child: Row(
@@ -241,7 +244,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding:  const EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: padding24,
                   ),
                   child: AppButton(
@@ -266,7 +269,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               ),
               Padding(
-                padding:  const EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: padding16,
                 ),
                 child: Row(
@@ -314,7 +317,7 @@ class GameResultDialog extends StatelessWidget {
       builder: (context, state) {
         if (state is CrashGameLost) {
           return Padding(
-            padding:  const EdgeInsets.all(padding16),
+            padding: const EdgeInsets.all(padding16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -377,7 +380,7 @@ class GameResultDialog extends StatelessWidget {
         }
         if (state is CrashGameWon) {
           return Padding(
-            padding:  const EdgeInsets.all(padding16),
+            padding: const EdgeInsets.all(padding16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -415,10 +418,18 @@ class GameResultDialog extends StatelessWidget {
                         bgColor: AppColors.primary,
                         text: 'New part',
                         onPressed: () {
-                          context.router.pushAndPopUntil(
-                            const HomeRoute(),
-                            predicate: (route) => false,
+                          context.router.popForced();
+                          AppDialog.showDialog(
+                            context: context,
+                            width: 300,
+                            height: 270,
+                            child: const PlaceABetWidget(),
                           );
+                          // crashGameBloc.add(event);
+                          // context.router.pushAndPopUntil(
+                          //   const HomeRoute(),
+                          //   predicate: (route) => false,
+                          // );
                         },
                       ),
                     ),
@@ -428,7 +439,10 @@ class GameResultDialog extends StatelessWidget {
                         borderColor: AppColors.primary,
                         text: 'Back to home',
                         onPressed: () {
-                          context.router.popUntilRoot();
+                          context.router.pushAndPopUntil(
+                            const HomeRoute(),
+                            predicate: (route) => false,
+                          );
                         },
                       ),
                     ),

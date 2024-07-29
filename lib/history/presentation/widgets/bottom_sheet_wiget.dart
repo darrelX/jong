@@ -83,7 +83,7 @@ class BottomSheetWiget extends StatelessWidget {
                                 ),
                                 children: [
                               TextSpan(
-                                  text: '${ticket.totalAmount}',
+                                  text: ticket.totalAmount!.toStringAsFixed(2),
                                   style: context.textTheme.titleLarge!
                                       .copyWith(color: Colors.white)),
                             ])),
