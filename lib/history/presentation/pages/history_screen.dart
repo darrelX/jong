@@ -61,8 +61,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (state is TicketStateToggle) {}
       },
       builder: (context, state) {
-        print("state $state");
-
         if (state is TicketStateLoading) {
           return Center(
             child: Transform.scale(
@@ -73,66 +71,72 @@ class _HistoryScreenState extends State<HistoryScreen> {
         }
         if (state is TicketStateSuccess) {
           return Scaffold(
-            body: Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              decoration: BoxDecoration(
-                color: context.theme.scaffoldBackgroundColor,
-                // borderRadius: BorderRadius.circular(15),
-                // border: Border.all(width: 0.05),
-              ),
+            body: RefreshIndicator(
+              onRefresh: _refresh,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Gap(20.h),
+                child: Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  height: 900,
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    // borderRadius: BorderRadius.circular(15),
+                    // border: Border.all(width: 0.05),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Gap(20.h),
 
-                    TicketCategoryDropdown(
-                      onPressed: _toggleFirstDropdown,
-                      title: "Tickets non traités",
-                      isDropOpen: _isFirstDropdownOpen,
-                      totalTickets: state.treatedTickets.length,
-                      tickets: state.treatedTickets,
-                      status: false,
-                    ),
-                    Gap(30.h),
-                    TicketCategoryDropdown(
-                      onPressed: _toggleSecondDropdown,
-                      title: "Tickets traités",
-                      status: true,
-                      isDropOpen: _isSecondDropdownOpen,
-                      totalTickets: state.notTreatedTickets.length,
-                      tickets: state.notTreatedTickets,
-                    ),
-                    Gap(49.h),
-                    // DropDownCategoryTickets(
-                    //   title: "Tickets traités",
-                    //   isDropOpen: _isSecondDropdownOpen,
-                    //   total: 10,
-                    //   onPressed: _toggleSecondDropdown,
-                    // ),
+                        TicketCategoryDropdown(
+                          onPressed: _toggleFirstDropdown,
+                          title: "Tickets non traités",
+                          isDropOpen: _isFirstDropdownOpen,
+                          totalTickets: state.treatedTickets.length,
+                          tickets: state.treatedTickets,
+                          status: false,
+                        ),
+                        Gap(30.h),
+                        TicketCategoryDropdown(
+                          onPressed: _toggleSecondDropdown,
+                          title: "Tickets traités",
+                          status: true,
+                          isDropOpen: _isSecondDropdownOpen,
+                          totalTickets: state.notTreatedTickets.length,
+                          tickets: state.notTreatedTickets,
+                        ),
+                        Gap(49.h),
+                        // DropDownCategoryTickets(
+                        //   title: "Tickets traités",
+                        //   isDropOpen: _isSecondDropdownOpen,
+                        //   total: 10,
+                        //   onPressed: _toggleSecondDropdown,
+                        // ),
 
-                    // Container(),
-                    // ElevatedButton(
-                    //     onPressed: () {
-                    //       showModalBottomSheet(
-                    //           context: context,
-                    //           elevation: 0.6,
-                    //           // constraints: const BoxConstraints(),
-                    //           // isScrollControlled: true,
-                    //           backgroundColor: Colors.transparent,
-                    //           builder: (BuildContext context) {
-                    //             return BottomSheetWiget(
-                    //                 qunatity: 4,
-                    //                 totalAmount: 3,
-                    //                 ticketId: 'fef',
-                    //                 products: state);
-                    //           });
-                    //     },
-                    //     child: const Text(
-                    //       'kb',
-                    //       style: TextStyle(color: Colors.red),
-                    //     )),
-                  ],
+                        // Container(),
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       showModalBottomSheet(
+                        //           context: context,
+                        //           elevation: 0.6,
+                        //           // constraints: const BoxConstraints(),
+                        //           // isScrollControlled: true,
+                        //           backgroundColor: Colors.transparent,
+                        //           builder: (BuildContext context) {
+                        //             return BottomSheetWiget(
+                        //                 qunatity: 4,
+                        //                 totalAmount: 3,
+                        //                 ticketId: 'fef',
+                        //                 products: state);
+                        //           });
+                        //     },
+                        //     child: const Text(
+                        //       'kb',
+                        //       style: TextStyle(color: Colors.red),
+                        //     )),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

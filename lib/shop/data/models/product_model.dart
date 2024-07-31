@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-import 'package:json_annotation/json_annotation.dart';
-
-part 'product_model.g.dart';
-
-@JsonSerializable()
 class ProductModel {
   final String? id;
   final String? name;
@@ -20,17 +13,17 @@ class ProductModel {
     required this.createdAt,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProductModelToJson(this);
-
-  String toJsonString() {
-    return json.encode(toJson());
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id'].toString() as String?,
+      name: json['name'] as String?,
+      productCategoryId: json['product_category_id'] as int?,
+      price: double.parse(json['price'].toString()) as double?,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'].toString()),
+    );
   }
 
-  factory ProductModel.fromJsonString(String jsonString) {
-    final jsonData = json.decode(jsonString);
-    return ProductModel.fromJson(jsonData);
-  }
+  // Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 }

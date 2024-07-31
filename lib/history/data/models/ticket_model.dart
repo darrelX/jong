@@ -45,7 +45,6 @@ class TicketModel {
 }
 
 List<ProductTicketModel> fetchProductTicketList(List<dynamic> json) {
-  print(json);
   return json
       .map((item) => ProductTicketModel.fromJson(item as Map<String, dynamic>))
       .toList();

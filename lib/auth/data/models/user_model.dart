@@ -2,19 +2,11 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_model.g.dart';
-
-@JsonSerializable()
 class UserModel {
-  @JsonKey(required: true)
   final int? id;
-  @JsonKey(required: true)
   final String? name;
-  @JsonKey(required: true)
   final String? email;
-  @JsonKey(required: true)
   final double? balance;
-  @JsonKey(required: true)
   final String? phoneNumber;
 
   UserModel({
@@ -25,14 +17,12 @@ class UserModel {
     required this.phoneNumber,
   });
 
-    UserModel copyWith({
-    int? id,
-    String? name,
-    String? email,
-    double? balance,
-   String? phoneNumber
-
-  }) {
+  UserModel copyWith(
+      {int? id,
+      String? name,
+      String? email,
+      double? balance,
+      String? phoneNumber}) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -42,8 +32,15 @@ class UserModel {
     );
   }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: int.parse(json['id'].toString()) as int?,
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      balance: double.parse(json['balance'].toString()) as double?,
+      phoneNumber: json['phone_number'] as String?,
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  // Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

@@ -37,6 +37,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    HistoryGameRoute.name: (routeData) {
+      final args = routeData.argsAs<HistoryGameRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: HistoryGameScreen(
+          key: args.key,
+          title: args.title,
+        ),
+      );
+    },
     HistoryRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -144,6 +154,44 @@ class GameRouteArgs {
   @override
   String toString() {
     return 'GameRouteArgs{key: $key, bet: $bet}';
+  }
+}
+
+/// generated route for
+/// [HistoryGameScreen]
+class HistoryGameRoute extends PageRouteInfo<HistoryGameRouteArgs> {
+  HistoryGameRoute({
+    Key? key,
+    required Widget title,
+    List<PageRouteInfo>? children,
+  }) : super(
+          HistoryGameRoute.name,
+          args: HistoryGameRouteArgs(
+            key: key,
+            title: title,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'HistoryGameRoute';
+
+  static const PageInfo<HistoryGameRouteArgs> page =
+      PageInfo<HistoryGameRouteArgs>(name);
+}
+
+class HistoryGameRouteArgs {
+  const HistoryGameRouteArgs({
+    this.key,
+    required this.title,
+  });
+
+  final Key? key;
+
+  final Widget title;
+
+  @override
+  String toString() {
+    return 'HistoryGameRouteArgs{key: $key, title: $title}';
   }
 }
 

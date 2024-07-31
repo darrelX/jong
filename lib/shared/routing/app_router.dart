@@ -11,6 +11,7 @@ import '../../history/presentation/pages/history_screen.dart';
 import '../pages/home_screen.dart';
 import '../../auth/presentation/pages/profile_screen.dart';
 import '../../shop/presentation/pages/shop_screen.dart';
+import 'package:jong/history/presentation/pages/history_game_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -50,6 +51,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           page: LoginRoute.page,
         ),
+        AutoRoute(page: HistoryGameRoute.page),
         AutoRoute(
           page: RegisterRoute.page,
         ),

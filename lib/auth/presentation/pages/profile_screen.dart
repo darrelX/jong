@@ -9,6 +9,7 @@ import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/utils/const.dart';
+import 'package:jong/shared/widget/jong_app_bar.dart';
 
 import '../../../shared/routing/app_router.dart';
 
@@ -147,7 +148,12 @@ class ProfileScreen extends StatelessWidget {
               const Gap(4),
               ListTile(
                 onTap: () {
-                  context.tabsRouter.setActiveIndex(2);
+                  context.router.popAndPush(HistoryGameRoute(
+                    title: const JongAppBar(
+                      title: "History",
+                    ),
+                    
+                  ));
                 },
                 leading: SvgPicture.asset(
                   'assets/icons/historyy.svg',
