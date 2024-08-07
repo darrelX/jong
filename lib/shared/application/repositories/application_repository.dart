@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:jong/auth/data/models/user_model.dart';
 import 'package:jong/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,23 @@ class ApplicationRepository {
     } catch (e) {
       log(e.toString());
       print(e);
+      rethrow;
+    }
+  }
+
+    Future<UserModel?> getUser(String token) async {
+    SharedPreferences storage = await prefs!;
+    String? token = storage.getString('token');
+
+    try {
+      Response response = await dio.get(
+        '/auth/user',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      log(response.data.toString());
+      return UserModel.fromJson(response.data);
+    } catch (e) {
+      log(e.toString());
       rethrow;
     }
   }

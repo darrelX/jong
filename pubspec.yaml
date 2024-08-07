@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^8.2.6
   modal_bottom_sheet: ^3.0.0
   connectivity_plus: ^6.0.3
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

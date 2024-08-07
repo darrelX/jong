@@ -4,107 +4,95 @@ import 'dart:developer' as dev;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jong/game/data/repositories/game_repository.dart';
+import 'package:jong/game/extensions/game_extensions.dart';
+import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 
 part 'crash_game_event.dart';
 part 'crash_game_state.dart';
 
 class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
   final double bet;
-
   Timer? timer;
+  double crashPoint = 0.0;
+  final GameRepository _repository = GameRepository();
+  final ApplicationCubit applicationCubit = getIt.get<ApplicationCubit>();
 
   CrashGameBloc({
     required this.bet,
-  }) : super(
-          CrashGameDefault(bet: bet),
-        ) {
-    on<InitializeCrashGameEvent>(
-      (event, emit) async {
-        int countDown = 3;
-        emit(
-          CrashGameInitial(
-            bet: bet,
-            countDown: countDown,
-          ),
-        );
+  }) : super(CrashGameDefault(bet: bet)) {
+    on<InitializeCrashGameEvent>(_onInitialize);
+    on<StartCrashGameEvent>(_onStartGame);
+    on<CrashGamePayingProcessEvent>(_onPayingProcess);
+    on<GameCrashEvent>(_onGameCrash);
+    on<CashOutCrashGameWinningsEvent>(_onCashOut);
+  }
 
-        for (var i = countDown; i >= 0; i--) {
-          await Future.delayed(const Duration(seconds: 1));
-          emit(
-            CrashGameInitial(
-              bet: bet,
-              countDown: i,
-            ),
-          );
-        }
+  Future<void> _onInitialize(
+      InitializeCrashGameEvent event, Emitter<CrashGameState> emit) async {
+    int countDown = 3;
+    emit(CrashGameInitial(bet: bet, countDown: countDown));
 
-        add(StartCrashGameEvent());
-      },
-    );
+    for (var i = countDown; i > 0; i--) {
+      await Future.delayed(const Duration(seconds: 1));
+      emit(CrashGameInitial(bet: bet, countDown: i));
+    }
 
-    on<StartCrashGameEvent>(
-      (event, emit) {
-        var crashPoint = Random().nextDouble() * 10;
-        // var crash
-        var multiplier = 0.0;
+    add(StartCrashGameEvent());
+  }
 
-        timer = Timer.periodic(
-          const Duration(milliseconds: 100),
-          (_) async {
-            dev.log("multiplier = $multiplier : crashPoint = $crashPoint");
+  void _onStartGame(StartCrashGameEvent event, Emitter<CrashGameState> emit) {
+    crashPoint = crashPoint.generateCrashNumber();
+    double multiplier = 0.0;
 
-            if (multiplier >= crashPoint) {
-              dev.log("Game Crash ");
-              _.cancel();
-              add(GameCrashEvent(multiplier: multiplier));
-            } else {
-              multiplier = multiplier + 0.05;
-              dev.log(
-                "New Multiplier: $multiplier || crashPoint = $crashPoint",
-              );
-              add(
-                CrashGamePayingProcessEvent(
-                  multiplier: multiplier,
-                ),
-              );
-            }
-          },
-        );
-      },
-    );
+    timer = Timer.periodic(const Duration(milliseconds: 100), (_) async {
+      dev.log("multiplier = $multiplier : crashPoint = $crashPoint");
 
-    on<CrashGamePayingProcessEvent>((event, emit) {
-      emit(
-        CrashGamePlaying(
-          bet: bet,
-          multiplier: event.multiplier,
-        ),
-      );
-    });
-
-    on<GameCrashEvent>(
-      (event, emit) {
-        emit(
-          CrashGameLost(
-            bet: bet,
-            multiplier: event.multiplier,
-          ),
-        );
-      },
-    );
-
-    on<CashOutCrashGameWinningsEvent>((event, emit) {
-      timer?.cancel();
-      emit(
-        CrashGameWon(
-          bet: bet,
-          multiplier: event.multiplier,
-        ),
-      );
+      if (multiplier >= crashPoint) {
+        dev.log("Game Crash ");
+        _.cancel();
+        add(GameCrashEvent(multiplier: multiplier));
+      } else {
+        multiplier += 0.05;
+        dev.log("New Multiplier: $multiplier || crashPoint = $crashPoint");
+        add(CrashGamePayingProcessEvent(multiplier: multiplier));
+      }
     });
   }
 
-  dispose() {
+  void _onPayingProcess(
+      CrashGamePayingProcessEvent event, Emitter<CrashGameState> emit) {
+    emit(CrashGamePlaying(bet: bet, multiplier: event.multiplier));
+  }
+
+  void _onGameCrash(GameCrashEvent event, Emitter<CrashGameState> emit) {
+    _repository.gameResult({
+      'user_id': applicationCubit.state.user!.id,
+      'game_id': 1,
+      'amount': bet,
+      "cote": event.multiplier,
+      "gain": -bet
+    });
+    emit(CrashGameLost(bet: bet, multiplier: event.multiplier));
+  }
+
+  void _onCashOut(
+      CashOutCrashGameWinningsEvent event, Emitter<CrashGameState> emit) {
     timer?.cancel();
+    _repository.gameResult({
+      'user_id': applicationCubit.state.user!.id,
+      'game_id': 1,
+      'amount': bet,
+      "cote": event.multiplier,
+      "gain": bet * event.multiplier
+    });
+    emit(CrashGameWon(bet: bet, multiplier: event.multiplier));
+  }
+
+  @override
+  Future<void> close() {
+    timer?.cancel();
+    return super.close();
   }
 }

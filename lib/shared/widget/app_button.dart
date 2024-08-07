@@ -34,55 +34,26 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          height: height,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: enable ? bgColor : bgColor?.withOpacity(.6),
-            border: borderColor != null
-                ? Border.all(
-                    color: borderColor!,
-                    width: 1.5,
-                  )
-                : null,
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap:
-                  (!loading && enable && onPressed != null) ? onPressed : null,
-              borderRadius: BorderRadius.circular(15),
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Opacity(
-                  opacity: loading ? 0 : 1,
-                  child: text != null
-                      ? Text(
-                          text!,
-                          style: context.textTheme.titleMedium?.copyWith(
-                            color: textColor != null
-                                ? textColor!
-                                : bgColor == AppColors.primary
-                                    ? AppColors.white
-                                    : null,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      : child,
-                ),
-              ),
-            ),
-          ),
-        ),
-        loading == false
-            ? Container()
-            : Positioned.fill(
-                child: Center(
-                  child: CupertinoTheme(
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: enable ? bgColor : bgColor?.withOpacity(.6),
+        border: borderColor != null
+            ? Border.all(
+                color: borderColor!,
+                width: 1.5,
+              )
+            : null,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: (!loading && enable && onPressed != null) ? onPressed : null,
+          borderRadius: BorderRadius.circular(15),
+          child: Center(
+            child: loading
+                ? CupertinoTheme(
                     data: CupertinoTheme.of(context).copyWith(
                       brightness: bgColor == AppColors.primary
                           ? Brightness.dark
@@ -92,10 +63,23 @@ class AppButton extends StatelessWidget {
                       radius: 16,
                       color: loadingColor,
                     ),
-                  ),
-                ),
-              ),
-      ],
+                  )
+                : text != null
+                    ? Text(
+                        text!,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          color: textColor != null
+                              ? textColor!
+                              : bgColor == AppColors.primary
+                                  ? AppColors.white
+                                  : null,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : child,
+          ),
+        ),
+      ),
     );
   }
 }

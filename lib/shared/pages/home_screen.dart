@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';
@@ -57,8 +60,8 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 AppDialog.showDialog(
                   context: context,
-                  width: 300,
-                  height: 270,
+                  width: 300.w,
+                  height: 300.h,
                   child: const PlaceABetWidget(),
                 );
               },
@@ -97,55 +100,74 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(padding16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Place a bet",
-              style: context.textTheme.headlineMedium?.copyWith(
-                fontSize: 26,
-              ),
-            ),
-            AppInput(
-              controller: _amountController,
-              label: 'Amount',
-              labelColors: AppColors.primary,
-              hint: "Min: 300",
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              showHelper: false,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
+    return BlocBuilder<ApplicationCubit, ApplicationState>(
+      bloc: getIt.get<ApplicationCubit>(),
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(padding16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Place a bet",
+                  style: context.textTheme.headlineMedium?.copyWith(
+                    fontSize: 26,
+                  ),
+                ),
+                // Gap(20.h),
+                AppInput(
+                  width: 300.w,
+                  controller: _amountController,
+                  label: 'Amount',
+                  labelColors: AppColors.primary,
+                  // maxLines: null,
+                  minLines: 1,
+                  hint: "Min: 300",
+                  keyboardType: TextInputType.number,
+                  showHelper: true,
+                  errorMaxLines: 2,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  autoValidate: AutovalidateMode.onUserInteraction,
+
+                  validators: [
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.min(300,
+                        errorText: "La valeur entree est inferieur a 300"),
+                    (value) {
+                      if (value != null && value.isNotEmpty) {
+                        final number = double.parse(value);
+                        if (number > state.user!.balance!) {
+                          return "La valeur doit etre inferieur au solde";
+                        }
+                      }
+                      return null;
+                    },
+                  ],
+                ),
+                // Gap(40.h),
+                AppButton(
+                  bgColor: AppColors.primary,
+                  text: "Start the game",
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      context.router.popAndPush(
+                        GameRoute(
+                          bet: double.parse(_amountController.text),
+                        ),
+                      );
+                    }
+                  },
+                )
               ],
-              validators: [
-                FormBuilderValidators.required(),
-                FormBuilderValidators.numeric(),
-                FormBuilderValidators.min(300,
-                    errorText: "La valeur entree est inferieur a 300"),
-                    
-              ],
             ),
-            
-            AppButton(
-              bgColor: AppColors.primary,
-              text: "Start the game",
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  context.router.popAndPush(
-                    GameRoute(
-                      bet: double.parse(_amountController.text),
-                    ),
-                  );
-                }
-              },
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

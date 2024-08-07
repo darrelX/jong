@@ -9,15 +9,21 @@ part 'application_state.dart';
 
 class ApplicationCubit extends Cubit<ApplicationState> {
   final repository = ApplicationRepository();
+  final pref = getIt.get<Future<SharedPreferences>>();
   ApplicationCubit() : super(const ApplicationState());
 
-  setUser(UserModel? user) {
+  setUser([UserModel? userModel]) async {
+    if (userModel != null) {
+      emit(ApplicationState(user: userModel));
+    }
+    final prefs = await pref;
+    final user = await repository.getUser(prefs.getString('token')!);
     emit(ApplicationState(user: user));
   }
 
   deposit(String method, int amount, int userId) async {
-    final balance = await repository.deposit(
-        method: method, amount: amount, userId: userId);
+    await repository.deposit(method: method, amount: amount, userId: userId);
+    setUser();
 
     // emit(ApplicationState(user: ));
   }

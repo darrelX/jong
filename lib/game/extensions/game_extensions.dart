@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
 import 'dart:typed_data';
+
+import 'package:crypto/crypto.dart';
 
 extension Uint8ListExtension on Uint8List {
   Uint8List fillRandom() {
@@ -21,5 +24,34 @@ extension X on double {
     var float64List = Float64List.sublistView(uint8List);
 
     return float64List[0];
+  }
+
+  double generateCrashNumber() {
+    // Étape 1 : Initialisation
+    int seed = Random().nextInt(10); // Graine aléatoire pour chaque exécution
+
+    final random = Random(seed);
+
+    // Étape 2 : Génération de la Valeur de Base
+    double randomValue = random.nextDouble(); // Valeur aléatoire entre 0 et 1
+    DateTime now = DateTime.now();
+    String hashInput = '$seed$randomValue$now';
+    var bytes = utf8.encode(hashInput);
+
+    var hashOutput = sha256.convert(bytes).toString().substring(0, 7);
+    int baseValue = int.parse(hashOutput, radix: 16) % 100;
+    // print(baseValue);
+
+    // Étape 3 : Calcul de la Valeur Finale
+
+    // Étape 4 : Introduction de l'Accélération
+    double acceleratedValue =
+        (baseValue.toDouble() * log(1 + baseValue.toDouble() / 100)) % 50;
+
+    // Étape 5 : Arrondi et Retour
+    double finalValue = (acceleratedValue % 100).toDouble();
+    return ((finalValue - 0) / (50 - 0)) * (10 - 0) + 0;
+
+    // return double.parse(finalValue.toStringAsFixed(2));
   }
 }

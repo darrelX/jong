@@ -36,13 +36,12 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
     return BlocBuilder<GameHistoryCubit, GameHistoryState>(
       bloc: _cubit,
       builder: (context, state) {
-        print(state);
         if (state is GameHistoryStateFailure) {
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Échec du chargement. Veuillez réessayer."),
+                const Text("Échec du chargement. Veuillez réessayer."),
                 Gap(20.h),
                 ElevatedButton(
                   onPressed: _onRefresh,
@@ -64,16 +63,16 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
           ),
           body: Container(
             padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
+              horizontal: 10.w,
             ),
             width: double.infinity,
-            height: 700.h,
+            height: MediaQuery.of(context).size.height,
             // color: Colors.red,
             child: RefreshIndicator(
               onRefresh: _onRefresh,
               child: Column(
                 children: [
-                  Gap(50.h),
+                  Gap(30.h),
                   Center(
                     child: Text("historique des parties",
                         style: context.textTheme.headlineMedium),
@@ -81,7 +80,8 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                   Gap(20.h),
                   if (state is GameHistoryStateSuccess)
                     Expanded(
-                        child: ListView.builder(
+                        child: ListView.separated(
+                            separatorBuilder: (context, i) => Gap(26.h),
                             itemCount: state.listGameHistory.length,
                             itemBuilder: (context, int elt) {
                               return GameHistoryWidget(
@@ -93,6 +93,25 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                             }))
                   else if (state is GameHistoryStateLoading)
                     Container()
+                  else if (state is GameHistoryStateFailure)
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Échec du chargement. Veuillez réessayer."),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: _onRefresh,
+                            child: Text(
+                              "Réessayer",
+                              style: context.textTheme.bodyMedium?.copyWith(
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                 ],
               ),
             ),

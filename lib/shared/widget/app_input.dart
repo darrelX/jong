@@ -47,6 +47,7 @@ class AppInput extends StatefulWidget {
   final int? maxValue;
   final double? width;
   final bool border;
+  final int? errorMaxLines;
 
   const AppInput({
     super.key,
@@ -95,7 +96,7 @@ class AppInput extends StatefulWidget {
     this.isItalic = false,
     this.labelColors,
     this.width,
-    this.border = true,
+    this.border = true, this.errorMaxLines,
   });
 
   @override
@@ -201,6 +202,7 @@ class _AppInputState extends State<AppInput> {
                     }
                   },
             decoration: InputDecoration(
+              errorMaxLines: widget.errorMaxLines,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0), // Rayon des bords
               ),

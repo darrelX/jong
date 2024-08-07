@@ -11,7 +11,7 @@ class AppSnackBar {
   static Future showError({
     required String message,
     required BuildContext context,
-    duration = const Duration(seconds: 20),
+    duration = const Duration(seconds: 5),
   }) async {
     if (_flushbar != null && _flushbar!.isShowing()) {
       await _flushbar!.dismiss();

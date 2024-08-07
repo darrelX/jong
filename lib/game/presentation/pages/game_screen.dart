@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
+import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/pages/home_screen.dart';
 import 'package:jong/shared/routing/app_router.dart';
@@ -30,6 +32,7 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   late CrashGameBloc crashGameBloc;
+  final ApplicationCubit _applicationCubit = getIt.get<ApplicationCubit>();
 
   @override
   void initState() {
@@ -39,7 +42,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void dispose() {
-    crashGameBloc.dispose();
+    // crashGameBloc.dispose();
     crashGameBloc.close();
     super.dispose();
   }
@@ -55,14 +58,12 @@ class _GameScreenState extends State<GameScreen> {
               predicate: (route) => false,
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SvgPicture.asset(
-              "assets/icons/arrow_back.svg",
-            ),
-          ),
+          child: const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Icon(Icons.arrow_back_ios_new)),
         ),
         title: const JongAppBar(title: 'Home'),
+        toolbarHeight: 70.h,
       ),
       body: BlocConsumer<CrashGameBloc, CrashGameState>(
         bloc: crashGameBloc,
@@ -72,10 +73,12 @@ class _GameScreenState extends State<GameScreen> {
               context: context,
               width: 300,
               height: 270,
-              child: GameResultDialog(
+              child: _GameResultDialog(
                 crashGameBloc: crashGameBloc,
               ),
             );
+            Future.delayed(const Duration(milliseconds: 300),
+                () async => await _applicationCubit.setUser());
           }
         },
         builder: (context, state) {
@@ -208,12 +211,79 @@ class _GameScreenState extends State<GameScreen> {
           }
 
           if (state is CrashGameDefault) {
-            return Column(
+            return SingleChildScrollView(
+              child: Container(
+                // color: Colors.red,
+                height: MediaQuery.of(context).size.height - 90.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // const Spacer(flex: 2),
+                    Gap(20.h),
+                    Center(
+                      child: ZoomIn(
+                        child: Image.asset(
+                          "assets/images/jong_bet.png",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: padding16,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            widget.bet.toStringAsFixed(2),
+                            style: context.textTheme.displayLarge?.copyWith(
+                              fontSize: 40.sp,
+                            ),
+                          ),
+                          const Gap(4),
+                          Text(
+                            "nkap",
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // const Spacer(),
+                    Gap(30.h),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: padding24,
+                      ),
+                      child: AppButton(
+                        bgColor: AppColors.primary,
+                        text: "Start",
+                        onPressed: () {
+                          crashGameBloc.add(InitializeCrashGameEvent());
+                        },
+                      ),
+                    ),
+                    Gap(10.h),
+                    // const Spacer(flex: 2),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Spacer(flex: 2),
-                ZoomIn(
-                  child: Image.asset(
-                    "assets/images/jong_bet.png",
+                // const Spacer(flex: 2),
+                Gap(20.h),
+                Center(
+                  child: ZoomIn(
+                    child: Image.asset(
+                      "assets/images/jong_bet.png",
+                    ),
                   ),
                 ),
                 Padding(
@@ -224,12 +294,10 @@ class _GameScreenState extends State<GameScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text(
-                          widget.bet.toStringAsFixed(2),
-                          style: context.textTheme.displayLarge?.copyWith(
-                            fontSize: 40.sp,
-                          ),
+                      Text(
+                        widget.bet.toStringAsFixed(2),
+                        style: context.textTheme.displayLarge?.copyWith(
+                          fontSize: 40.sp,
                         ),
                       ),
                       const Gap(4),
@@ -242,7 +310,8 @@ class _GameScreenState extends State<GameScreen> {
                     ],
                   ),
                 ),
-                const Spacer(),
+                // const Spacer(),
+                Gap(30.h),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: padding24,
@@ -255,47 +324,10 @@ class _GameScreenState extends State<GameScreen> {
                     },
                   ),
                 ),
-                const Spacer(flex: 2),
+                Gap(10.h),
+                // const Spacer(flex: 2),
               ],
-            );
-          }
-
-          return Column(
-            children: [
-              const Spacer(flex: 2),
-              ZoomIn(
-                child: Image.asset(
-                  "assets/images/jong_bet.png",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: padding16,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        widget.bet.toStringAsFixed(2),
-                        style: context.textTheme.displayLarge?.copyWith(
-                          fontSize: 40.sp,
-                        ),
-                      ),
-                    ),
-                    const Gap(4),
-                    Text(
-                      "nkap",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(flex: 2),
-            ],
+            ),
           );
         },
       ),
@@ -303,9 +335,8 @@ class _GameScreenState extends State<GameScreen> {
   }
 }
 
-class GameResultDialog extends StatelessWidget {
-  const GameResultDialog({
-    super.key,
+class _GameResultDialog extends StatelessWidget {
+  const _GameResultDialog({
     required this.crashGameBloc,
   });
   final CrashGameBloc crashGameBloc;
@@ -355,9 +386,12 @@ class GameResultDialog extends StatelessWidget {
                         bgColor: AppColors.primary,
                         text: 'New part',
                         onPressed: () {
-                          context.router.pushAndPopUntil(
-                            const HomeRoute(),
-                            predicate: (route) => false,
+                          context.router.popForced();
+                          AppDialog.showDialog(
+                            context: context,
+                            width: 300,
+                            height: 270,
+                            child: const PlaceABetWidget(),
                           );
                         },
                       ),
@@ -368,7 +402,10 @@ class GameResultDialog extends StatelessWidget {
                         borderColor: AppColors.primary,
                         text: 'Back to home',
                         onPressed: () {
-                          context.router.popUntilRoot();
+                          context.router.pushAndPopUntil(
+                            const HomeRoute(),
+                            predicate: (route) => false,
+                          );
                         },
                       ),
                     ),

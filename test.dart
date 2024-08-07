@@ -1,57 +1,39 @@
-// import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 
-void main() async {
-  // final url = Uri.parse('http://localhost:3000/register');
+double generateComplexCrashNumber() {
+  // Étape 1 : Initialisation
+  int seed =
+      Random().nextInt(100); // Graine aléatoire pour une plus grande diversité
+  final random = Random(seed);
 
-  // try {
-  //   // Les données à envoyer dans la requête POST
-  //   final data = {
-  //     'name': 'John',
-  //     'password': 'Doe',
-  //     'email': 'john.doe@example.com',
-  //   };
+  // Étape 2 : Génération de la Valeur de Base
+  double randomValue = random.nextDouble() * 10; // Valeur entre 0 et 10
+  DateTime now = DateTime.now();
+  String hashInput = '$seed$randomValue${now.millisecondsSinceEpoch}';
+  var bytes = utf8.encode(hashInput);
 
-  //   // Faire la requête POST
-  //   final response = await http.post(
-  //     url,
-  //     body: data,
-  //     headers: {'Content-Type': 'application/json'},
-  //   );
+  var hashOutput = sha256.convert(bytes).toString().substring(0, 10);
+  int baseValue = int.parse(hashOutput, radix: 16) % 200; // Changer la plage
 
-  //   // Traiter la réponse
-  //   print(response.body);
-  // } catch (error) {
-  //   // Gérer les erreurs
-  //   print('Erreur lors de la requête POST : $error');
-  // }
+  // Étape 3 : Calcul de la Valeur Finale
+  double transformationFactor =
+      sin(baseValue / 10) * 50; // Utiliser une fonction trigonométrique
+  double adjustedBaseValue = baseValue + transformationFactor;
 
-  //  String dateString = '2024-07-09T03:35:22.000000Z';
+  // Étape 4 : Introduction de l'Accélération et du Bruit
+  double noise = random.nextDouble() * 5; // Ajouter du bruit aléatoire
+  double acceleratedValue =
+      (adjustedBaseValue * log(1 + adjustedBaseValue / 150)) + noise;
 
-  // DateTime dateTime = DateTime.parse(dateString);
-
-  // final DateTime a = DateTime.now();
-  // final b = DateFormat('dd/MM/yyyy').format(dateTime);
-  // final c = DateFormat('HH:mm').format(dateTime);
-
-  // print(dateTime); // Affiche : 2024-07-09 03:35:22.000Z
-  // print("$b $c");
-  // PartA part = PartA(a: 0);
-  Future<int> futureA = Future.delayed(Duration(seconds: 2), () => 1);
-  Future<String> futureB = Future.delayed(Duration(seconds: 3), () => "Hello");
-  Future<double> futureC = Future.delayed(Duration(seconds: 4), () => 3.14);
-
-  var result = await Future.any([futureA, futureB, futureC]);
-  print(result.runtimeType);
-  
+  // Étape 5 : Arrondi et Retour
+  double finalValue = (acceleratedValue % 150).toDouble();
+   return ((finalValue - 0) / (50 - 0)) * (20 - 0) + 0; // Changer la plage de retour
 }
 
-class Parent {
-  final String? parent;
-  Parent({this.parent});
-}
-
-class Child extends Parent {
-  final String child;
-  Child(this.child);
+void main() {
+  for (var i = 0; i < 1000; i++) {
+    print(generateComplexCrashNumber());
+  }
 }

@@ -46,7 +46,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Popup acount"),
+        title: const Text("Popup account"),
       ),
       body: BlocBuilder<ApplicationCubit, ApplicationState>(
         bloc: bloc,
@@ -203,9 +203,8 @@ class _TopUpScreenState extends State<TopUpScreen> {
                             int.parse(_amountController.value.text),
                             state.user!.id!);
                         if (!context.mounted) return;
-                        context.router.push(
-                          const HomeRoute(),
-                        );
+                        context.router.pushAndPopUntil(const HomeRoute(),
+                            predicate: (route) => false);
                       }
                     },
                     bgColor: AppColors.primary,

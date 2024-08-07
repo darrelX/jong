@@ -37,7 +37,6 @@ class AuthRepository {
     required String password,
   }) async {
     SharedPreferences storage = await prefs!;
-    final String token;
 
     Response response = await dio.post(
       '/auth/login',
@@ -50,7 +49,7 @@ class AuthRepository {
     if (response.data != null) {
       storage.setString('token', response.data['token'] ?? '');
     }
-    token = storage.getString('token') ?? '';
+    final token = storage.getString('token') ?? '';
 
     return getUser(token);
   }
@@ -63,6 +62,8 @@ class AuthRepository {
     required String phone,
     required String password,
   }) async {
+    SharedPreferences storage = await prefs!;
+
     final Response response = await dio.post(
       '/auth/register',
       data: {
@@ -80,6 +81,11 @@ class AuthRepository {
       phone: phone,
       password: password,
     );
-    return getUser(phone);
+    if (response.data != null) {
+      storage.setString('token', response.data['token'] ?? '');
+    }
+    final token = storage.getString('token') ?? '';
+
+    return getUser(token);
   }
 }

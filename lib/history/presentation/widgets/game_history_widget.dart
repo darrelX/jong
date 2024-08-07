@@ -22,14 +22,14 @@ class GameHistoryWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       margin: EdgeInsets.symmetric(
-        vertical: 20.h,
+        horizontal: 10.w,
       ),
       decoration: BoxDecoration(
         color: context.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x1A191C32),
+            color: Color.fromARGB(16, 25, 28, 50),
             offset: Offset(0, 20),
             blurRadius: 30,
             spreadRadius: 0,
@@ -39,66 +39,79 @@ class GameHistoryWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Spacer()
-          Gap(10.w),
-          Container(
-            height: 50,
-            width: 50,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.primary,
-            ),
-            child: Center(
-              child: Image.asset(
-                'assets/icons/coins.png',
-                // fit: BoxFit.none,
-                height: 30,
-                // width: 40,
+          Flexible(
+            flex: 3,
+            child: SizedBox(
+              width: double.infinity,
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primary,
+                ),
+                child: Center(
+                  child: Image.asset(
+                    'assets/icons/coins.png',
+                    // fit: BoxFit.none,
+                    height: 30,
+                    // width: 40,
+                  ),
+                ),
               ),
             ),
           ),
-          // Gap(20.w),
-          Gap(30.w),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                amount!.toStringAsFixed(2),
-                textAlign: TextAlign.left,
-                style: context.textTheme.bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w800),
+          Flexible(
+            flex: 4,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    amount!.toStringAsFixed(2),
+                    textAlign: TextAlign.left,
+                    style: context.textTheme.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    'quote de ${cote!.toStringAsFixed(2)}',
+                    textAlign: TextAlign.left,
+                    style: context.textTheme.bodyMedium!
+                        .copyWith(color: AppColors.primary),
+                  ),
+                  Text(
+                    DateFormat('dd/MM/yyyy').format(createdAt!).toString(),
+                    textAlign: TextAlign.left,
+                    style: context.textTheme.bodyMedium!
+                        .copyWith(color: AppColors.green),
+                  )
+                ],
               ),
-              Text(
-                'quote de ${cote!.toStringAsFixed(2)}',
-                textAlign: TextAlign.left,
-                style: context.textTheme.bodyMedium!
-                    .copyWith(color: AppColors.primary),
-              ),
-              Text(
-                DateFormat('dd/MM/yyyy').format(createdAt!).toString(),
-                textAlign: TextAlign.left,
-                style: context.textTheme.bodyMedium!
-                    .copyWith(color: AppColors.green),
-              )
-            ],
+            ),
           ),
-          Gap(30.w),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${gain!.toStringAsFixed(1)}nkap',
-                style: context.textTheme.bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w800),
+          Flexible(
+            flex: 4,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${gain!.toStringAsFixed(1)}nkap',
+                    style: context.textTheme.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    gain! > 0 ? 'gagné' : 'perdu',
+                    style: context.textTheme.bodyLarge!
+                        .copyWith(color: AppColors.green),
+                  ),
+                ],
               ),
-              Text(
-                gain! > 0 ? 'gagné' : 'perdu',
-                style: context.textTheme.bodyLarge!
-                    .copyWith(color: AppColors.green),
-              ),
-            ],
+            ),
           )
         ],
       ),

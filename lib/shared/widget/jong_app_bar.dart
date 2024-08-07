@@ -8,7 +8,7 @@ import 'package:jong/shared/extensions/context_extensions.dart';
 import '../application/cubit/application_cubit.dart';
 import '../theme/app_colors.dart';
 
-class JongAppBar extends StatelessWidget {
+class JongAppBar extends StatefulWidget {
   const JongAppBar({
     super.key,
     required this.title,
@@ -17,11 +17,22 @@ class JongAppBar extends StatelessWidget {
   final String title;
 
   @override
+  State<JongAppBar> createState() => _JongAppBarState();
+}
+
+class _JongAppBarState extends State<JongAppBar> {
+  @override
+  void initState() {
+    super.initState();
+    getIt.get<ApplicationCubit>().setUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: Text(title),
+          child: Text(widget.title),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +49,7 @@ class JongAppBar extends StatelessWidget {
                   bloc: getIt.get<ApplicationCubit>(),
                   builder: (context, state) {
                     return Text(
-                      double.parse(state.user!.balance.toString())
+                      double.parse(state.user!.balance!.toString())
                           .toStringAsFixed(2),
                     );
                   },
