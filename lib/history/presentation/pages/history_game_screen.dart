@@ -7,7 +7,6 @@ import 'package:jong/history/logic/history_cubit/game_history_cubit.dart';
 import 'package:jong/history/presentation/widgets/game_history_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
-// import 'package:jong/shared/theme/app_colors.dart';
 
 @RoutePage()
 class HistoryGameScreen extends StatefulWidget {
@@ -20,29 +19,94 @@ class HistoryGameScreen extends StatefulWidget {
 
 class _HistoryGameScreenState extends State<HistoryGameScreen> {
   final GameHistoryCubit _cubit = GameHistoryCubit();
-
-  Future<void> _onRefresh() async {
-    await _cubit.fetch();
-  }
+  final ScrollController _scrollController = ScrollController();
+  int _page = 1;
 
   @override
   void initState() {
     super.initState();
-    _cubit.fetch();
+    _cubit.fetch(); // Initial fetch of data
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
+      _cubit.fetch(); // Fetch more data when scrolled to the bottom
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    await _cubit.fetch(page: _page); // Reload data on pull-to-refresh
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _cubit.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameHistoryCubit, GameHistoryState>(
-      bloc: _cubit,
-      builder: (context, state) {
-        if (state is GameHistoryStateFailure) {
-          Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: widget.title,
+        toolbarHeight: 70.h,
+      ),
+      body: BlocBuilder<GameHistoryCubit, GameHistoryState>(
+        bloc: _cubit,
+        builder: (context, state) {
+          if (state is GameHistoryStateSuccess) {
+            return RefreshIndicator(
+              onRefresh: () => _onRefresh(),
+              child: ListView.separated(
+                controller: _scrollController,
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 30.h),
+                itemCount: state.listGameHistory.length,
+                separatorBuilder: (context, i) => Gap(26.h),
+                itemBuilder: (context, index) {
+                  final gameHistory = state.listGameHistory[index];
+                  return GameHistoryWidget(
+                    amount: gameHistory.amount,
+                    cote: gameHistory.cote,
+                    createdAt: gameHistory.createdAt,
+                    gain: gameHistory.gain,
+                  );
+                },
+              ),
+            );
+          }
+          if (state is GameHistoryStateFailure) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Échec du chargement. Veuillez réessayer."),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _onRefresh,
+                    child: Text(
+                      "Réessayer",
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (state is GameHistoryStateLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Échec du chargement. Veuillez réessayer."),
-                Gap(20.h),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _onRefresh,
                   child: Text(
@@ -55,69 +119,8 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
               ],
             ),
           );
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: widget.title,
-            toolbarHeight: 70.h,
-          ),
-          body: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10.w,
-            ),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height,
-            // color: Colors.red,
-            child: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: Column(
-                children: [
-                  Gap(30.h),
-                  Center(
-                    child: Text("historique des parties",
-                        style: context.textTheme.headlineMedium),
-                  ),
-                  Gap(20.h),
-                  if (state is GameHistoryStateSuccess)
-                    Expanded(
-                        child: ListView.separated(
-                            separatorBuilder: (context, i) => Gap(26.h),
-                            itemCount: state.listGameHistory.length,
-                            itemBuilder: (context, int elt) {
-                              return GameHistoryWidget(
-                                  amount: state.listGameHistory[elt].amount,
-                                  cote: state.listGameHistory[elt].cote,
-                                  createdAt:
-                                      state.listGameHistory[elt].createdAt,
-                                  gain: state.listGameHistory[elt].gain);
-                            }))
-                  else if (state is GameHistoryStateLoading)
-                    Container()
-                  else if (state is GameHistoryStateFailure)
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Échec du chargement. Veuillez réessayer."),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: _onRefresh,
-                            child: Text(
-                              "Réessayer",
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
-import 'package:jong/shared/theme/app_colors.dart';
-import 'package:jong/shared/utils/const.dart';
+
 
 class ProductsOfTicket extends StatelessWidget {
   const ProductsOfTicket(

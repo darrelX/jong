@@ -21,11 +21,14 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     emit(ApplicationState(user: user));
   }
 
-  deposit(String method, int amount, int userId) async {
-    await repository.deposit(method: method, amount: amount, userId: userId);
-    setUser();
+  dynamic deposit(String method, int amount, int userId, String phoneNumber) async {
+    try {
+      await repository.deposit(method: method, amount: amount, userId: userId, phoneNumber: phoneNumber);
+      setUser();
+    } catch (e) {
+      rethrow;
+    }
 
-    // emit(ApplicationState(user: ));
   }
 
   logout() async {

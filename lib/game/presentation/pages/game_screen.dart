@@ -214,7 +214,7 @@ class _GameScreenState extends State<GameScreen> {
             return SingleChildScrollView(
               child: Container(
                 // color: Colors.red,
-                height: MediaQuery.of(context).size.height - 90.h,
+                height: MediaQuery.of(context).size.height - 70.h,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -32,16 +32,17 @@ class TicketCategoryDropdown extends StatelessWidget {
       ),
       width: 360.w,
       decoration: BoxDecoration(
-        color: context.theme.scaffoldBackgroundColor,
+        // color: context.theme.scaffoldBackgroundColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(width: 0.05),
+        border: Border.all(width: 0.5),
         boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A191C32),
-            offset: Offset(20, 0),
-            blurRadius: 30,
-            spreadRadius: 0,
-          ),
+          // BoxShadow(
+          //   color: Color(0x1A191C32),
+          //   offset: Offset(20, 0),
+          //   blurRadius: 30,
+          //   spreadRadius: 0,
+          // ),
         ],
       ),
       child: Column(
@@ -106,7 +107,7 @@ class TicketCategoryDropdown extends StatelessWidget {
                 children: [
                   ...tickets.map((item) => TicketWidget(
                         total: tickets.length,
-                        width: 410.h,
+                        width: 400.w,
                         ticket: item,
                       )),
                 ],

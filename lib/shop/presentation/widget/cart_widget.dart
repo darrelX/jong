@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/theme/app_colors.dart';
-import 'package:jong/shared/utils/const.dart';
-import 'package:jong/shop/logic/product_provider.dart';
+import 'package:jong/shop/logic/cubit/product_cubit.dart';
 
 import 'preview_widget.dart';
 import 'product_widget.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({super.key,});
+  const CartWidget({super.key, required this.state});
+  final ProductUpdatedState state;
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
@@ -23,7 +22,7 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final instance = context.read<ProductProvider>();
+    // final instance = context.read<ProductProvider>();
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -40,22 +39,22 @@ class _CartWidgetState extends State<CartWidget> {
           // ignore: prefer_const_constructors
           PreviewWidget(
             padding: EdgeInsets.zero,
-           
           ),
           const Gap(20),
           Expanded(
               child: ListView.builder(
-                  itemCount: instance.listProductModel.length,
+                  itemCount: widget.state.products.length,
                   itemBuilder: (BuildContext context, int _) {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ProductWidget(
                           isShop: true,
-                          id: "${instance.listProductModel[_].id}",
+                          state: widget.state,
+                          id: "${widget.state.products[_].id}",
                           image: 'assets/images/1000.png',
-                          title: instance.listProductModel[_].name!,
-                          price: instance.listProductModel[_].price!,
+                          title: widget.state.products[_].name!,
+                          price: widget.state.products[_].price!,
                           quantity: 10,
                           // controller: controller['id'],
                         ),

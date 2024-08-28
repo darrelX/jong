@@ -4,13 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/history/logic/cubit/ticket_cubit.dart';
-import 'package:jong/history/presentation/widgets/bottom_sheet_wiget.dart';
 import 'package:jong/history/presentation/widgets/category_selector_widget.dart';
-import 'package:jong/history/presentation/widgets/ticket_widget.dart';
-import 'package:jong/history/presentation/widgets/validation_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
-import 'package:jong/shared/widget/app_dialog.dart';
 
 @RoutePage()
 class HistoryScreen extends StatefulWidget {
@@ -21,12 +17,12 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final TicketCubit cubit = TicketCubit();
+  final TicketCubit _cubit = TicketCubit();
   bool _isFirstDropdownOpen = false;
   bool _isSecondDropdownOpen = false;
 
-  Future<void> _refresh() async {
-    await cubit.fetchTicketsList();
+  Future<void> _onRefresh() async {
+    await _cubit.fetchTicketsList();
   }
 
   void _toggleFirstDropdown() {
@@ -44,19 +40,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     super.initState();
-    cubit.fetchTicketsList();
+    _cubit.fetchTicketsList();
   }
 
   @override
   void dispose() {
     super.dispose();
-    cubit.close();
+    _cubit.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TicketCubit, TicketState>(
-      bloc: cubit,
+      bloc: _cubit,
       listener: (context, state) {
         if (state is TicketStateToggle) {}
       },
@@ -72,22 +68,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (state is TicketStateSuccess) {
           return Scaffold(
             body: RefreshIndicator(
-              onRefresh: _refresh,
+              onRefresh: _onRefresh,
               child: SingleChildScrollView(
                 child: Container(
                   width: double.maxFinite,
                   padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  height: 900,
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    // borderRadius: BorderRadius.circular(15),
-                    // border: Border.all(width: 0.05),
-                  ),
+                  height: MediaQuery.of(context).size.height - 70.h,
+                  // decoration: const BoxDecoration(
+                  //   color: Colors.transparent,
+                  //   // borderRadius: BorderRadius.circular(15),
+                  //   // border: Border.all(width: 0.05),
+                  // ),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         Gap(20.h),
-
                         TicketCategoryDropdown(
                           onPressed: _toggleFirstDropdown,
                           title: "Tickets non traités",
@@ -106,34 +101,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           tickets: state.notTreatedTickets,
                         ),
                         Gap(49.h),
-                        // DropDownCategoryTickets(
-                        //   title: "Tickets traités",
-                        //   isDropOpen: _isSecondDropdownOpen,
-                        //   total: 10,
-                        //   onPressed: _toggleSecondDropdown,
-                        // ),
-
-                        // Container(),
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       showModalBottomSheet(
-                        //           context: context,
-                        //           elevation: 0.6,
-                        //           // constraints: const BoxConstraints(),
-                        //           // isScrollControlled: true,
-                        //           backgroundColor: Colors.transparent,
-                        //           builder: (BuildContext context) {
-                        //             return BottomSheetWiget(
-                        //                 qunatity: 4,
-                        //                 totalAmount: 3,
-                        //                 ticketId: 'fef',
-                        //                 products: state);
-                        //           });
-                        //     },
-                        //     child: const Text(
-                        //       'kb',
-                        //       style: TextStyle(color: Colors.red),
-                        //     )),
                       ],
                     ),
                   ),
@@ -142,10 +109,42 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           );
         }
+        if (state is TicketFailure) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Échec du chargement. Veuillez réessayer."),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onRefresh,
+                  child: Text(
+                    "Réessayer",
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
         return Center(
-          child: Transform.scale(
-            scale: 2, // Réduire de moitié la taille du widget
-            child: const CircularProgressIndicator(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Échec du chargement. Veuillez réessayer."),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _onRefresh,
+                child: Text(
+                  "Réessayer",
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.black,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },

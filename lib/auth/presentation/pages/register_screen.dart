@@ -92,35 +92,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const BorderRadius.vertical(top: Radius.circular(20)),
                 color: context.theme.scaffoldBackgroundColor,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gap(40.h),
-                  Text(
-                    "Welcome Back!",
-                    style: context.textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  Gap(20.h),
-                  Text(
-                    "To keep connected with us please login with your personal info",
-                    style: context.textTheme.bodyLarge?.copyWith(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gap(40.h),
+                    Text(
+                      "Welcome Back!",
+                      style: context.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.w900,
-                        color: AppColors.black.withOpacity(0.6)),
-                    textAlign: TextAlign.left,
-                  ),
-                  Gap(60.h),
-                  Form(
-                    key: _formKey,
-                    child: Expanded(
-                      child: PageView(
-                        controller: _pageController,
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          SingleChildScrollView(
-                            child: Column(
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    Gap(20.h),
+                    Text(
+                      "To keep connected with us please login with your personal info",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.black.withOpacity(0.6)),
+                      textAlign: TextAlign.left,
+                    ),
+                    Gap(60.h),
+                    Container(
+                      height: 280.h,
+                      child: Form(
+                        key: _formKey,
+                        child: PageView(
+                          controller: _pageController,
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            Column(
                               children: [
                                 AppInput(
                                   controller: _nameController,
@@ -167,9 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ],
                             ),
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
+                            Column(
                               children: [
                                 AppInput(
                                   controller: _genderController,
@@ -256,55 +255,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     )
                                   ],
                                 ),
-                                Gap(30.h),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  _currentPage == 0
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: padding16,
+                    _currentPage == 0
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: padding16,
+                            ),
+                            child: AppButton(
+                              bgColor: AppColors.primary,
+                              text: "Next",
+                              onPressed: () {
+                                setState(() {
+                                  _pageController.nextPage(
+                                      duration: Durations.long1,
+                                      curve: Curves.linear);
+                                });
+                              },
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: padding16,
+                            ),
+                            child: AppButton(
+                              loading: state is RegisterLoading,
+                              bgColor: AppColors.primary,
+                              text: "Sign In",
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _cubit.register(
+                                    name: _nameController.text,
+                                    email: _emailController.text,
+                                    birthDate: DateTime.now(),
+                                    gender: gender,
+                                    phoneNumber: _phoneController.text,
+                                    password: _passwordController.text,
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                          child: AppButton(
-                            bgColor: AppColors.primary,
-                            text: "Next",
-                            onPressed: () {
-                              setState(() {
-                                _pageController.nextPage(
-                                    duration: Durations.long1,
-                                    curve: Curves.linear);
-                              });
-                            },
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: padding16,
-                          ),
-                          child: AppButton(
-                            loading: state is RegisterLoading,
-                            bgColor: AppColors.primary,
-                            text: "Sign In",
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _cubit.register(
-                                  name: _nameController.text,
-                                  email: _emailController.text,
-                                  birthDate: DateTime.now(),
-                                  gender: gender,
-                                  phoneNumber: _phoneController.text,
-                                  password: _passwordController.text,
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                  Gap(40.h)
-                ],
+                    Gap(148.h)
+                  ],
+                ),
               ));
         },
       ),

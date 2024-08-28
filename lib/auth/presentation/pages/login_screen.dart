@@ -3,10 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jong/auth/logic/cubit/auth_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/routing/app_router.dart';
@@ -30,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
@@ -38,13 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-    //   // Utilisateur connecté
-    //   if (account != null) {
-    //     // Gérer l'authentification réussie ici
-    //     print('Utilisateur connecté : ${account.displayName}');
-    //   }
-    // } as void Function(GoogleSignInAccount? event)?);
   }
 
   @override

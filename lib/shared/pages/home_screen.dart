@@ -109,6 +109,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Place a bet",

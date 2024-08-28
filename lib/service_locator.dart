@@ -4,6 +4,7 @@ import 'package:jong/auth/data/repositories/auth_repository.dart';
 import 'package:jong/history/data/repositories/ticket_repository.dart';
 import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
+import 'package:jong/shop/logic/cubit/product_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,15 +47,15 @@ void setupLocator() {
       ),
   );
 
+  getIt.registerSingleton<ApplicationCubit>(ApplicationCubit());
+
+
   getIt.registerSingleton<AuthRepository>(
     AuthRepository(
         dio: getIt.get<Dio>(), prefs: getIt.get<Future<SharedPreferences>>()),
   );
 
-  getIt.registerSingleton<ProductRepository>(
-    ProductRepository(
-        dio: getIt.get<Dio>(), prefs: getIt.get<Future<SharedPreferences>>()),
-  );
+  getIt.registerSingleton<ProductRepository>(ProductRepository());
 
   getIt.registerSingleton<TicketRepository>(
     TicketRepository(
@@ -63,7 +64,6 @@ void setupLocator() {
         repository: getIt.get<ProductRepository>()),
   );
 
-  getIt.registerSingleton<ApplicationCubit>(
-    ApplicationCubit(),
-  );
+  getIt.registerSingleton<ProductCubit>(ProductCubit());
+
 }

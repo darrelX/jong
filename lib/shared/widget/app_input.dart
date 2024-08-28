@@ -96,7 +96,8 @@ class AppInput extends StatefulWidget {
     this.isItalic = false,
     this.labelColors,
     this.width,
-    this.border = true, this.errorMaxLines,
+    this.border = true,
+    this.errorMaxLines,
   });
 
   @override
@@ -123,7 +124,7 @@ class _AppInputState extends State<AppInput> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (widget.label != null)
@@ -157,6 +158,7 @@ class _AppInputState extends State<AppInput> {
           ),
           child: TextFormField(
             controller: widget.controller,
+            
             style: TextStyle(
               height: 1.8.h,
               fontWeight: FontWeight.w500,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/service_locator.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/widget/app_dialog.dart';
-import 'package:jong/shop/logic/product_provider.dart';
+import 'package:jong/shared/widget/app_snackbar.dart';
+import 'package:jong/shop/logic/cubit/product_cubit.dart';
 import 'package:jong/shop/presentation/widget/checkout_widget.dart';
-import 'package:provider/provider.dart';
 
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/const.dart';
@@ -19,7 +20,8 @@ class PreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final instance = context.read<ProductProvider>();
+    // final instance = context.read<ProductProvider>();
+    final ProductCubit cubit = getIt.get<ProductCubit>();
 
     return Container(
       padding: padding,
@@ -64,7 +66,7 @@ class PreviewWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${instance.getTotalPrice()}',
+                    '${cubit.getTotalPrice()}',
                     style: context.textTheme.displaySmall?.copyWith(
                       color: AppColors.white,
                     ),
@@ -84,16 +86,20 @@ class PreviewWidget extends StatelessWidget {
                 customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(radius20 - 1),
                 ),
-                onTap: () {
-                  instance.getBasketItems();
-                  AppDialog.showDialog(
-                    context: context,
-                    height: 300,
-                    child: const Padding(
-                      padding: EdgeInsets.all(padding16),
-                      child: CheckoutWidget(),
-                    ),
-                  );
+                onTap: () async {
+                  await cubit.getBasketItems().then((_) {
+                    AppDialog.showDialog(
+                      context: context,
+                      height: 300,
+                      child: const Padding(
+                        padding: EdgeInsets.all(padding16),
+                        child: CheckoutWidget(),
+                      ),
+                    );
+                  }).catchError((_) {
+                    AppSnackBar.showError(
+                        message: "Unknown error", context: context);
+                  });
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -12,7 +12,9 @@ import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/utils/const.dart';
 import 'package:jong/shared/widget/app_button.dart';
+import 'package:jong/shared/widget/app_dialog.dart';
 import 'package:jong/shared/widget/app_input.dart';
+import 'package:jong/shared/widget/app_snackbar.dart';
 
 @RoutePage()
 class TopUpScreen extends StatefulWidget {
@@ -27,8 +29,8 @@ class _TopUpScreenState extends State<TopUpScreen> {
   final TextEditingController _amountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  PhoneNumber? number;
-  String pm = 'momo';
+  PhoneNumber? _number;
+  String? pm;
 
   @override
   void initState() {
@@ -80,8 +82,9 @@ class _TopUpScreenState extends State<TopUpScreen> {
                         const Gap(6),
                         InternationalPhoneNumberInput(
                           onInputChanged: (PhoneNumber value) {
-                            number = value;
-                            setState(() {});
+                            setState(() {
+                              _number = value;
+                            });
                           },
                           hintText: '',
                           initialValue: PhoneNumber(isoCode: 'CM'),
@@ -139,7 +142,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                         ),
                         const Gap(20),
                         RadioListTile<String>(
-                          value: 'mtn',
+                          value: 'MTN_MOMO',
                           groupValue: pm,
                           onChanged: (value) {
                             // if (value == null) return;
@@ -166,7 +169,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                           ),
                         ),
                         RadioListTile<String>(
-                          value: 'orange',
+                          value: 'ORANGE_MONEY',
                           groupValue: pm,
                           onChanged: (value) {
                             // if (value == null) return;
@@ -194,17 +197,35 @@ class _TopUpScreenState extends State<TopUpScreen> {
                       ],
                     ),
                   ),
-                  const Gap(10),
+                  Gap(10.h),
                   AppButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        await bloc.deposit(
-                            pm,
-                            int.parse(_amountController.value.text),
-                            state.user!.id!);
-                        if (!context.mounted) return;
-                        context.router.pushAndPopUntil(const HomeRoute(),
-                            predicate: (route) => false);
+                        if (pm == null) {
+                          AppSnackBar.showError(
+                            message:
+                                'Veuillez selectionner une méthode de paiement',
+                            context: context,
+                          );
+                          return;
+                        }
+                        try {
+                          await bloc.deposit(
+                              pm!,
+                              int.parse(_amountController.value.text),
+                              state.user!.id!,
+                              _number!.phoneNumber!.substring(4));
+                          if (!context.mounted) return;
+                          AppSnackBar.showSuccess(
+                              message: "Transaction en attente",
+                              context: context);
+                        } catch (e) {
+                          AppSnackBar.showError(
+                              message: "Echec", context: context);
+                        }
+
+                        // context.router.pushAndPopUntil(const HomeRoute(),
+                        //     predicate: (route) => false);
                       }
                     },
                     bgColor: AppColors.primary,

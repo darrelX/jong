@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/service_locator.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
-import 'package:jong/shop/logic/product_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:jong/shop/logic/cubit/product_cubit.dart';
 
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/const.dart';
@@ -17,6 +17,7 @@ class ProductWidget extends StatefulWidget {
     required this.price,
     required this.quantity,
     required this.id,
+    required this.state,
     this.isShop = false,
   });
   final String image;
@@ -25,6 +26,7 @@ class ProductWidget extends StatefulWidget {
   final double price;
   final int quantity;
   final bool isShop;
+  final ProductUpdatedState state;
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
@@ -33,11 +35,12 @@ class ProductWidget extends StatefulWidget {
 class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
-    final instance = context.read<ProductProvider>();
+    // final instance = context.read<ProductProvider>();
+    final cubit = getIt.get<ProductCubit>();
 
     return Visibility(
       visible: widget.isShop
-          ? (instance.counters[widget.id]! < 1 ? false : true)
+          ? (widget.state.counters[widget.id]! < 1 ? false : true)
           : true,
       child: Container(
         height: 90.h,
@@ -90,13 +93,14 @@ class _ProductWidgetState extends State<ProductWidget> {
                   children: [
                     IgnorePointer(
                       ignoring:
-                          instance.counters[widget.id]! > 0 ? false : true,
+                          widget.state.counters[widget.id]! > 0 ? false : true,
                       child: Opacity(
-                        opacity: instance.counters[widget.id]! > 0 ? 1 : 0.5,
+                        opacity:
+                            widget.state.counters[widget.id]! > 0 ? 1 : 0.5,
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              instance.decrement(widget.id);
+                              cubit.decrement(widget.id);
                             });
                           },
                           customBorder: RoundedRectangleBorder(
@@ -125,7 +129,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                     const Gap(8),
                     Text(
-                      '${instance.counters[widget.id]}',
+                      '${widget.state.counters[widget.id]}',
                       style: context.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -133,17 +137,19 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                     const Gap(8),
                     IgnorePointer(
-                      ignoring: instance.counters[widget.id]! < widget.quantity
-                          ? false
-                          : true,
+                      ignoring:
+                          widget.state.counters[widget.id]! < widget.quantity
+                              ? false
+                              : true,
                       child: Opacity(
-                        opacity: instance.counters[widget.id]! < widget.quantity
-                            ? 1
-                            : 0.5,
+                        opacity:
+                            widget.state.counters[widget.id]! < widget.quantity
+                                ? 1
+                                : 0.5,
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              instance.increment(widget.id, widget.quantity);
+                              cubit.increment(widget.id, widget.quantity);
                             });
                           },
                           customBorder: RoundedRectangleBorder(

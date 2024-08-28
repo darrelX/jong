@@ -17,9 +17,10 @@ final class GameHistoryStateLoading extends GameHistoryState {
 
 final class GameHistoryStateSuccess extends GameHistoryState {
   final List<GameHistoryModel> listGameHistory;
-  const GameHistoryStateSuccess({ required this.listGameHistory});
+  const GameHistoryStateSuccess({required this.listGameHistory});
 }
 
 final class GameHistoryStateFailure extends GameHistoryState {
-  const GameHistoryStateFailure();
+  final String message;
+  const GameHistoryStateFailure({required this.message});
 }

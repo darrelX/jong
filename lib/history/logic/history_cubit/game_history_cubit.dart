@@ -16,18 +16,17 @@ class GameHistoryCubit extends Cubit<GameHistoryState> {
         applicationCubit = getIt.get<ApplicationCubit>(),
         super(const GameHistoryStateInitial());
 
-  fetch() async {
+  fetch({int page=1}) async {
     emit(const GameHistoryStateLoading());
 
     try {
-      print('darrel');
-      print(applicationCubit.state.user!.balance!);
       List<GameHistoryModel> listGameHistory = (await repository
-          .fetchGameHistory(applicationCubit.state.user!.id!))!;
+          .fetchGameHistory(userId: applicationCubit.state.user!.id!, page: page))!;
 
       emit(GameHistoryStateSuccess(listGameHistory: listGameHistory));
     } catch (e) {
-      emit(const GameHistoryStateFailure());
+      emit( GameHistoryStateFailure(message: e.toString()));
+      rethrow;
     }
   }
 }

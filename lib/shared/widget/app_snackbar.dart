@@ -6,12 +6,10 @@ import 'package:jong/shared/theme/app_colors.dart';
 class AppSnackBar {
   static Flushbar? _flushbar;
 
-  static bool isShowing = _flushbar?.isShowing() ?? false;
-
   static Future showError({
     required String message,
     required BuildContext context,
-    duration = const Duration(seconds: 5),
+    duration = const Duration(seconds: 3),
   }) async {
     if (_flushbar != null && _flushbar!.isShowing()) {
       await _flushbar!.dismiss();
@@ -39,7 +37,6 @@ class AppSnackBar {
     required BuildContext context,
     Function(Flushbar<dynamic>)? onTap,
     duration = const Duration(seconds: 3),
-    VoidCallback? onClose,
   }) async {
     if (_flushbar != null && _flushbar!.isShowing()) {
       await _flushbar!.dismiss();
@@ -60,14 +57,6 @@ class AppSnackBar {
               ),
             ),
           ),
-          // InkWell(
-          //   onTap: onClose,
-          //   child: SvgPicture.asset(
-          //     "assets/icons/close.svg",
-          //     height: 25,
-          //     width: 25,
-          //   ),
-          // )
         ],
       ),
       margin: const EdgeInsets.all(20),

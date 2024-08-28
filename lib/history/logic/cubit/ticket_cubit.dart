@@ -16,7 +16,6 @@ class TicketCubit extends Cubit<TicketState> {
   final ApplicationCubit application;
   final treatedTickets = <TicketModel>[];
   final notTreatedTickets = <TicketModel>[];
-  LoadingState loadingState = LoadingState.initial;
 
   TicketCubit()
       : ticketRepository = getIt.get<TicketRepository>(),
@@ -36,15 +35,9 @@ class TicketCubit extends Cubit<TicketState> {
   Future<void> fetchTicketsList() async {
     treatedTickets.clear();
     notTreatedTickets.clear();
-    if (loadingState == LoadingState.loading) return;
-
-    loadingState = LoadingState.loading;
-
+    emit(TicketStateLoading(
+        treatedTickets: treatedTickets, notTreatedTickets: notTreatedTickets));
     try {
-      emit(TicketStateLoading(
-          treatedTickets: treatedTickets,
-          notTreatedTickets: notTreatedTickets));
-
       List<TicketModel> ticketsList = (await ticketRepository
           .fetchTicketsList(application.state.user!.id!))!;
 
@@ -55,7 +48,6 @@ class TicketCubit extends Cubit<TicketState> {
           notTreatedTickets.add(ticket);
         }
       }
-      loadingState = LoadingState.success;
 
       emit(TicketStateSuccess(
           treatedTickets: treatedTickets,
@@ -63,8 +55,6 @@ class TicketCubit extends Cubit<TicketState> {
 
       return;
     } catch (e) {
-      loadingState = LoadingState.error;
-
       emit(TicketFailure(message: e.toString()));
       return;
     }

@@ -1,23 +1,17 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:jong/auth/data/models/user_model.dart';
-import 'package:jong/auth/data/repositories/auth_repository.dart';
 import 'package:jong/service_locator.dart';
-import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/models/product_model.dart';
-import 'package:jong/shop/logic/product_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductRepository {
   final Dio dio;
   Future<SharedPreferences>? prefs;
-  // final ApplicationCubit repository;
 
-  ProductRepository({
-    required this.dio,
-    this.prefs,
-  });
+  ProductRepository()
+      : dio = getIt.get<Dio>(),
+        prefs = getIt.get<Future<SharedPreferences>>();
 
   Future<List<ProductModel>> fetchProductsList(int userId) async {
     try {

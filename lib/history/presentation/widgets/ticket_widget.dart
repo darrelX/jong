@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:jong/history/data/models/ticket_model.dart';
 import 'package:jong/history/presentation/widgets/bottom_sheet_wiget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/widget/app_bottom_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../shared/theme/app_colors.dart';
 
@@ -26,17 +27,25 @@ class TicketWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return BottomSheetWiget(
+        AppBottomSheet.showModelBottomSheet(
+            context: context,
+            backgroundColor: AppColors.primary,
+            child: BottomSheetWiget(
               total: total,
               ticket: ticket,
               products: ticket.products!,
-            );
-          },
-        );
+            ));
+        // showModalBottomSheet(
+        //   context: context,
+        //   backgroundColor: Colors.transparent,
+        //   builder: (context) {
+        //     return BottomSheetWiget(
+        //       total: total,
+        //       ticket: ticket,
+        //       products: ticket.products!,
+        //     );
+        //   },
+        // );
       },
       child: Container(
         height: 90.h,
@@ -47,20 +56,20 @@ class TicketWidget extends StatelessWidget {
           // color: Colors.blue,
           borderRadius: BorderRadius.circular(15),
           // border: Border.all(width: 0.04),
-          // boxShadow: const [
-          //   BoxShadow(
-          //     color: Color(0x1A191C32),
-          //     offset: Offset(3, 0),
-          //     blurRadius: 2,
-          //     spreadRadius: 0,
-          //   ),
-          //   BoxShadow(
-          //     color: Color(0x1A191C32),
-          //     offset: Offset(-5, 10),
-          //     blurRadius: 2,
-          //     spreadRadius: 0,
-          //   ),
-          // ],
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x1A191C32),
+              offset: Offset(3, 0),
+              blurRadius: 2,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Color(0x1A191C32),
+              offset: Offset(-5, 10),
+              blurRadius: 2,
+              spreadRadius: 0,
+            ),
+          ],
         ),
         padding: EdgeInsets.all(10.h),
         child: Row(
@@ -83,7 +92,7 @@ class TicketWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(19.h),
+            Gap(19.w),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -9,12 +9,13 @@ class AppBottomSheet {
     required BuildContext context,
     required Widget child,
     AnimationController? transitionController,
+    Color? backgroundColor,
     double? height,
   }) async {
     await showModalBottomSheet(
       context: context,
       transitionAnimationController: transitionController,
-      backgroundColor: AppColors.white,
+      // backgroundColor: backgroundColor,
       isScrollControlled: true,
       constraints: BoxConstraints(
         maxHeight: height ?? context.height * .8,
@@ -29,9 +30,9 @@ class AppBottomSheet {
       builder: (context) {
         return Container(
           width: context.width,
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: backgroundColor ?? AppColors.white,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),

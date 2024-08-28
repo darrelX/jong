@@ -7,20 +7,38 @@ sealed class ProductState extends Equatable {
   List<Object> get props => [];
 }
 
-class ProductInitial extends ProductState {
+final class ProductInitial extends ProductState {
   const ProductInitial();
+  @override
+  List<Object> get props => [];
 }
 
-class ProductUpdated extends ProductState {
-  final Map<String, dynamic> articles;
-  final Map<String, int> products;
+final class ProductLoadingState extends ProductState {
+  const ProductLoadingState();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class ProductUpdatedState extends ProductState {
+  final Map<String, int> counters;
+  final List<ProductModel> products;
   final double? getTotalPrice;
 
-  const ProductUpdated(
-      {required this.articles,
+  const ProductUpdatedState(
+      {required this.counters,
       required this.products,
       this.getTotalPrice = 0.0});
 
   @override
-  List<Object> get props => [articles, products, getTotalPrice!];
+  List<Object> get props => [counters, products, getTotalPrice!];
+}
+
+final class ProductFailure extends ProductState {
+  final String message;
+
+  const ProductFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

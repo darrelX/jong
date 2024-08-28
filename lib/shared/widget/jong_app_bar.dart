@@ -54,7 +54,7 @@ class _JongAppBarState extends State<JongAppBar> {
                     );
                   },
                 ),
-                const Gap(1),
+                 Gap(1.w),
                 Text(
                   "  nkap",
                   style: context.textTheme.bodyMedium?.copyWith(

@@ -1,95 +1,98 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
+import 'package:jong/shop/data/models/product_model.dart';
+import 'package:jong/shop/data/repositories/product_repository.dart';
 
 part 'product_state.dart';
 
-Map<String, dynamic> _articles = {
-  "id": "",
-  "items": [
-    {"title": "dada", "price": 100, "quantity": 8, "id": "0", "isShop": false},
-    {"title": "dada1", "price": 200, "quantity": 2, "id": "1", "isShop": false},
-    {"title": "dada2", "price": 300, "quantity": 1, "id": "2", "isShop": false},
-    {"title": "dada3", "price": 400, "quantity": 9, "id": "3", "isShop": false},
-    {"title": "dada4", "price": 550, "quantity": 3, "id": "4", "isShop": false},
-    {"title": "dada5", "price": 600, "quantity": 1, "id": "5", "isShop": false},
-    {
-      "title": "dada6",
-      "price": 1200,
-      "quantity": 4,
-      "id": "6",
-      "isShop": false
-    },
-    {
-      "title": "dada7",
-      "price": 3200,
-      "quantity": 3,
-      "id": "7",
-      "isShop": false
-    },
-  ],
-};
-
-Map<String, int> _products = {};
-
 class ProductCubit extends Cubit<ProductState> {
-  Map<String, dynamic> get articles => _articles;
-  Map<String, int> get products => _products;
+  final ProductRepository repository = getIt.get<ProductRepository>();
+  final Map<String, int> _counters = {};
+  List<ProductModel> _listProductModel = [];
+  final ApplicationCubit application = getIt.get<ApplicationCubit>();
 
-  ProductCubit() : super(const ProductInitial()) {
-    if (_products.isEmpty) {
-      for (var article in articles['items']) {
-        products[article['id']] = 0;
+  ProductCubit() : super(const ProductInitial());
+
+  Future<void> fetchProducts() async {
+    _listProductModel.clear();
+    _counters.clear();
+    emit(const ProductLoadingState());
+    try {
+      _listProductModel =
+          await repository.fetchProductsList(application.state.user!.id!);
+
+      for (var article in _listProductModel) {
+        _counters[article.id!] = 0;
       }
-      emit(const ProductInitial());
+
+      print(_listProductModel);
+      emit(ProductUpdatedState(
+          counters: _counters,
+          products: _listProductModel,
+          getTotalPrice: getTotalPrice()));
+    } catch (e) {
+      emit(ProductFailure(message: e.toString()));
     }
-    emit(ProductUpdated(
-        articles: _articles,
-        products: _products,
-        getTotalPrice: getTotalPrice()));
   }
 
   void increment(String id, int quantity) {
-    if (_products.containsKey(id) && _products[id]! < quantity) {
-      _products[id] = _products[id]! + 1;
+    if (_counters.containsKey(id) && _counters[id]! < quantity) {
+      _counters[id] = _counters[id]! + 1;
     }
-    emit(ProductUpdated(
-        articles: _articles,
-        products: _products,
+    emit(ProductUpdatedState(
+        counters: _counters,
+        products: _listProductModel,
         getTotalPrice: getTotalPrice()));
   }
 
   void decrement(String id) {
-    if (_products.containsKey(id) && _products[id]! > 0) {
-      _products[id] = _products[id]! - 1;
+    if (_counters.containsKey(id) && _counters[id]! > 0) {
+      _counters[id] = _counters[id]! - 1;
     }
-    emit(ProductUpdated(
-        articles: _articles,
-        products: _products,
+    emit(ProductUpdatedState(
+        counters: _counters,
+        products: _listProductModel,
         getTotalPrice: getTotalPrice()));
   }
 
-  List<Map<String, dynamic>> getBasketItems() {
-    List<Map<String, dynamic>> basketItems = [];
+  Future<void> getBasketItems() async {
+    final List basketItems = _listProductModel
+        .where((article) =>
+            _counters.containsKey("${article.id}") &&
+            _counters["${article.id}"]! > 0)
+        .map((article) => {
+              'id': "${article.id}",
+              'quantity': _counters["${article.id}"],
+            })
+        .toList();
 
-    for (var article in _articles['items']) {
-      String id = article['id'];
-      if (_products.containsKey(id) && _products[id]! > 0) {
-        var basketItem = Map<String, dynamic>.from(article);
-        basketItem['quantity'] = _products[id];
-        basketItems.add(basketItem);
-      }
+    final Map<String, dynamic> result = {
+      'user_id': application.state.user!.id!,
+      'products': basketItems,
+    };
+    try {
+      print(result);
+      // if (_result == n) {
+
+      // }
+      await repository.createTicket(result, application.state.user!.id!);
+    } catch (e) {
+      print(e.toString());
+      rethrow;
     }
-    return basketItems;
   }
 
   double getTotalPrice() {
     double totalPrice = 0.0;
-    for (var article in _articles['items']) {
-      String id = article['id'];
-      if (_products.containsKey(id) && _products[id]! > 0) {
-        totalPrice += article['price'] * _products[id]!;
+
+    for (var article in _listProductModel) {
+      String id = "${article.id}";
+      if (_counters.containsKey(id) && _counters[id]! > 0) {
+        totalPrice += article.price! * _counters[id]!;
       }
     }
-    return totalPrice;
+    return double.parse(totalPrice.toStringAsFixed(2));
   }
 }

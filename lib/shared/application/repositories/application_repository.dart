@@ -13,10 +13,10 @@ class ApplicationRepository {
       : dio = getIt.get<Dio>(),
         prefs = getIt.get<Future<SharedPreferences>>();
 
-  deposit({required String method,required int amount, required int userId}) async {
+  deposit({required String method,required int amount, required int userId, required String phoneNumber}) async {
     try {
       final response = await dio.post('/deposits',
-          data: {"method": method, "amount": amount, "user_id": userId});
+          data: {"method": method, "amount": amount, "user_id": userId, "phone_number" : phoneNumber });
       final Map<String, dynamic> deposit = response.data;
       print('deposit $deposit');
       return deposit['amount'];

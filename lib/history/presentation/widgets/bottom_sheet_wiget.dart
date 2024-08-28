@@ -30,7 +30,7 @@ class BottomSheetWiget extends StatelessWidget {
         maxChildSize: 1,
         builder: (context, scrollController) {
           return Container(
-            height: 180.h,
+            // height: 300.h,
             decoration: const BoxDecoration(
               color: AppColors.primary,
               borderRadius: BorderRadius.vertical(
@@ -41,7 +41,7 @@ class BottomSheetWiget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Gap(20.h),
+                // Gap(20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -122,7 +122,7 @@ class BottomSheetWiget extends StatelessWidget {
                 Gap(10.h),
                 Expanded(
                   child: ListView.builder(
-                    controller: scrollController,
+                    // controller: scrollController,
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       return ProductsOfTicket(

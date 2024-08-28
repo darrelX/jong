@@ -20,7 +20,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
   final ApplicationCubit applicationCubit = getIt.get<ApplicationCubit>();
 
   CrashGameBloc({
-    required this.bet,
+     this.bet = 0,
   }) : super(CrashGameDefault(bet: bet)) {
     on<InitializeCrashGameEvent>(_onInitialize);
     on<StartCrashGameEvent>(_onStartGame);

@@ -29,9 +29,15 @@ class GameHistoryWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
-            color: Color.fromARGB(16, 25, 28, 50),
-            offset: Offset(0, 20),
-            blurRadius: 30,
+            color: Color(0x1A191C32),
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Color(0x1A191C32),
+            offset: Offset(-7, 10),
+            blurRadius: 2,
             spreadRadius: 0,
           ),
         ],

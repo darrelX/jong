@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
@@ -15,8 +16,9 @@ class AppDialog {
     Color barrierColor = Colors.black,
     Alignment alignment = Alignment.center,
     EdgeInsets padding = EdgeInsets.zero,
+    Duration? duration,
   }) {
-    return showGeneralDialog(
+    showGeneralDialog(
       barrierLabel: barrierLabel,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor.withOpacity(0.5),
@@ -54,5 +56,8 @@ class AppDialog {
         );
       },
     );
+    if (duration != null) {
+      Future.delayed(duration, () => context.router.popForced());
+    }
   }
 }
