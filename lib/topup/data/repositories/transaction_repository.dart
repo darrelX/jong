@@ -3,17 +3,18 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:jong/auth/data/models/user_model.dart';
 import 'package:jong/service_locator.dart';
+import 'package:jong/topup/data/models/transaction_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ApplicationRepository {
+class TransactionRepository {
   final Dio dio;
   final Future<SharedPreferences> prefs;
 
-  ApplicationRepository()
+  TransactionRepository()
       : dio = getIt.get<Dio>(),
         prefs = getIt.get<Future<SharedPreferences>>();
 
-  deposit(
+  Future<TransactionModel> deposit(
       {required String method,
       required int amount,
       required int userId,
@@ -25,32 +26,25 @@ class ApplicationRepository {
         "user_id": userId,
         "phone_number": phoneNumber
       });
-      return response.data as Map<String, dynamic>;
+      return TransactionModel.fromJson(response.data as Map<String, dynamic>);
     } catch (e) {
+      print("999");
       rethrow;
     }
   }
 
-  getStatusTransaction({required int userId}) async {
-    final Response response = await dio.get('/deposits',
-        options: Options(headers: {"user_id": userId}));
-    //  DepositModel.fromJson(response.data["data"], response.data["total"]);
-  }
-
-  Future<UserModel?> getUser(String token) async {
-    SharedPreferences storage = await prefs!;
-    String? token = storage.getString('token');
-
+  Future<int> getStatus({required int id}) async {
     try {
-      Response response = await dio.get(
-        '/auth/user',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
-      log(response.data.toString());
-      return UserModel.fromJson(response.data);
+      final Response response = await dio.get('/deposits/$id'
+         );
+      // print("number ${response.data['status']}");
+      // final x = response.data[]
+      return response.data['status'];
     } catch (e) {
-      log(e.toString());
+      print('Error bro');
       rethrow;
     }
+
+    //  DepositModel.fromJson(response.data["data"], response.data["total"]);
   }
 }

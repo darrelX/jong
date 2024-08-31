@@ -48,6 +48,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
           case 3:
             return AppBar(
               title: const Text("Profile"),
+              toolbarHeight: 70.h,
               actions: [
                 SvgPicture.asset(
                   'assets/icons/settings.svg',

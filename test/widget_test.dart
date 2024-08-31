@@ -1,36 +1,28 @@
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
+// import 'package:equatable/equatable.dart';
 
-final getIt = GetIt.instance;
+// sealed class Parent extends Equatable {
+//   final int age;
+//   const Parent({required this.age});
 
-void main() async {
-  configureDependencies(); // Configurer les dépendances
+//     @override
+//   List<Object> get props => [age];
+// }
 
-  final dio = getIt<Dio>(); // Utiliser getIt directement
-  try {
-    final response = await dio.post(
-      '/users',
-      data: {
-        'email': 'darrel@gmail.com',
-        'password': 'arafat',
-      },
-    );
+// final class Child1 extends Parent {
+//  const Child1({required super.age});
 
-    // Utilisez la réponse
-    print(response.data);
-  } catch (error) {
-    // Gérez les erreurs
-    print(error.toString());
-  }
-}
+//    @override
+//   List<Object> get props => [super.age];
+// }
 
-void configureDependencies() {
-  getIt.registerSingleton<Dio>(Dio(BaseOptions(
-    baseUrl: 'https://localhost:3000/users',
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  )));
-}
+// final class Child2 extends Parent {
+//  const Child2({required super.age});
+
+//    @override
+//   List<Object> get props => [super.age];
+// }
+
+// void main() {
+//   Child1 child = Child1(age: 2);
+//   print(const Child2.);
+// }

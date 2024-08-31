@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shop/logic/cubit/product_cubit.dart';
@@ -42,11 +43,12 @@ class _CartWidgetState extends State<CartWidget> {
           ),
           const Gap(20),
           Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                   itemCount: widget.state.products.length,
+                  separatorBuilder: (context, i) => Gap(10.h),
                   itemBuilder: (BuildContext context, int _) {
                     return Column(
-                      mainAxisSize: MainAxisSize.min,
+                      // mainAxisSize: MainAxisSize.min,
                       children: [
                         ProductWidget(
                           isShop: true,

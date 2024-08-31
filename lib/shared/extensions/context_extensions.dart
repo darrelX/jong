@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 extension ThemeDataX on BuildContext {
   Brightness get brightness => Theme.of(this).brightness;
@@ -18,4 +19,8 @@ extension MediaQueryX on BuildContext {
   double get height => screenSize.height;
 
   EdgeInsets get padding => MediaQuery.of(this).padding;
+}
+
+extension AppLocalizationX on BuildContext {
+  AppLocalizations get appLocalization => AppLocalizations.of(this)!;
 }

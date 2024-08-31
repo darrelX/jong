@@ -45,8 +45,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _cubit.close();
+    super.dispose();
   }
 
   @override

@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:json_annotation/json_annotation.dart';
-
 class UserModel {
   final int? id;
   final String? name;

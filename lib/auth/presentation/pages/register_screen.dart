@@ -59,12 +59,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: AppColors.primary,
       appBar: AppBar(
         title: Text(
-          "sign in",
+          "Inscription",
           style: context.textTheme.displaySmall!
               .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
         ),
         centerTitle: true,
-        toolbarHeight: 95.h,
+        toolbarHeight: 110.h,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: _cubit,
@@ -92,13 +92,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const BorderRadius.vertical(top: Radius.circular(20)),
                 color: context.theme.scaffoldBackgroundColor,
               ),
+              height: context.height,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap(40.h),
                     Text(
-                      "Welcome Back!",
+                      "Creer un compte",
                       style: context.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
@@ -106,14 +107,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Gap(20.h),
                     Text(
-                      "To keep connected with us please login with your personal info",
+                      "Remplissez les champs ci-dessous pour commencer",
                       style: context.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w900,
                           color: AppColors.black.withOpacity(0.6)),
                       textAlign: TextAlign.left,
                     ),
                     Gap(60.h),
-                    Container(
+                    SizedBox(
                       height: 280.h,
                       child: Form(
                         key: _formKey,
@@ -261,46 +262,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
+                    Gap(50.h),
                     _currentPage == 0
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: padding16,
-                            ),
-                            child: AppButton(
-                              bgColor: AppColors.primary,
-                              text: "Next",
-                              onPressed: () {
-                                setState(() {
-                                  _pageController.nextPage(
-                                      duration: Durations.long1,
-                                      curve: Curves.linear);
-                                });
-                              },
-                            ),
+                        ? AppButton(
+                            bgColor: AppColors.primary,
+                            text: "Suivant",
+                            onPressed: () {
+                              setState(() {
+                                _pageController.nextPage(
+                                    duration: Durations.long1,
+                                    curve: Curves.linear);
+                              });
+                            },
                           )
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: padding16,
-                            ),
-                            child: AppButton(
-                              loading: state is RegisterLoading,
-                              bgColor: AppColors.primary,
-                              text: "Sign In",
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _cubit.register(
-                                    name: _nameController.text,
-                                    email: _emailController.text,
-                                    birthDate: DateTime.now(),
-                                    gender: gender,
-                                    phoneNumber: _phoneController.text,
-                                    password: _passwordController.text,
-                                  );
-                                }
-                              },
-                            ),
+                        : AppButton(
+                            loading: state is RegisterLoading,
+                            bgColor: AppColors.primary,
+                            text: "Validation",
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.router.pushAndPopUntil(
+                                  const OTPInputRoute(),
+                                  predicate: (route) => true,
+                                );
+
+                                // _cubit.register(
+                                //   name: _nameController.text,
+                                //   email: _emailController.text,
+                                //   birthDate: DateTime.now(),
+                                //   gender: gender,
+                                //   phoneNumber: _phoneController.text,
+                                //   password: _passwordController.text,
+                                // );
+                              }
+                            },
                           ),
-                    Gap(148.h)
                   ],
                 ),
               ));

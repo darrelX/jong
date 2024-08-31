@@ -8,27 +8,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'application_state.dart';
 
 class ApplicationCubit extends Cubit<ApplicationState> {
-  final repository = ApplicationRepository();
+  final _repository = ApplicationRepository();
   final pref = getIt.get<Future<SharedPreferences>>();
-  ApplicationCubit() : super(const ApplicationState());
+  ApplicationCubit() : super(const ApplicationStateInitial());
 
   setUser([UserModel? userModel]) async {
     if (userModel != null) {
-      emit(ApplicationState(user: userModel));
+      emit(ApplicationStateInitial(user: userModel));
     }
     final prefs = await pref;
-    final user = await repository.getUser(prefs.getString('token')!);
-    emit(ApplicationState(user: user));
+    final user = await _repository.getUser(prefs.getString('token')!);
+    emit(ApplicationStateInitial(user: user));
   }
 
-  dynamic deposit(String method, int amount, int userId, String phoneNumber) async {
+  dynamic deposit(
+      String method, int amount, int userId, String phoneNumber) async {
     try {
-      await repository.deposit(method: method, amount: amount, userId: userId, phoneNumber: phoneNumber);
+      final Map<String, dynamic> response = await _repository.deposit(
+          method: method,
+          amount: amount,
+          userId: userId,
+          phoneNumber: phoneNumber);
+      print("test");
       setUser();
-    } catch (e) {
-      rethrow;
-    }
+      if (response['status'] == 0) {
+        emit(const ApplicationStatePending());
+      }
 
+      // return status['status'];
+    } catch (e) {
+      emit(const ApplicationStateFailure());
+    }
   }
 
   logout() async {

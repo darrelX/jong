@@ -1,0 +1,8 @@
+{
+    "language" : "English",
+    "@@locale": "en",
+    "@language" : {
+        "description": "The current language"
+    },
+    "loginTitle": "Welcome Back!"
+}

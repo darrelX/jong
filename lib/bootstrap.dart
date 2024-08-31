@@ -7,10 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jong/auth/logic/cubit/auth_cubit.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
 import 'package:jong/service_locator.dart';
-import 'package:jong/shop/data/models/product_model.dart';
 import 'package:jong/shop/logic/cubit/product_cubit.dart';
-import 'package:jong/shop/presentation/pages/shop_screen.dart';
-import 'package:provider/provider.dart';
 
 _setupApplication() {
   /// Hide status bar for splash screen

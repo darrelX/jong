@@ -138,6 +138,7 @@ class _AppInputState extends State<AppInput> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
+                  
                   "${widget.label}",
                   style: context.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w600,
@@ -213,9 +214,9 @@ class _AppInputState extends State<AppInput> {
               // enabledBorder: widget.border ? InputBorder.none : null,
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0), // Rayon des bords
-                  borderSide: BorderSide(color: Colors.transparent)),
+                  borderSide: const BorderSide(color: Colors.transparent)),
               filled: true,
-              fillColor: Color.fromRGBO(240, 244, 245, 10),
+              fillColor: const Color.fromRGBO(240, 244, 245, 10),
               hintText: widget.hint,
               hintStyle: TextStyle(
                 fontWeight: FontWeight.w300,

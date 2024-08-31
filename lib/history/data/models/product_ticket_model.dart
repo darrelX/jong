@@ -6,7 +6,7 @@ class ProductTicketModel {
   final DateTime? updatedAt;
   final int? quantity;
   final String? productCategoryId;
-
+  final int? total;
 
   const ProductTicketModel(
       {required this.id,
@@ -15,6 +15,7 @@ class ProductTicketModel {
       required this.createdAt,
       required this.updatedAt,
       required this.quantity,
+      this.total,
       required this.productCategoryId});
 
   factory ProductTicketModel.fromJson(Map<String, dynamic> json) {

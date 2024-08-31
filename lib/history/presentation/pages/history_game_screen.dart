@@ -20,6 +20,7 @@ class HistoryGameScreen extends StatefulWidget {
 class _HistoryGameScreenState extends State<HistoryGameScreen> {
   final GameHistoryCubit _cubit = GameHistoryCubit();
   final ScrollController _scrollController = ScrollController();
+  bool _hasMax = true;
   int _page = 1;
 
   @override
@@ -32,12 +33,13 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent) {
-      _cubit.fetch(); // Fetch more data when scrolled to the bottom
+      print("hey");
+      _hasMax = false;
     }
   }
 
   Future<void> _onRefresh() async {
-    await _cubit.fetch(page: _page); // Reload data on pull-to-refresh
+    await _cubit.fetch(); // Reload data on pull-to-refresh
   }
 
   @override
@@ -49,6 +51,7 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("hasmax $_hasMax");
     return Scaffold(
       appBar: AppBar(
         title: widget.title,
@@ -60,20 +63,37 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
           if (state is GameHistoryStateSuccess) {
             return RefreshIndicator(
               onRefresh: () => _onRefresh(),
-              child: ListView.separated(
-                controller: _scrollController,
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 30.h),
-                itemCount: state.listGameHistory.length,
-                separatorBuilder: (context, i) => Gap(26.h),
-                itemBuilder: (context, index) {
-                  final gameHistory = state.listGameHistory[index];
-                  return GameHistoryWidget(
-                    amount: gameHistory.amount,
-                    cote: gameHistory.cote,
-                    createdAt: gameHistory.createdAt,
-                    gain: gameHistory.gain,
-                  );
-                },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 30.h),
+                      itemCount: state.listGameHistory.length + 1,
+                      separatorBuilder: (context, i) => Gap(26.h),
+                      itemBuilder: (context, index) {
+                        if (index <= state.listGameHistory.length) {
+                          final gameHistory = state.listGameHistory[index];
+                          return GameHistoryWidget(
+                            amount: gameHistory.amount,
+                            cote: gameHistory.cote,
+                            createdAt: gameHistory.createdAt,
+                            gain: gameHistory.gain,
+                          );
+                        }
+                        if (_hasMax == true) {
+                          return const SizedBox();
+                        }
+                        if (_hasMax == false) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           }
@@ -100,7 +120,6 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
           if (state is GameHistoryStateLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

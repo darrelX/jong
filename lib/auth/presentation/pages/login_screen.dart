@@ -83,159 +83,157 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: Container(
-              height: context.height - 135.h,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-                color: Colors.white,
+          return Container(
+            height: context.height,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(30),
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 25.w,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Gap(40.h),
-                      Text(
-                        "Welcome Back!",
-                        style: context.textTheme.headlineLarge?.copyWith(
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 25.w,
+            ),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gap(40.h),
+                    Text(
+                      "Bienvenue",
+                      style: context.textTheme.headlineLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Gap(8.h),
+                    Text(
+                      "Pour rester en contact avec nous, veuillez vous connecter avec vos informations personnelles.",
+                      style: context.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w900,
+                          color: AppColors.black.withOpacity(0.6)),
+                      textAlign: TextAlign.start,
+                    ),
+                    Gap(40.h),
+                    AppInput(
+                      controller: _phoneController,
+                      // label: 'Tel',
+                      border: false,
+                      hint: 'Numero de telephone',
+                      labelColors: AppColors.black.withOpacity(0.7),
+                      keyboardType: TextInputType.phone,
+                      validators: [
+                        FormBuilderValidators.required(
+                          errorText: 'Numero de telephone requis',
+                        ),
+                        FormBuilderValidators.numeric()
+                      ],
+                    ),
+                    Gap(20.h),
+                    AppInput(
+                      controller: _passwordController,
+                      // label: 'Password',
+                      hint: 'Mot de passe',
+                      labelColors: AppColors.black.withOpacity(0.7),
+                      keyboardType: TextInputType.visiblePassword,
+                      autofillHints: const [
+                        AutofillHints.password,
+                      ],
+                      showEyes: true,
+                      obscureText: true,
+                      validators: [
+                        FormBuilderValidators.required(
+                          errorText: 'Mot de passe requis',
+                        ),
+                      ],
+                    ),
+                    Gap(20.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: _isChecked,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _isChecked = value!;
+                                  });
+                                }),
+                            Text(
+                              "Se souvenir de moi",
+                              style: context.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: AppColors.black.withOpacity(0.6)),
+                            )
+                          ],
+                        ),
+                        // Align(
+                        //   alignment: Alignment.bottomRight,
+                        //   child: GestureDetector(
+                        //     onTap: () {},
+                        //     child: Text(
+                        //       "Forget password",
+                        //       style: context.textTheme.bodySmall?.copyWith(
+                        //           fontWeight: FontWeight.w900,
+                        //           color: AppColors.primary),
+                        //       textAlign: TextAlign.end,
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                    Gap(50.h),
+                    AppButton(
+                      loading: state is LoginLoading,
+                      bgColor: AppColors.primary,
+                      text: "Connectez-vous",
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _cubit.login(
+                            phone: _phoneController.text,
+                            password: _passwordController.text,
+                          );
+                        }
+                      },
+                    ),
+                    Gap(80.h),
+                    Center(
+                      child: Text.rich(
+                        TextSpan(
+                          text: 'Avez vous un\n',
+                          style: TextStyle(
+                              color: AppColors.black.withOpacity(0.6)),
+                          children: [
+                            TextSpan(
+                              text: "compte ?  ",
+                              style: TextStyle(
+                                  color: AppColors.black.withOpacity(0.6)),
+                            ),
+                            TextSpan(
+                              text: "Inscription",
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.primary,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.router.push(const RegisterRoute());
+                                },
+                            ),
+                          ],
                         ),
                         textAlign: TextAlign.center,
-                      ),
-                      Gap(8.h),
-                      Text(
-                        "To keep connected with us please login with your personal info",
                         style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.black.withOpacity(0.6)),
-                        textAlign: TextAlign.start,
-                      ),
-                      Gap(40.h),
-                      AppInput(
-                        controller: _phoneController,
-                        // label: 'Tel',
-                        border: false,
-                        hint: 'Numero de telephone',
-                        labelColors: AppColors.black.withOpacity(0.7),
-                        keyboardType: TextInputType.phone,
-                        validators: [
-                          FormBuilderValidators.required(
-                            errorText: 'Phone number is required',
-                          ),
-                          FormBuilderValidators.numeric()
-                        ],
-                      ),
-                      Gap(20.h),
-                      AppInput(
-                        controller: _passwordController,
-                        // label: 'Password',
-                        hint: 'Mot de passe',
-                        labelColors: AppColors.black.withOpacity(0.7),
-                        keyboardType: TextInputType.visiblePassword,
-                        autofillHints: const [
-                          AutofillHints.password,
-                        ],
-                        showEyes: true,
-                        obscureText: true,
-                        validators: [
-                          FormBuilderValidators.required(
-                            errorText: 'Password is required',
-                          ),
-                        ],
-                      ),
-                      Gap(20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                  value: _isChecked,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _isChecked = value!;
-                                    });
-                                  }),
-                              Text(
-                                'Remenber me',
-                                style: context.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.black.withOpacity(0.6)),
-                              )
-                            ],
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                "Forgot Password",
-                                style: context.textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.primary),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Gap(50.h),
-                      AppButton(
-                        loading: state is LoginLoading,
-                        bgColor: AppColors.primary,
-                        text: "Login",
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _cubit.login(
-                              phone: _phoneController.text,
-                              password: _passwordController.text,
-                            );
-                          }
-                        },
-                      ),
-                      Gap(80.h),
-                      Center(
-                        child: Text.rich(
-                          TextSpan(
-                            text: 'Dont have an\n',
-                            style: TextStyle(
-                                color: AppColors.black.withOpacity(0.6)),
-                            children: [
-                              TextSpan(
-                                text: "account ?  ",
-                                style: TextStyle(
-                                    color: AppColors.black.withOpacity(0.6)),
-                              ),
-                              TextSpan(
-                                text: "Signup",
-                                style: context.textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.primary,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    context.router.push(const RegisterRoute());
-                                  },
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w900,
-                          ),
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
-                      // Gap(4.h),
-                    ],
-                  ),
+                    ),
+                    Gap(5.h),
+                  ],
                 ),
               ),
             ),

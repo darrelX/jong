@@ -49,6 +49,9 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   connectivity_plus: ^6.0.4
   carousel_slider: ^4.2.1
+  flutter_localizations:
+    sdk: flutter
+  pin_code_fields: ^8.0.1
 
 dev_dependencies:
   flutter_test:
@@ -59,8 +62,8 @@ dev_dependencies:
   json_serializable: ^6.8.0
 
 flutter:
-  uses-material-design: true
   generate: true
+  uses-material-design: true
 
   assets:
     - assets/icons/

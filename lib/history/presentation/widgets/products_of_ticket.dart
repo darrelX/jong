@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 
-
 class ProductsOfTicket extends StatelessWidget {
   const ProductsOfTicket(
       {super.key, required this.product, required this.image});
@@ -30,7 +29,9 @@ class ProductsOfTicket extends StatelessWidget {
         ],
       ),
       padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 8.h),
-      margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 10.h),
+      margin: EdgeInsets.symmetric(
+        vertical: 6.h,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

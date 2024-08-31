@@ -48,13 +48,16 @@ class _JongAppBarState extends State<JongAppBar> {
                 BlocBuilder<ApplicationCubit, ApplicationState>(
                   bloc: getIt.get<ApplicationCubit>(),
                   builder: (context, state) {
-                    return Text(
-                      double.parse(state.user!.balance!.toString())
-                          .toStringAsFixed(2),
-                    );
+                    if (state is ApplicationStateInitial) {
+                      return Text(
+                        double.parse(state.user!.balance!.toString())
+                            .toStringAsFixed(2),
+                      );
+                    }
+                    return SizedBox();
                   },
                 ),
-                 Gap(1.w),
+                Gap(1.w),
                 Text(
                   "  nkap",
                   style: context.textTheme.bodyMedium?.copyWith(

@@ -13,6 +13,9 @@ final class CrashGameDefault extends CrashGameState {
   const CrashGameDefault({
     required super.bet,
   });
+
+  @override
+  List<Object> get props => [bet];
 }
 
 final class CrashGameInitial extends CrashGameState {

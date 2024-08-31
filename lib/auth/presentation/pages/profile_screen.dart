@@ -23,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
       body: BlocBuilder<ApplicationCubit, ApplicationState>(
         bloc: getIt.get<ApplicationCubit>(),
         builder: (context, state) {
+
           return ListView(
             children: [
               Container(
@@ -58,15 +59,15 @@ class ProfileScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      // "${state.user?.email}",
-                      "${state.user?.email}",
-
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+                    state.user?.email == null
+                        ? const SizedBox()
+                        : Text(
+                            "${state.user?.email}",
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
                     const Gap(20),
                     Container(
                       width: double.infinity,
@@ -152,7 +153,6 @@ class ProfileScreen extends StatelessWidget {
                     title: const JongAppBar(
                       title: "History",
                     ),
-                    
                   ));
                 },
                 leading: SvgPicture.asset(

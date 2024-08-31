@@ -51,14 +51,20 @@ class _ProductWidgetState extends State<ProductWidget> {
           boxShadow: const [
             BoxShadow(
               color: Color(0x1A191C32),
-              offset: Offset(0, 20),
-              blurRadius: 30,
+              offset: Offset(0, 1),
+              blurRadius: 2,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Color(0x1A191C32),
+              offset: Offset(-7, 10),
+              blurRadius: 2,
               spreadRadius: 0,
             ),
           ],
         ),
-        padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 8.h),
-        margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
+        margin: EdgeInsets.symmetric(horizontal: 6.w),
         child: Row(
           children: [
             Image.asset(
@@ -78,7 +84,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   ),
                   Text(
                     "${widget.price} nkap",
-                    style: context.textTheme.bodyMedium?.copyWith(
+                    style: context.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -130,9 +136,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                     const Gap(8),
                     Text(
                       '${widget.state.counters[widget.id]}',
-                      style: context.textTheme.bodyLarge?.copyWith(
+                      style: context.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
                       ),
                     ),
                     const Gap(8),

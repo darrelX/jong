@@ -7,7 +7,6 @@ import 'package:jong/history/data/models/ticket_model.dart';
 import 'package:jong/history/presentation/widgets/bottom_sheet_wiget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/widget/app_bottom_sheet.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../shared/theme/app_colors.dart';
 
 class TicketWidget extends StatelessWidget {
@@ -92,7 +91,7 @@ class TicketWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(19.w),
+            Gap(14.w),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -107,8 +106,8 @@ class TicketWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    DateFormat('dd.MM.yyyy').format(ticket.createdAt!) +
-                        DateFormat(' - hh.mm').format(ticket.createdAt!),
+                    DateFormat('dd.MM.yy').format(ticket.createdAt!) +
+                        DateFormat('/hh.mm').format(ticket.createdAt!),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.bodySmall?.copyWith(
@@ -124,7 +123,7 @@ class TicketWidget extends StatelessWidget {
               children: [
                 Text(
                   // ticket..toStringAsFixed(2),
-                  ticket!.totalAmount!.toStringAsFixed(2),
+                  ticket.totalAmount!.toStringAsFixed(1),
                   style: context.textTheme.headlineMedium?.copyWith(
                     color: AppColors.primary,
                     fontSize: 24,

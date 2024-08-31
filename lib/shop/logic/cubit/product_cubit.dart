@@ -73,10 +73,6 @@ class ProductCubit extends Cubit<ProductState> {
       'products': basketItems,
     };
     try {
-      print(result);
-      // if (_result == n) {
-
-      // }
       await repository.createTicket(result, application.state.user!.id!);
     } catch (e) {
       print(e.toString());

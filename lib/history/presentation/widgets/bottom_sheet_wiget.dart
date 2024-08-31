@@ -102,13 +102,13 @@ class BottomSheetWiget extends StatelessWidget {
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        width: 110.w,
+                        width: 86.w,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white),
                         child: Center(
                           child: Text(
-                            'Traiter',
+                            'Traité',
                             style: context.textTheme.titleMedium?.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,

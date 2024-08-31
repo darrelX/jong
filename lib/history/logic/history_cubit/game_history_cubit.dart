@@ -11,21 +11,36 @@ part 'game_history_state.dart';
 class GameHistoryCubit extends Cubit<GameHistoryState> {
   final GameHistoryRepository repository;
   final ApplicationCubit applicationCubit;
+
+  List<GameHistoryModel> _listGameHistory = [];
   GameHistoryCubit()
       : repository = GameHistoryRepository(),
         applicationCubit = getIt.get<ApplicationCubit>(),
         super(const GameHistoryStateInitial());
 
-  fetch({int page=1}) async {
+  fetch() async {
+    _listGameHistory.clear();
     emit(const GameHistoryStateLoading());
-
     try {
-      List<GameHistoryModel> listGameHistory = (await repository
-          .fetchGameHistory(userId: applicationCubit.state.user!.id!, page: page))!;
-
-      emit(GameHistoryStateSuccess(listGameHistory: listGameHistory));
+      _listGameHistory = (await repository.fetchGameHistory(
+        userId: applicationCubit.state.user!.id!,
+      ))!;
+      emit(GameHistoryStateSuccess(listGameHistory: _listGameHistory));
     } catch (e) {
-      emit( GameHistoryStateFailure(message: e.toString()));
+      emit(GameHistoryStateFailure(message: e.toString()));
+      rethrow;
+    }
+  }
+
+  refreshList({required int page}) async {
+    emit(const GameHistoryStateLoading());
+    try {
+      final copy = (await repository.fetchGameHistory(
+          userId: applicationCubit.state.user!.id!, page: page))!;
+      _listGameHistory.addAll(copy);
+      emit(GameHistoryStateSuccess(listGameHistory: _listGameHistory));
+    } catch (e) {
+      emit(GameHistoryStateFailure(message: e.toString()));
       rethrow;
     }
   }

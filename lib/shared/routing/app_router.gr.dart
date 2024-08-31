@@ -65,6 +65,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginScreen(),
       );
     },
+    OTPInputRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OTPInputScreen(),
+      );
+    },
     ProfileRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -233,6 +239,20 @@ class LoginRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'LoginRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OTPInputScreen]
+class OTPInputRoute extends PageRouteInfo<void> {
+  const OTPInputRoute({List<PageRouteInfo>? children})
+      : super(
+          OTPInputRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OTPInputRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

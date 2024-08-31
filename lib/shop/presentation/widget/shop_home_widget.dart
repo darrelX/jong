@@ -33,7 +33,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
           top: padding16,
           bottom: 180.h,
         ),
-        width: double.infinity,
+        width: context.width,
         child: RefreshIndicator(
           onRefresh: _cubit.fetchProducts,
           child: Column(
@@ -48,7 +48,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
               Gap(30.h),
               Expanded(
                   child: (widget.state.products.isNotEmpty)
-                      ? ListView.builder(
+                      ? ListView.separated(
                           itemBuilder: (BuildContext context, int _) {
                             return ProductWidget(
                               isShop: false,
@@ -61,6 +61,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
                               // controller: controller['id'],
                             );
                           },
+                          separatorBuilder: (context, i) => Gap(15.h),
                           itemCount: widget.state.products.length)
                       : Expanded(
                           child: Center(

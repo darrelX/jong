@@ -55,22 +55,19 @@ class _ShopScreenState extends State<ShopScreen> {
 
           if (state is ProductUpdatedState) {
             return Scaffold(
-                body: RefreshIndicator(
-              onRefresh: _refresh,
-              child: DraggableBottomSheet(
-                minExtent: 175.h,
-                useSafeArea: false,
-                curve: Curves.easeIn,
-                previewWidget: PreviewWidget(),
-                expandedWidget: CartWidget(
-                  state: state,
-                ),
-                backgroundWidget: ShopHomeWidget(
-                  state: state,
-                ),
-                maxExtent: context.height * 0.8,
-                onDragging: (pos) {},
+                body: DraggableBottomSheet(
+              minExtent: 175.h,
+              useSafeArea: false,
+              curve: Curves.easeIn,
+              previewWidget: PreviewWidget(),
+              expandedWidget: CartWidget(
+                state: state,
               ),
+              backgroundWidget: ShopHomeWidget(
+                state: state,
+              ),
+              maxExtent: context.height * 0.8,
+              onDragging: (pos) {},
             ));
           }
 

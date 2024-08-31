@@ -34,16 +34,16 @@ class HomeScreen extends StatelessWidget {
           ),
           const Gap(30),
           Text(
-            " Welcome to\njong game",
+            "Bienvenue au \njeu de Jong",
             textAlign: TextAlign.center,
             style: context.textTheme.headlineLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 40.sp,
+              // fontSize: 40.sp,
             ),
           ),
           const Gap(20),
           Text(
-            "start wining right now",
+            "Commencez à gagner dès maintenant.",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w300,
             ),
@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
             child: AppButton(
               bgColor: AppColors.primary,
               height: 55.h,
-              text: 'Get started',
+              text: 'Commencer',
               onPressed: () {
                 AppDialog.showDialog(
                   context: context,
@@ -112,7 +112,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Place a bet",
+                  "Placer un pari",
                   style: context.textTheme.headlineMedium?.copyWith(
                     fontSize: 26,
                   ),
@@ -121,7 +121,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
                 AppInput(
                   width: 300.w,
                   controller: _amountController,
-                  label: 'Amount',
+                  label: 'Montant',
                   labelColors: AppColors.primary,
                   // maxLines: null,
                   minLines: 1,
@@ -138,12 +138,12 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
                     FormBuilderValidators.required(),
                     FormBuilderValidators.numeric(),
                     FormBuilderValidators.min(300,
-                        errorText: "La valeur entree est inferieur a 300"),
+                        errorText: "Le montant entree est inferieur a 300"),
                     (value) {
                       if (value != null && value.isNotEmpty) {
                         final number = double.parse(value);
                         if (number > state.user!.balance!) {
-                          return "La valeur doit etre inferieur au solde";
+                          return "Le montant doit etre inferieur au solde";
                         }
                       }
                       return null;
@@ -153,7 +153,7 @@ class _PlaceABetWidgetState extends State<PlaceABetWidget> {
                 // Gap(40.h),
                 AppButton(
                   bgColor: AppColors.primary,
-                  text: "Start the game",
+                  text: "Commencer le jeu",
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       context.router.popAndPush(

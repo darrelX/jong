@@ -52,7 +52,7 @@ class PreviewWidget extends StatelessWidget {
             ),
           ),
           Text(
-            "Total price",
+            "Montant total",
             style: context.textTheme.titleMedium?.copyWith(
               color: AppColors.white,
               fontWeight: FontWeight.w600,
@@ -98,7 +98,8 @@ class PreviewWidget extends StatelessWidget {
                     );
                   }).catchError((_) {
                     AppSnackBar.showError(
-                        message: "Unknown error", context: context);
+                        message: "Une erreur inconnue s'est produite",
+                        context: context);
                   });
                 },
                 child: Container(
@@ -111,7 +112,7 @@ class PreviewWidget extends StatelessWidget {
                     horizontal: padding24,
                   ),
                   child: Text(
-                    "check out",
+                    "Vérifier",
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: AppColors.primary,
                     ),

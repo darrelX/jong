@@ -9,29 +9,30 @@ class TicketModel {
   final DateTime? createdAt; // New property
   final DateTime? updatedAt;
   final List<ProductTicketModel>? products;
+  final int? total;
 
-  TicketModel({
-    required this.id,
-    required this.totalAmount,
-    required this.userId,
-    this.status = false,
-    required this.createdAt,
-    this.updatedAt,
-    required this.products
-  });
+  TicketModel(
+      {required this.id,
+      required this.totalAmount,
+      this.total,
+      required this.userId,
+      this.status = false,
+      required this.createdAt,
+      this.updatedAt,
+      required this.products});
 
   factory TicketModel.fromJson(Map<String, dynamic> json) {
     // print("dada ${json['total_amount'].runtimeType} ${json['total_amount']}");
     return TicketModel(
-      id: (json['id'] as int).toString() as String?,
-      totalAmount: double.parse(json['total_amount'].toString()) as double?,
-      userId: (json['user_id'] as int).toString() as String?,
-      status: json['status'] as bool?,
-      createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,
-      updatedAt: DateTime.parse(json['updated_at'] as String) as DateTime?,
-      products: fetchProductTicketList(json['products'])
-      //     as List<ProductTicketModel>?);
-    );
+        id: (json['id'] as int).toString() as String?,
+        totalAmount: double.parse(json['total_amount'].toString()) as double?,
+        userId: (json['user_id'] as int).toString() as String?,
+        status: json['status'] as bool?,
+        createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,
+        updatedAt: DateTime.parse(json['updated_at'] as String) as DateTime?,
+        products: fetchProductTicketList(json['products'])
+        //     as List<ProductTicketModel>?);
+        );
   }
 
   // Map<String, dynamic> toJson() => <String, dynamic>{

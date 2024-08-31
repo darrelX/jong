@@ -13,45 +13,45 @@ enum LoadingState { initial, loading, success, error }
 
 class TicketCubit extends Cubit<TicketState> {
   final TicketRepository ticketRepository;
-  final ApplicationCubit application;
-  final treatedTickets = <TicketModel>[];
-  final notTreatedTickets = <TicketModel>[];
+  final ApplicationCubit _application;
+  final _treatedTickets = <TicketModel>[];
+  final _notTreatedTickets = <TicketModel>[];
 
   TicketCubit()
       : ticketRepository = getIt.get<TicketRepository>(),
-        application = getIt.get<ApplicationCubit>(),
+        _application = getIt.get<ApplicationCubit>(),
         super(const TicketStateInitial());
 
   toggleToTreated(int id) async {
     // final List<TicketModel> copiedTreatedTickets = List.from(treatedTickets);
     final List<TicketModel> copiedNotTreatedTickets =
-        List.from(notTreatedTickets);
+        List.from(_notTreatedTickets);
     await fetchTicketsList();
-    copiedNotTreatedTickets != notTreatedTickets;
+    copiedNotTreatedTickets != _notTreatedTickets;
 
     emit(const TicketStateToggle());
   }
 
   Future<void> fetchTicketsList() async {
-    treatedTickets.clear();
-    notTreatedTickets.clear();
+    _treatedTickets.clear();
+    _notTreatedTickets.clear();
     emit(TicketStateLoading(
-        treatedTickets: treatedTickets, notTreatedTickets: notTreatedTickets));
+        treatedTickets: _treatedTickets, notTreatedTickets: _notTreatedTickets));
     try {
       List<TicketModel> ticketsList = (await ticketRepository
-          .fetchTicketsList(application.state.user!.id!))!;
+          .fetchTicketsList(_application.state.user!.id!))!;
 
       for (var ticket in ticketsList) {
         if (ticket.status == true) {
-          treatedTickets.add(ticket);
+          _treatedTickets.add(ticket);
         } else {
-          notTreatedTickets.add(ticket);
+          _notTreatedTickets.add(ticket);
         }
       }
 
       emit(TicketStateSuccess(
-          treatedTickets: treatedTickets,
-          notTreatedTickets: notTreatedTickets));
+          treatedTickets: _treatedTickets,
+          notTreatedTickets: _notTreatedTickets));
 
       return;
     } catch (e) {
