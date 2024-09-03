@@ -15,7 +15,7 @@ import '../../../shared/utils/const.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/app_input.dart';
 import '../../../shared/widget/app_snackbar.dart';
-import '../../logic/cubit/auth_cubit.dart';
+import '../../logic/auth_cubit/auth_cubit.dart';
 
 @RoutePage()
 class RegisterScreen extends StatefulWidget {

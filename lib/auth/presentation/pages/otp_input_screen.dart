@@ -36,11 +36,18 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
   @override
   void initState() {
     super.initState();
+    _timeOut = Timer.periodic(const Duration(seconds: 12), (timer) {
+      timer.cancel();
+      setState(() {
+        print("Let's go");
+      });
+    });
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _timeOut?.cancel();
     super.dispose();
   }
 
@@ -83,14 +90,14 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                         .copyWith(fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  Gap(60.h),
+                  Gap(30.h),
                   Text(
                     'Nous avons envoyé un code au numero whatsApp ${widget.number!.split(' ').join().substring(0, 3)}*****${widget.number!.split(' ').join().substring(8)}',
                     style: context.textTheme.bodyLarge!
                         .copyWith(fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  Gap(100.h),
+                  Gap(120.h),
                   Text(
                     'Entrer le code OTP',
                     style: context.textTheme.titleMedium!.copyWith(
@@ -161,7 +168,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                       ],
                     ),
                   ),
-                  Gap(140.h),
+                  Gap(120.h),
                   AppButton(
                       bgColor: AppColors.primary,
                       text: "Envoyer le code OTP",
@@ -196,6 +203,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                         //   password: _passwordController.text,
                         // );
                       }),
+                  Gap(20.h),
                   Visibility(
                     visible: false,
                     child: AppButton(

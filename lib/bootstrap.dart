@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jong/auth/logic/cubit/auth_cubit.dart';
+import 'package:jong/auth/logic/auth_cubit/auth_cubit.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
 import 'package:jong/service_locator.dart';
 import 'package:jong/shop/logic/cubit/product_cubit.dart';
