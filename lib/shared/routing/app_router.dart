@@ -13,6 +13,7 @@ import '../../auth/presentation/pages/profile_screen.dart';
 import '../../shop/presentation/pages/shop_screen.dart';
 import 'package:jong/history/presentation/pages/history_game_screen.dart';
 import 'package:jong/auth/presentation/pages/otp_input_screen.dart';
+import 'package:jong/auth/presentation/pages/forget_password_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -60,5 +61,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           page: TopUpRoute.page,
         ),
+        AutoRoute(page: ForgetPasswordRoute.page),
       ];
 }

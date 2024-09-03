@@ -1,28 +1,78 @@
-// import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
-// sealed class Parent extends Equatable {
-//   final int age;
-//   const Parent({required this.age});
+class PinCodeExample extends StatefulWidget {
+  @override
+  _PinCodeExampleState createState() => _PinCodeExampleState();
+}
 
-//     @override
-//   List<Object> get props => [age];
-// }
+class _PinCodeExampleState extends State<PinCodeExample> {
+  TextEditingController _pinController = TextEditingController();
+  bool _hasError = false;
 
-// final class Child1 extends Parent {
-//  const Child1({required super.age});
-
-//    @override
-//   List<Object> get props => [super.age];
-// }
-
-// final class Child2 extends Parent {
-//  const Child2({required super.age});
-
-//    @override
-//   List<Object> get props => [super.age];
-// }
-
-// void main() {
-//   Child1 child = Child1(age: 2);
-//   print(const Child2.);
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Pin Code Example"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            PinCodeTextField(
+              appContext: context,
+              length: 4,
+              controller: _pinController,
+              onChanged: (value) {
+                setState(() {
+                  _hasError = false;
+                });
+              },
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(5),
+                fieldHeight: 50,
+                fieldWidth: 40,
+                activeFillColor: Colors.white,
+              ),
+              onCompleted: (value) {
+                if (value.length != 4) {
+                  setState(() {
+                    _hasError = true;
+                  });
+                }
+              },
+            ),
+            SizedBox(height: 20),
+            Visibility(
+              visible: _hasError,
+              child: Text(
+                "Veuillez remplir correctement le code PIN.",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                if (_pinController.text.length != 4) {
+                  setState(() {
+                    _hasError = true;
+                  });
+                } else {
+                  setState(() {
+                    _hasError = false;
+                  });
+                  // Faites quelque chose avec le code PIN (par exemple, une vérification)
+                  print("Code PIN: ${_pinController.text}");
+                }
+              },
+              child: Text("Vérifier"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

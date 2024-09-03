@@ -48,12 +48,66 @@ class _TopUpScreenState extends State<TopUpScreen> {
   void dispose() {
     _timeoutTimer?.cancel();
     _timer?.cancel();
-
     _phoneController.dispose();
     _amountController.dispose();
     super.dispose();
   }
-  
+
+  void _handleTransactionState(TransactionState state) {
+    if (state is TransactionPending) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      _timeoutTimer = Timer.periodic(const Duration(seconds: 50), (_) {
+        _timeoutTimer?.cancel();
+
+        _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+          // Vérification du statut de la transaction
+          _bloc.checkStatut(state.transactionModel!.id!);
+
+          if (state is TransactionSuccess || state is TransactionFailure) {
+            print("dar state 1");
+
+            setState(() {
+              _isLoading = false;
+              print(_isLoading);
+            });
+
+            // Gestion des cas de succès ou d'échec
+            if (state is TransactionSuccess) {
+              print("dar Success");
+              WidgetsBinding.instance.addPostFrameCallback((_) =>
+                  AppDialog.showDialog(
+                      context: context,
+                      child: const ValidationPayementWidget()));
+            } else if (state is TransactionFailure) {
+              print("dar Echec");
+              WidgetsBinding.instance.addPostFrameCallback((_) =>
+                  AppSnackBar.showError(
+                      message: "Transaction échouée", context: context));
+            }
+
+            // Annulation des timers
+            timer.cancel();
+            _timeoutTimer?.cancel();
+
+            // Vérification de timeout pour les transactions pendantes
+          }
+        });
+        print("darrel 2");
+
+        WidgetsBinding.instance.addPostFrameCallback((_) =>
+            AppSnackBar.showError(
+                message: "Transaction échouée", context: context));
+        setState(() {
+          _isLoading = false;
+        });
+        print("dar 3");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,50 +116,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
       ),
       body: BlocConsumer<TransactionCubit, TransactionState>(
         listener: (context, state) {
-          if (state is TransactionPending) {
-            setState(() {
-              _isLoading = true;
-            });
-            _timeoutTimer = Timer.periodic(const Duration(seconds: 50), (_) {
-              _timeoutTimer?.cancel();
-              _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-                _bloc.checkStatut(state.transactionModel!.id!);
-                if (state is TransactionSuccess ||
-                    state is TransactionFailure) {
-                  setState(() {
-                    _isLoading = false;
-                    print(_isLoading);
-                  });
-                  if (state is TransactionSuccess) {
-                    print("Success");
-                    WidgetsBinding.instance.addPostFrameCallback((_) =>
-                        AppDialog.showDialog(
-                            context: context,
-                            child: const ValidationPayementWidget()));
-                  }
-                  if (state is TransactionFailure) {
-                    print("Echec");
-                    WidgetsBinding.instance.addPostFrameCallback((_) =>
-                        AppSnackBar.showError(
-                            message: "Transaction echouée", context: context));
-                  }
-
-                  timer.cancel();
-                  _timeoutTimer?.cancel();
-
-                  if (State is TransactionPending &&
-                      _timeoutTimer!.tick >= 59) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) =>
-                        AppSnackBar.showError(
-                            message: "Transaction echouée", context: context));
-                  }
-                }
-              });
-            });
-            // WidgetsBinding.instance.addPostFrameCallback((_) =>
-            //     AppSnackBar.showSuccess(
-            //         message: "Pending transaction", context: context));
-          }
+          _handleTransactionState(state);
         },
         bloc: _bloc,
         builder: (context, state) {
@@ -273,7 +284,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                             if (_formKey.currentState!.validate()) {
                               if (pm == null) {
                                 AppSnackBar.showError(
-                                  message: '"Please select a payment method."',
+                                  message: "Please select a payment method.",
                                   context: context,
                                 );
                                 return;

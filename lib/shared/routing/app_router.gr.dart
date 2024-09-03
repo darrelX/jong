@@ -27,6 +27,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ApplicationScreen(),
       );
     },
+    ForgetPasswordRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ForgetPasswordScreen(),
+      );
+    },
     GameRoute.name: (routeData) {
       final args = routeData.argsAs<GameRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -66,9 +72,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     OTPInputRoute.name: (routeData) {
+      final args = routeData.argsAs<OTPInputRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OTPInputScreen(),
+        child: OTPInputScreen(
+          key: args.key,
+          number: args.number,
+        ),
       );
     },
     ProfileRoute.name: (routeData) {
@@ -122,6 +132,20 @@ class ApplicationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ApplicationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ForgetPasswordScreen]
+class ForgetPasswordRoute extends PageRouteInfo<void> {
+  const ForgetPasswordRoute({List<PageRouteInfo>? children})
+      : super(
+          ForgetPasswordRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ForgetPasswordRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -245,16 +269,40 @@ class LoginRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [OTPInputScreen]
-class OTPInputRoute extends PageRouteInfo<void> {
-  const OTPInputRoute({List<PageRouteInfo>? children})
-      : super(
+class OTPInputRoute extends PageRouteInfo<OTPInputRouteArgs> {
+  OTPInputRoute({
+    Key? key,
+    required String? number,
+    List<PageRouteInfo>? children,
+  }) : super(
           OTPInputRoute.name,
+          args: OTPInputRouteArgs(
+            key: key,
+            number: number,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'OTPInputRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<OTPInputRouteArgs> page =
+      PageInfo<OTPInputRouteArgs>(name);
+}
+
+class OTPInputRouteArgs {
+  const OTPInputRouteArgs({
+    this.key,
+    required this.number,
+  });
+
+  final Key? key;
+
+  final String? number;
+
+  @override
+  String toString() {
+    return 'OTPInputRouteArgs{key: $key, number: $number}';
+  }
 }
 
 /// generated route for

@@ -281,10 +281,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             text: "Validation",
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                context.router.pushAndPopUntil(
-                                  const OTPInputRoute(),
-                                  predicate: (route) => true,
-                                );
+                                // context.router.pushAndPopUntil(
+                                //   const OTPInputRoute(),
+                                //   predicate: (route) => true,
+                                // );
 
                                 // _cubit.register(
                                 //   name: _nameController.text,

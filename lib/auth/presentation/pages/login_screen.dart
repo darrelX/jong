@@ -152,38 +152,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Gap(20.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                }),
-                            Text(
-                              "Se souvenir de moi",
-                              style: context.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.black.withOpacity(0.6)),
-                            )
-                          ],
-                        ),
-                        // Align(
-                        //   alignment: Alignment.bottomRight,
-                        //   child: GestureDetector(
-                        //     onTap: () {},
-                        //     child: Text(
-                        //       "Forget password",
+                        // Row(
+                        //   children: [
+                        //     Checkbox(
+                        //         value: _isChecked,
+                        //         onChanged: (bool? value) {
+                        //           setState(() {
+                        //             _isChecked = value!;
+                        //           });
+                        //         }),
+                        //     Text(
+                        //       "Se souvenir de moi",
                         //       style: context.textTheme.bodySmall?.copyWith(
                         //           fontWeight: FontWeight.w900,
-                        //           color: AppColors.primary),
-                        //       textAlign: TextAlign.end,
-                        //     ),
-                        //   ),
+                        //           color: AppColors.black.withOpacity(0.6)),
+                        //     )
+                        //   ],
                         // ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              context.router.push(const ForgetPasswordRoute());
+                            },
+                            child: Text(
+                              "Mot de passe oublié",
+                              style: context.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: AppColors.primary),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Gap(50.h),
@@ -232,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    Gap(5.h),
+                    Gap(9.h),
                   ],
                 ),
               ),
