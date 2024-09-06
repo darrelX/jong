@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: AppColors.primary,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Inscription",
           style: context.textTheme.displaySmall!
@@ -261,7 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-                    Gap(50.h),
+                    Gap(20.h),
                     _currentPage == 0
                         ? AppButton(
                             bgColor: AppColors.primary,
@@ -285,17 +287,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 //   predicate: (route) => true,
                                 // );
 
-                                // _cubit.register(
-                                //   name: _nameController.text,
-                                //   email: _emailController.text,
-                                //   birthDate: DateTime.now(),
-                                //   gender: gender,
-                                //   phoneNumber: _phoneController.text,
-                                //   password: _passwordController.text,
-                                // );
+                                _cubit.register(
+                                  name: _nameController.text,
+                                  email: _emailController.text,
+                                  birthDate: DateTime.now(),
+                                  gender: gender,
+                                  phoneNumber: _phoneController.text,
+                                  password: _passwordController.text,
+                                );
                               }
                             },
                           ),
+                    Gap(30.h),
+                    Center(
+                      child: Text.rich(
+                        TextSpan(
+                          text: 'Avez vous un\n',
+                          style: TextStyle(
+                              color: AppColors.black.withOpacity(0.6)),
+                          children: [
+                            TextSpan(
+                              text: "compte ?  ",
+                              style: TextStyle(
+                                  color: AppColors.black.withOpacity(0.6)),
+                            ),
+                            TextSpan(
+                              text: "Connexion",
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.primary,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.router.push(const LoginRoute());
+                                },
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/theme/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PinCodeWidget extends StatefulWidget {
@@ -22,7 +23,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 250.w,
+      width: 290.w,
       // height: 0.h,
       child: Column(
         children: [
@@ -70,7 +71,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                   children: [
                     Text(widget.error!,
                         style: context.textTheme.bodyLarge!.copyWith(
-                            color: Colors.red, fontWeight: FontWeight.w800)
+                            color: AppColors.red, fontWeight: FontWeight.w900)
                         // textAlign: TextAlign.left,
                         ),
                     const Spacer(),

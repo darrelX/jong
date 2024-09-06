@@ -63,6 +63,7 @@ class AppRouter extends _$AppRouter {
           page: TopUpRoute.page,
         ),
         AutoRoute(page: ForgetPasswordRoute.page),
-
+        AutoRoute(page: NewPasswordRoute.page),
+        AutoRoute(page: OTPInputRoute.page),
       ];
 }

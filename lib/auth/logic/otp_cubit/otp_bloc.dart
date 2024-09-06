@@ -12,7 +12,7 @@ part 'otp_event.dart';
 
 class OtpBloc extends Bloc<OtpEvent, OtpState> {
   Timer? _timer;
-  static const int totalDuration = 120;
+  static const int totalDuration = 10;
   final OtpRepository _repository;
   int _currentDuration = totalDuration;
 
@@ -83,8 +83,11 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
 
   Future<void> _onReset(OtpReset event, Emitter<OtpState> emit) async {
     _timer?.cancel();
+
     if (state is OtpExpired || state is OtpVerificationFailure) {
+      emit(const OtpVerifying(countDown: 0));
       try {
+        await _repository.sendOtp(event.phoneNumber);
         _startTimer(emit);
         emit(OtpSentInProgress(countDown: _currentDuration));
       } catch (e) {
@@ -92,9 +95,6 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
             errorMessage: Utils.extractErrorMessage(e),
             countDown: totalDuration));
       }
-
-      add(OtpInitialized(
-          phoneNumber: event.phoneNumber, duration: totalDuration));
     }
   }
 

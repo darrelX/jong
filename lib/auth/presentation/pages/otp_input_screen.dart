@@ -80,9 +80,10 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
             });
           }
           if (state is OtpVerificationSuccess) {
+            print("statex statex");
             widget.hasForgottenPassword
-                ? context.router.popAndPush(const NewPasswordRoute())
-                : context.router.popAndPush(const RegisterRoute());
+                ? context.router.push(const NewPasswordRoute())
+                : context.router.push(const RegisterRoute());
           }
         },
         builder: (context, state) {
@@ -183,34 +184,25 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                           });
                         },
                       ),
-                      Gap(120.h),
+                      Gap(110.h),
                       Opacity(
-                        opacity: (state is OtpSentInProgress) ? 0.5 : 1,
+                        opacity: (state is! OtpExpired &&
+                                state is! OtpVerificationFailure &&
+                                state is! OtpVerificationSuccess)
+                            ? 0.5
+                            : 1,
                         child: IgnorePointer(
-                          ignoring: state is OtpSentInProgress &&
-                              state is OtpVerifying,
+                          ignoring: state is! OtpExpired &&
+                              state is! OtpVerificationFailure &&
+                              state is! OtpVerificationSuccess,
                           child: AppButton(
                               bgColor: AppColors.primary,
-                              // loading: state is OtpVerifying,
+                              loading: state is OtpVerifying,
                               text: "Renvoyer le code OTP",
                               onPressed: () {
                                 if (_formField.currentState!.validate()) {
                                   _error = null;
-
-                                  // if (_currentText == null ||
-                                  //     _currentText!.length != 4) {
-                                  //   setState(() {
-                                  //     _error = "Veuillez remplir le champ";
-                                  //   });
-                                  // } else if (_currentText != _secretCode) {
-                                  //   setState(() {
-                                  //     _error = "Code incorrect";
-                                  //   });
-                                  // } else {
-                                  //   setState(() {
-                                  //     _error = null;
-                                  //   });
-                                  // }
+                                  _textEditingController.clear();
                                   context.read<OtpBloc>().add(
                                       OtpReset(phoneNumber: widget.number!));
                                   if (state is OtpVerificationSuccess) {
@@ -239,7 +231,9 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                       ),
                       Gap(20.h),
                       Visibility(
-                        visible: state is! OtpExpired,
+                        visible: state is! OtpExpired &&
+                            state is! OtpVerificationFailure &&
+                            state is! OtpVerificationSuccess,
                         child: SizedBox(
                           width: 250.w,
                           child: RichText(
@@ -260,10 +254,6 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                                   ])),
                         ),
                       ),
-                      // Text(
-                      //   "Tu peux demander un autre code OTP dans ",
-                      //   style: context.textTheme.bodyMedium!.copyWith(),
-                      // ),
                       Gap(20.h)
                     ],
                   ),
