@@ -11,7 +11,6 @@ import '../../../service_locator.dart';
 import '../../../shared/application/cubit/application_cubit.dart';
 import '../../../shared/routing/app_router.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/const.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/app_input.dart';
 import '../../../shared/widget/app_snackbar.dart';

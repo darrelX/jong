@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:jong/game/data/models/game_model.dart';
 import 'package:jong/service_locator.dart';
 
 class GameRepository {

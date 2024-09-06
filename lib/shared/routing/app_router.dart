@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:jong/auth/presentation/pages/new_password_screen.dart';
 
 import '../../app_init_screen.dart';
 import '../../auth/presentation/pages/login_screen.dart';
@@ -62,5 +63,6 @@ class AppRouter extends _$AppRouter {
           page: TopUpRoute.page,
         ),
         AutoRoute(page: ForgetPasswordRoute.page),
+
       ];
 }

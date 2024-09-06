@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isChecked = false;
+  final bool _isChecked = false;
 
   @override
   void initState() {
@@ -175,7 +175,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.bottomRight,
                           child: GestureDetector(
                             onTap: () {
-                              context.router.push(const ForgetPasswordRoute());
+                              context.router.push(ForgetPasswordRoute(
+                                  title1: "Retrouver mon compte",
+                                  hasForgottenPassword: true,
+                                  title2:
+                                      "Entrer un numero de votre whatsapp associé à votre compte",
+                                      
+                                  description: "Retrouver mon compte"));
                             },
                             child: Text(
                               "Mot de passe oublié",
@@ -223,7 +229,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  context.router.push(const RegisterRoute());
+                                  context.router.push(ForgetPasswordRoute(
+                                      title1: "Creer un compte",
+                                      hasForgottenPassword: false,
+                                      title2: "Creer un compte",
+                                      description:
+                                          "Bienvenue dans l'application Jong"));
                                 },
                             ),
                           ],

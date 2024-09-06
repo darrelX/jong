@@ -1,9 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:jong/history/data/models/product_ticket_model.dart';
 import 'package:jong/history/data/models/ticket_model.dart';
-import 'package:jong/service_locator.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

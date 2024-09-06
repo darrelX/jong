@@ -2,23 +2,23 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/auth/logic/otp_cubit/otp_bloc.dart';
+import 'package:jong/auth/presentation/widgets/pin_code_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
+import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/widget/app_button.dart';
-import 'package:jong/shared/widget/app_dialog.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../../../topup/widgets/validation_payement_widget.dart';
 
 @RoutePage()
 class OTPInputScreen extends StatefulWidget {
   final String? number;
+  final bool hasForgottenPassword;
 
-  const OTPInputScreen({super.key, required this.number});
+  const OTPInputScreen(
+      {super.key, required this.number, this.hasForgottenPassword = true});
 
   @override
   State createState() => _OtpInputScreenState();
@@ -28,27 +28,34 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   String? _currentText;
   final GlobalKey<FormState> _formField = GlobalKey<FormState>();
-  final FocusNode _focusNode = FocusNode();
   String? _error;
-  String _secretCode = "0000";
-  Timer? _timeOut;
+  final String _secretCode = "0000";
+
+  late final OtpBloc _bloc = context.read<OtpBloc>();
+
+  String _formatSeconds(int totalSeconds) {
+    int minutes = totalSeconds ~/ 60;
+    int seconds = totalSeconds % 60;
+    return '${minutes.toString().padLeft(2)}:${seconds.toString().padLeft(2, "0")}';
+  }
 
   @override
   void initState() {
     super.initState();
-    _timeOut = Timer.periodic(const Duration(seconds: 12), (timer) {
-      timer.cancel();
-      setState(() {
-        print("Let's go");
-      });
-    });
+    _bloc.add(OtpInitialized(
+        phoneNumber: widget.number!, duration: _bloc.state.countDown));
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
-    _timeOut?.cancel();
     super.dispose();
+  }
+
+  Future<void> _reFresh() async {
+    _bloc.add(OtpInitialized(
+        phoneNumber: widget.number!.replaceAll(' ', ''),
+        duration: _bloc.state.countDown));
   }
 
   @override
@@ -64,172 +71,207 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
         toolbarHeight: 110.h,
         // centerTitle: true,
       ),
-      body: SafeArea(
-        child: Form(
-          key: _formField,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-                color: Colors.white),
-            padding: EdgeInsets.symmetric(
-              horizontal: 25.w,
-            ),
-            height: context.height,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Gap(30.h),
-                  Text(
-                    'OTP Verification',
-                    style: context.textTheme.titleLarge!
-                        .copyWith(fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
+      body: BlocConsumer<OtpBloc, OtpState>(
+        // bloc: _bloc,
+        listener: (context, state) {
+          if (state is OtpVerificationFailure) {
+            setState(() {
+              _error = state.errorMessage;
+            });
+          }
+          if (state is OtpVerificationSuccess) {
+            widget.hasForgottenPassword
+                ? context.router.popAndPush(const NewPasswordRoute())
+                : context.router.popAndPush(const RegisterRoute());
+          }
+        },
+        builder: (context, state) {
+          print("statex $state");
+
+          if (state is OtpLoadingState) {
+            return Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
                   ),
-                  Gap(30.h),
-                  Text(
-                    'Nous avons envoyé un code au numero whatsApp ${widget.number!.split(' ').join().substring(0, 3)}*****${widget.number!.split(' ').join().substring(8)}',
-                    style: context.textTheme.bodyLarge!
-                        .copyWith(fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
+                  color: Colors.white),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (state is OtpSendFailure) {
+            return Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
                   ),
-                  Gap(120.h),
-                  Text(
-                    'Entrer le code OTP',
-                    style: context.textTheme.titleMedium!.copyWith(
-                        color: Colors.black, fontWeight: FontWeight.w800),
-                    textAlign: TextAlign.center,
-                  ),
-                  Gap(40.h),
-                  SizedBox(
-                    width: 250.w,
-                    // height: 0.h,
-                    child: Column(
-                      children: [
-                        PinCodeTextField(
-                          appContext: context,
-                          length: 4,
-                          autoDisposeControllers: false,
-                          obscureText: false,
-                          animationType: AnimationType.fade,
-                          pinTheme: PinTheme(
-                            shape: PinCodeFieldShape.box,
-                            borderRadius: BorderRadius.circular(5),
-                            fieldHeight: 80.h,
-                            fieldWidth: 50.w,
-                            activeFillColor: Colors.white,
-                            inactiveFillColor: Colors.white,
-                            selectedFillColor: Colors.white,
-                            activeColor: const Color(0xFFCD6E24),
-                            inactiveColor: const Color(0xFFCD6E24),
-                            selectedColor: const Color(0xFFCD6E24),
-                          ),
-                          animationDuration: const Duration(milliseconds: 300),
-                          enableActiveFill: true,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: _textEditingController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          onCompleted: (v) {
-                            print("Completed");
-                          },
-                          focusNode: _focusNode,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _currentText = value;
-                              print("currentx $_currentText");
-                            });
-                          },
-                          beforeTextPaste: (text) {
-                            return true;
-                          },
+                  color: Colors.white),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Échec du chargement. Veuillez réessayer."),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _reFresh,
+                      child: Text(
+                        "Réessayer",
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.black,
                         ),
-                        _error == null
-                            ? const SizedBox()
-                            : Row(
-                                children: [
-                                  Text(_error!,
-                                      style: context.textTheme.bodyLarge!
-                                          .copyWith(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w800)
-                                      // textAlign: TextAlign.left,
-                                      ),
-                                  const Spacer(),
-                                ],
-                              ),
-                      ],
+                      ),
                     ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return SafeArea(
+            child: Form(
+              key: _formField,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Container(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                    color: Colors.white),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25.w,
+                ),
+                height: context.height,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Gap(30.h),
+                      Text(
+                        'OTP Verification',
+                        style: context.textTheme.titleLarge!
+                            .copyWith(fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(30.h),
+                      Text(
+                        'Nous avons envoyé un code au numero whatsApp ${widget.number!.split(' ').join().substring(0, 3)}*****${widget.number!.split(' ').join().substring(8)}',
+                        style: context.textTheme.bodyLarge!
+                            .copyWith(fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(100.h),
+                      Text(
+                        'Entrer le code OTP',
+                        style: context.textTheme.titleMedium!.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(40.h),
+                      PinCodeWidget(
+                        error: _error,
+                        textEditingController: _textEditingController,
+                        onCompleted: (value) async {
+                          setState(() {
+                            _currentText = value;
+                            print("currentx $_currentText");
+                            if (_currentText!.length >= 4) {
+                              _bloc.add(OtpSubmitted(
+                                  otp: _currentText!,
+                                  phoneNumber: widget.number!));
+                            }
+                          });
+                        },
+                      ),
+                      Gap(120.h),
+                      Opacity(
+                        opacity: (state is OtpSentInProgress) ? 0.5 : 1,
+                        child: IgnorePointer(
+                          ignoring: state is OtpSentInProgress &&
+                              state is OtpVerifying,
+                          child: AppButton(
+                              bgColor: AppColors.primary,
+                              // loading: state is OtpVerifying,
+                              text: "Renvoyer le code OTP",
+                              onPressed: () {
+                                if (_formField.currentState!.validate()) {
+                                  _error = null;
+
+                                  // if (_currentText == null ||
+                                  //     _currentText!.length != 4) {
+                                  //   setState(() {
+                                  //     _error = "Veuillez remplir le champ";
+                                  //   });
+                                  // } else if (_currentText != _secretCode) {
+                                  //   setState(() {
+                                  //     _error = "Code incorrect";
+                                  //   });
+                                  // } else {
+                                  //   setState(() {
+                                  //     _error = null;
+                                  //   });
+                                  // }
+                                  context.read<OtpBloc>().add(
+                                      OtpReset(phoneNumber: widget.number!));
+                                  if (state is OtpVerificationSuccess) {
+                                    setState(() {
+                                      print("Success");
+                                    });
+                                  } else if (state is OtpVerificationFailure) {
+                                    setState(() {
+                                      print("No Success");
+                                    });
+                                  }
+                                }
+                                // AppDialog.showDialog(
+                                //     context: context,
+                                //     child: const ValidationPayementWidget());
+                                // _cubit.register(
+                                //   name: _nameController.text,
+                                //   email: _emailController.text,
+                                //   birthDate: DateTime.now(),
+                                //   gender: gender,
+                                //   phoneNumber: _phoneController.text,
+                                //   password: _passwordController.text,
+                                // );
+                              }),
+                        ),
+                      ),
+                      Gap(20.h),
+                      Visibility(
+                        visible: state is! OtpExpired,
+                        child: SizedBox(
+                          width: 250.w,
+                          child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                  style: context.textTheme.bodyMedium!.copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                        text:
+                                            "Tu peux demander un autre code OTP dans "),
+                                    TextSpan(
+                                        text: _formatSeconds(state.countDown),
+                                        style: context.textTheme.bodyMedium!
+                                            .copyWith(color: AppColors.red))
+                                  ])),
+                        ),
+                      ),
+                      // Text(
+                      //   "Tu peux demander un autre code OTP dans ",
+                      //   style: context.textTheme.bodyMedium!.copyWith(),
+                      // ),
+                      Gap(20.h)
+                    ],
                   ),
-                  Gap(120.h),
-                  AppButton(
-                      bgColor: AppColors.primary,
-                      text: "Envoyer le code OTP",
-                      onPressed: () {
-                        if (_formField.currentState!.validate()) {
-                          print(_currentText);
-                          if (_currentText == null ||
-                              _currentText!.length != 4) {
-                            setState(() {
-                              _error = "Veuillez remplir le champ";
-                            });
-                            return;
-                          } else if (_currentText != _secretCode) {
-                            setState(() {
-                              _error = "Code incorrect";
-                            });
-                          } else {
-                            setState(() {
-                              _error = null;
-                            });
-                          }
-                        }
-                        // AppDialog.showDialog(
-                        //     context: context,
-                        //     child: const ValidationPayementWidget());
-                        // _cubit.register(
-                        //   name: _nameController.text,
-                        //   email: _emailController.text,
-                        //   birthDate: DateTime.now(),
-                        //   gender: gender,
-                        //   phoneNumber: _phoneController.text,
-                        //   password: _passwordController.text,
-                        // );
-                      }),
-                  Gap(20.h),
-                  Visibility(
-                    visible: false,
-                    child: AppButton(
-                        bgColor: AppColors.black,
-                        text: "Renvoyer OTP",
-                        onPressed: () {
-                          if (_formField.currentState!.validate()) {}
-                          // AppDialog.showDialog(
-                          //     context: context,
-                          //     child: const ValidationPayementWidget());
-                          // _cubit.register(
-                          //   name: _nameController.text,
-                          //   email: _emailController.text,
-                          //   birthDate: DateTime.now(),
-                          //   gender: gender,
-                          //   phoneNumber: _phoneController.text,
-                          //   password: _passwordController.text,
-                          // );
-                        }),
-                  ),
-                  Gap(20.h)
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

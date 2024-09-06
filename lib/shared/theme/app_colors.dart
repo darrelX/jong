@@ -14,12 +14,10 @@ abstract class AppColors {
     primary: primary,
     secondary: primary,
     surface: surfaceWhite,
-    background: white,
     error: red,
     onPrimary: black,
     onSecondary: black,
     onSurface: black,
-    onBackground: black,
     onError: white,
     brightness: Brightness.light,
   );

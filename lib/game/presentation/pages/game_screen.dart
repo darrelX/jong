@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/game/logic/bloc/crash_game_bloc.dart';
 import 'package:jong/service_locator.dart';
@@ -37,6 +36,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     crashGameBloc = CrashGameBloc(bet: widget.bet);
+    
     super.initState();
   }
 
@@ -212,7 +212,7 @@ class _GameScreenState extends State<GameScreen> {
 
           if (state is CrashGameDefault) {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 // color: Colors.red,
                 height: MediaQuery.of(context).size.height - 70.h,
                 child: Column(

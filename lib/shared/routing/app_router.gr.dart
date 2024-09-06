@@ -28,9 +28,16 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     ForgetPasswordRoute.name: (routeData) {
+      final args = routeData.argsAs<ForgetPasswordRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ForgetPasswordScreen(),
+        child: ForgetPasswordScreen(
+          key: args.key,
+          title1: args.title1,
+          hasForgottenPassword: args.hasForgottenPassword,
+          description: args.description,
+          title2: args.title2,
+        ),
       );
     },
     GameRoute.name: (routeData) {
@@ -71,6 +78,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginScreen(),
       );
     },
+    NewPasswordRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NewPasswordScreen(),
+      );
+    },
     OTPInputRoute.name: (routeData) {
       final args = routeData.argsAs<OTPInputRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -78,6 +91,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: OTPInputScreen(
           key: args.key,
           number: args.number,
+          hasForgottenPassword: args.hasForgottenPassword,
         ),
       );
     },
@@ -138,16 +152,55 @@ class ApplicationRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ForgetPasswordScreen]
-class ForgetPasswordRoute extends PageRouteInfo<void> {
-  const ForgetPasswordRoute({List<PageRouteInfo>? children})
-      : super(
+class ForgetPasswordRoute extends PageRouteInfo<ForgetPasswordRouteArgs> {
+  ForgetPasswordRoute({
+    Key? key,
+    required String title1,
+    bool hasForgottenPassword = true,
+    required String description,
+    required String title2,
+    List<PageRouteInfo>? children,
+  }) : super(
           ForgetPasswordRoute.name,
+          args: ForgetPasswordRouteArgs(
+            key: key,
+            title1: title1,
+            hasForgottenPassword: hasForgottenPassword,
+            description: description,
+            title2: title2,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ForgetPasswordRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<ForgetPasswordRouteArgs> page =
+      PageInfo<ForgetPasswordRouteArgs>(name);
+}
+
+class ForgetPasswordRouteArgs {
+  const ForgetPasswordRouteArgs({
+    this.key,
+    required this.title1,
+    this.hasForgottenPassword = true,
+    required this.description,
+    required this.title2,
+  });
+
+  final Key? key;
+
+  final String title1;
+
+  final bool hasForgottenPassword;
+
+  final String description;
+
+  final String title2;
+
+  @override
+  String toString() {
+    return 'ForgetPasswordRouteArgs{key: $key, title1: $title1, hasForgottenPassword: $hasForgottenPassword, description: $description, title2: $title2}';
+  }
 }
 
 /// generated route for
@@ -268,17 +321,33 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NewPasswordScreen]
+class NewPasswordRoute extends PageRouteInfo<void> {
+  const NewPasswordRoute({List<PageRouteInfo>? children})
+      : super(
+          NewPasswordRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewPasswordRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [OTPInputScreen]
 class OTPInputRoute extends PageRouteInfo<OTPInputRouteArgs> {
   OTPInputRoute({
     Key? key,
     required String? number,
+    bool hasForgottenPassword = true,
     List<PageRouteInfo>? children,
   }) : super(
           OTPInputRoute.name,
           args: OTPInputRouteArgs(
             key: key,
             number: number,
+            hasForgottenPassword: hasForgottenPassword,
           ),
           initialChildren: children,
         );
@@ -293,15 +362,18 @@ class OTPInputRouteArgs {
   const OTPInputRouteArgs({
     this.key,
     required this.number,
+    this.hasForgottenPassword = true,
   });
 
   final Key? key;
 
   final String? number;
 
+  final bool hasForgottenPassword;
+
   @override
   String toString() {
-    return 'OTPInputRouteArgs{key: $key, number: $number}';
+    return 'OTPInputRouteArgs{key: $key, number: $number, hasForgottenPassword: $hasForgottenPassword}';
   }
 }
 

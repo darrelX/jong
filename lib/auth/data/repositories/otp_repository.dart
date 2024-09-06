@@ -3,8 +3,34 @@ import 'package:jong/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpRepository {
-  final Dio dio;
-  final Future<SharedPreferences>? prefs;
+  final Dio _dio;
+  final Future<SharedPreferences>? _prefs;
 
-   OtpRepository() : dio = getIt.get<Dio>(), prefs = getIt<Future<SharedPreferences>>();
+  OtpRepository()
+      : _dio = getIt.get<Dio>(),
+        _prefs = getIt<Future<SharedPreferences>>();
+
+  Future<bool> submit(
+      {required String code, required String phoneNumber}) async {
+    try {
+      final Response response = await _dio.post('/otp/verify',
+          data: {"phone_number": phoneNumber, "code": code});
+      if (response.statusCode! == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> sendOtp(String phoneNumber) async {
+    try {
+      final Response response =
+          await _dio.post('/otp/send', data: {"phone_number": phoneNumber});
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

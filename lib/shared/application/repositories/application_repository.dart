@@ -38,7 +38,7 @@ class ApplicationRepository {
   }
 
   Future<UserModel?> getUser(String token) async {
-    SharedPreferences storage = await prefs!;
+    SharedPreferences storage = await prefs;
     String? token = storage.getString('token');
 
     try {

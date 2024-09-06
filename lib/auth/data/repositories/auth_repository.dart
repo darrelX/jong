@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:jong/shared/utils/utils.dart'; // Assurez-vous que cet import est nécessaire
+// Assurez-vous que cet import est nécessaire
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 

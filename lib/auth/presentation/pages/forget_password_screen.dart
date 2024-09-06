@@ -10,8 +10,16 @@ import 'package:jong/shared/widget/app_button.dart';
 
 @RoutePage()
 class ForgetPasswordScreen extends StatefulWidget {
+  final String title1;
+  final String title2;
+  final String description;
+  final bool hasForgottenPassword;
   const ForgetPasswordScreen({
     super.key,
+    required this.title1,
+    this.hasForgottenPassword = true,
+    required this.description,
+    required this.title2,
   });
 
   @override
@@ -42,7 +50,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       backgroundColor: AppColors.primary,
       appBar: AppBar(
         title: Text(
-          "  Retrouver mon compte",
+          widget.title1,
           style: context.textTheme.titleLarge!
               .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
         ),
@@ -50,6 +58,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       ),
       body: Container(
         height: context.height,
+        width: double.infinity,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(30),
@@ -61,22 +70,24 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gap(60.h),
                 Text(
-                  "Retrouver mon compte",
+                  widget.title2,
                   style: context.textTheme.titleLarge!
                       .copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
                 ),
                 Gap(100.h),
                 Text(
-                  "Entrer un numero de votre whatsapp associé à votre compte",
+                  widget.description,
                   style: context.textTheme.titleMedium!
                       .copyWith(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
-                Gap(100.h),
+                Gap(30.h),
                 InternationalPhoneNumberInput(
                   onInputChanged: (PhoneNumber value) {
                     setState(() {
@@ -105,11 +116,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   inputBorder: context.theme.inputDecorationTheme.border,
                 ),
                 // _number!.
-                Gap(200.h),
+                Gap(180.h),
                 AppButton(
                   // loading: state is LoginLoading,
                   bgColor: AppColors.primary,
-                  text: "Retrouver mon compte",
+                  text: widget.title1,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       print(_number);
@@ -117,9 +128,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       //   phone: _phoneController.text,
                       //   password: _passwordController.text,
                       // );
+
                       context.router.pushAndPopUntil(
                           predicate: (route) => true,
-                          OTPInputRoute(number: _phoneController.value.text));
+                          OTPInputRoute(
+                            number:
+                                _phoneController.value.text.replaceAll(' ', ''),
+                                hasForgottenPassword: widget.hasForgottenPassword
+                          ));
                     }
                   },
                 ),

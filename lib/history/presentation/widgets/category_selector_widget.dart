@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/history/data/models/ticket_model.dart';
-import 'package:jong/history/logic/cubit/ticket_cubit.dart';
 import 'package:jong/history/presentation/widgets/ticket_widget.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';

@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PinCodeExample extends StatefulWidget {
+  const PinCodeExample({super.key});
+
   @override
   _PinCodeExampleState createState() => _PinCodeExampleState();
 }
 
 class _PinCodeExampleState extends State<PinCodeExample> {
-  TextEditingController _pinController = TextEditingController();
+  final TextEditingController _pinController = TextEditingController();
   bool _hasError = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pin Code Example"),
+        title: const Text("Pin Code Example"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -45,15 +47,15 @@ class _PinCodeExampleState extends State<PinCodeExample> {
                 }
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Visibility(
               visible: _hasError,
-              child: Text(
+              child: const Text(
                 "Veuillez remplir correctement le code PIN.",
                 style: TextStyle(color: Colors.red),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (_pinController.text.length != 4) {
@@ -68,7 +70,7 @@ class _PinCodeExampleState extends State<PinCodeExample> {
                   print("Code PIN: ${_pinController.text}");
                 }
               },
-              child: Text("Vérifier"),
+              child: const Text("Vérifier"),
             ),
           ],
         ),

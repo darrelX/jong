@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jong/auth/data/repositories/auth_repository.dart';
+import 'package:jong/auth/logic/otp_cubit/otp_bloc.dart';
 import 'package:jong/history/data/repositories/ticket_repository.dart';
 import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shop/data/repositories/product_repository.dart';
@@ -67,7 +68,10 @@ void setupLocator() {
 
   getIt.registerSingleton<ProductCubit>(ProductCubit());
 
-  getIt.registerSingleton<TransactionCubit>(TransactionCubit());
+  getIt.registerSingleton<TransactionCubit>(TransactionCubit()); 
+
+  getIt.registerSingleton<OtpBloc>(OtpBloc()); 
+
 
 
 }

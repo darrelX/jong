@@ -21,7 +21,7 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
   final GameHistoryCubit _cubit = GameHistoryCubit();
   final ScrollController _scrollController = ScrollController();
   bool _hasMax = true;
-  int _page = 1;
+  final int _page = 1;
 
   @override
   void initState() {
@@ -90,6 +90,7 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                             child: CircularProgressIndicator(),
                           );
                         }
+                        return null;
                       },
                     ),
                   ),

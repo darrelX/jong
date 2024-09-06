@@ -1,5 +1,4 @@
 import 'package:jong/history/data/models/product_ticket_model.dart';
-import 'package:jong/history/presentation/widgets/products_of_ticket.dart';
 
 class TicketModel {
   final String? id;

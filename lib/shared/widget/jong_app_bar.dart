@@ -54,7 +54,7 @@ class _JongAppBarState extends State<JongAppBar> {
                             .toStringAsFixed(2),
                       );
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   },
                 ),
                 Gap(1.w),

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:developer' as dev;
 
 import 'package:equatable/equatable.dart';
@@ -20,7 +19,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
   final ApplicationCubit applicationCubit = getIt.get<ApplicationCubit>();
 
   CrashGameBloc({
-     this.bet = 0,
+    this.bet = 0,
   }) : super(CrashGameDefault(bet: bet)) {
     on<InitializeCrashGameEvent>(_onInitialize);
     on<StartCrashGameEvent>(_onStartGame);
@@ -34,7 +33,7 @@ class CrashGameBloc extends Bloc<CrashGameEvent, CrashGameState> {
     int countDown = 3;
     emit(CrashGameInitial(bet: bet, countDown: countDown));
 
-    for (var i = countDown; i > 0; i--) {
+    for (var i = countDown; i >= 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
       emit(CrashGameInitial(bet: bet, countDown: i));
     }
