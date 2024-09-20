@@ -13,10 +13,10 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   ApplicationCubit() : super(const ApplicationStateInitial());
 
   setUser([UserModel? userModel]) async {
+    final prefs = await pref;
     if (userModel != null) {
       emit(ApplicationStateInitial(user: userModel));
     }
-    final prefs = await pref;
     final user = await _repository.getUser(prefs.getString('token')!);
     emit(ApplicationStateInitial(user: user));
   }

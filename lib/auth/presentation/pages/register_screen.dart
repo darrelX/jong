@@ -55,285 +55,289 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     // print('page ${controller.page!.round()}');
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Inscription",
-          style: context.textTheme.displaySmall!
-              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Inscription",
+            style: context.textTheme.displaySmall!
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+          ),
+          centerTitle: true,
+          toolbarHeight: 110.h,
         ),
-        centerTitle: true,
-        toolbarHeight: 110.h,
-      ),
-      body: BlocConsumer<AuthCubit, AuthState>(
-        bloc: _cubit,
-        listener: (context, state) {
-          if (state is RegisterFailure) {
-            AppSnackBar.showError(
-              message: state.message,
-              context: context,
-            );
-          }
+        body: BlocConsumer<AuthCubit, AuthState>(
+          bloc: _cubit,
+          listener: (context, state) {
+            if (state is RegisterFailure) {
+              AppSnackBar.showError(
+                message: state.message,
+                context: context,
+              );
+            }
 
-          if (state is RegisterSuccess) {
-            getIt.get<ApplicationCubit>().setUser(state.user);
-            context.router.pushAndPopUntil(
-              const ApplicationRoute(),
-              predicate: (route) => false,
-            );
-          }
-        },
-        builder: (context, state) {
-          return Container(
-              padding: EdgeInsets.symmetric(horizontal: 25.w),
-              decoration: BoxDecoration(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(20)),
-                color: context.theme.scaffoldBackgroundColor,
-              ),
-              height: context.height,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gap(40.h),
-                    Text(
-                      "Creer un compte",
-                      style: context.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Gap(20.h),
-                    Text(
-                      "Remplissez les champs ci-dessous pour commencer",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.black.withOpacity(0.6)),
-                      textAlign: TextAlign.left,
-                    ),
-                    Gap(60.h),
-                    SizedBox(
-                      height: 280.h,
-                      child: Form(
-                        key: _formKey,
-                        child: PageView(
-                          controller: _pageController,
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            Column(
-                              children: [
-                                AppInput(
-                                  controller: _nameController,
-                                  // label: 'E-mail',
-                                  hint: 'Name',
-                                  keyboardType: TextInputType.name,
-                                  autofillHints: const [
-                                    AutofillHints.name,
-                                  ],
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Name is required',
-                                    ),
-                                  ],
-                                ),
-                                Gap(30.h),
-                                AppInput(
-                                  controller: _emailController,
-                                  // label: 'E-mail',
-                                  hint: 'E-mail',
-                                  keyboardType: TextInputType.emailAddress,
-                                  autofillHints: const [
-                                    AutofillHints.email,
-                                  ],
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'E-mail is required',
-                                    ),
-                                    FormBuilderValidators.email(
-                                      errorText: 'E-mail is required',
-                                    ),
-                                  ],
-                                ),
-                                Gap(30.h),
-                                AppInput(
-                                  controller: _phoneController,
-                                  hint: 'Tel',
-                                  keyboardType: TextInputType.phone,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Phone number is required',
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                AppInput(
-                                  controller: _genderController,
-                                  hint: 'Gender',
-                                  keyboardType: TextInputType.none,
-                                  readOnly: true,
-                                  onTap: () {
-                                    AppBottomSheet.showModelBottomSheet(
-                                      context: context,
-                                      child: Column(
-                                        children: [
-                                          ListTile(
-                                            title: const Text("Male"),
-                                            selected: gender == 1,
-                                            onTap: () {
-                                              setState(() {
-                                                gender = 1;
-                                                _genderController.text = "Male";
-                                                context.router.maybePop();
-                                              });
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: const Text("Female"),
-                                            selected: gender == 0,
-                                            onTap: () {
-                                              setState(() {
-                                                gender = 0;
-                                                _genderController.text =
-                                                    "Female";
-                                                context.router.maybePop();
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Gender is required',
-                                    ),
-                                  ],
-                                  suffixIcon: const Icon(
-                                      Icons.keyboard_arrow_down_outlined),
-                                ),
-                                Gap(30.h),
-                                AppInput(
-                                  controller: _passwordController,
-                                  hint: 'Password',
-                                  keyboardType: TextInputType.visiblePassword,
-                                  autofillHints: const [
-                                    AutofillHints.password,
-                                  ],
-                                  showEyes: true,
-                                  onChange: (value) {
-                                    pwd = value;
-                                    setState(() {});
-                                  },
-                                  obscureText: true,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Password is required',
-                                    ),
-                                  ],
-                                ),
-                                Gap(30.h),
-                                AppInput(
-                                  controller: _confirmPasswordController,
-                                  hint: 'Confirm password',
-                                  keyboardType: TextInputType.visiblePassword,
-                                  autofillHints: const [
-                                    AutofillHints.password,
-                                  ],
-                                  showEyes: true,
-                                  obscureText: true,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Field is required',
-                                    ),
-                                    FormBuilderValidators.equal(
-                                      pwd,
-                                      errorText: 'Does not match',
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Gap(20.h),
-                    _currentPage == 0
-                        ? AppButton(
-                            bgColor: AppColors.primary,
-                            text: "Suivant",
-                            onPressed: () {
-                              setState(() {
-                                _pageController.nextPage(
-                                    duration: Durations.long1,
-                                    curve: Curves.linear);
-                              });
-                            },
-                          )
-                        : AppButton(
-                            loading: state is RegisterLoading,
-                            bgColor: AppColors.primary,
-                            text: "Validation",
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // context.router.pushAndPopUntil(
-                                //   const OTPInputRoute(),
-                                //   predicate: (route) => true,
-                                // );
-
-                                _cubit.register(
-                                  name: _nameController.text,
-                                  email: _emailController.text,
-                                  birthDate: DateTime.now(),
-                                  gender: gender,
-                                  phoneNumber: _phoneController.text,
-                                  password: _passwordController.text,
-                                );
-                              }
-                            },
-                          ),
-                    Gap(30.h),
-                    Center(
-                      child: Text.rich(
-                        TextSpan(
-                          text: 'Avez vous un\n',
-                          style: TextStyle(
-                              color: AppColors.black.withOpacity(0.6)),
-                          children: [
-                            TextSpan(
-                              text: "compte ?  ",
-                              style: TextStyle(
-                                  color: AppColors.black.withOpacity(0.6)),
-                            ),
-                            TextSpan(
-                              text: "Connexion",
-                              style: context.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w900,
-                                color: AppColors.primary,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  context.router.push(const LoginRoute());
-                                },
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                  ],
+            if (state is RegisterSuccess) {
+              getIt.get<ApplicationCubit>().setUser(state.user);
+              context.router.pushAndPopUntil(
+                const ApplicationRoute(),
+                predicate: (route) => false,
+              );
+            }
+          },
+          builder: (context, state) {
+            return Container(
+                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(20)),
+                  color: context.theme.scaffoldBackgroundColor,
                 ),
-              ));
-        },
+                height: context.height,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gap(40.h),
+                      Text(
+                        "Creer un compte",
+                        style: context.textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Gap(20.h),
+                      Text(
+                        "Remplissez les champs ci-dessous pour commencer",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.black.withOpacity(0.6)),
+                        textAlign: TextAlign.left,
+                      ),
+                      Gap(60.h),
+                      SizedBox(
+                        height: 280.h,
+                        child: Form(
+                          key: _formKey,
+                          child: PageView(
+                            controller: _pageController,
+                            scrollDirection: Axis.horizontal,
+                            children: <Widget>[
+                              Column(
+                                children: [
+                                  AppInput(
+                                    controller: _nameController,
+                                    // label: 'E-mail',
+                                    hint: 'Name',
+                                    keyboardType: TextInputType.name,
+                                    autofillHints: const [
+                                      AutofillHints.name,
+                                    ],
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'Name is required',
+                                      ),
+                                    ],
+                                  ),
+                                  Gap(30.h),
+                                  AppInput(
+                                    controller: _emailController,
+                                    // label: 'E-mail',
+                                    hint: 'E-mail',
+                                    keyboardType: TextInputType.emailAddress,
+                                    autofillHints: const [
+                                      AutofillHints.email,
+                                    ],
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'E-mail is required',
+                                      ),
+                                      FormBuilderValidators.email(
+                                        errorText: 'E-mail is required',
+                                      ),
+                                    ],
+                                  ),
+                                  Gap(30.h),
+                                  AppInput(
+                                    controller: _phoneController,
+                                    hint: 'Tel',
+                                    keyboardType: TextInputType.phone,
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'Phone number is required',
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  AppInput(
+                                    controller: _genderController,
+                                    hint: 'Gender',
+                                    keyboardType: TextInputType.none,
+                                    readOnly: true,
+                                    onTap: () {
+                                      AppBottomSheet.showModelBottomSheet(
+                                        context: context,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              title: const Text("Male"),
+                                              selected: gender == 1,
+                                              onTap: () {
+                                                setState(() {
+                                                  gender = 1;
+                                                  _genderController.text =
+                                                      "Male";
+                                                  context.router.maybePop();
+                                                });
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: const Text("Female"),
+                                              selected: gender == 0,
+                                              onTap: () {
+                                                setState(() {
+                                                  gender = 0;
+                                                  _genderController.text =
+                                                      "Female";
+                                                  context.router.maybePop();
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'Gender is required',
+                                      ),
+                                    ],
+                                    suffixIcon: const Icon(
+                                        Icons.keyboard_arrow_down_outlined),
+                                  ),
+                                  Gap(30.h),
+                                  AppInput(
+                                    controller: _passwordController,
+                                    hint: 'Password',
+                                    keyboardType: TextInputType.visiblePassword,
+                                    autofillHints: const [
+                                      AutofillHints.password,
+                                    ],
+                                    showEyes: true,
+                                    onChange: (value) {
+                                      pwd = value;
+                                      setState(() {});
+                                    },
+                                    obscureText: true,
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'Password is required',
+                                      ),
+                                    ],
+                                  ),
+                                  Gap(30.h),
+                                  AppInput(
+                                    controller: _confirmPasswordController,
+                                    hint: 'Confirm password',
+                                    keyboardType: TextInputType.visiblePassword,
+                                    autofillHints: const [
+                                      AutofillHints.password,
+                                    ],
+                                    showEyes: true,
+                                    obscureText: true,
+                                    validators: [
+                                      FormBuilderValidators.required(
+                                        errorText: 'Field is required',
+                                      ),
+                                      FormBuilderValidators.equal(
+                                        pwd,
+                                        errorText: 'Does not match',
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(20.h),
+                      _currentPage == 0
+                          ? AppButton(
+                              bgColor: AppColors.primary,
+                              text: "Suivant",
+                              onPressed: () {
+                                setState(() {
+                                  _pageController.nextPage(
+                                      duration: Durations.long1,
+                                      curve: Curves.linear);
+                                });
+                              },
+                            )
+                          : AppButton(
+                              loading: state is RegisterLoading,
+                              bgColor: AppColors.primary,
+                              text: "Validation",
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  // context.router.pushAndPopUntil(
+                                  //   const OTPInputRoute(),
+                                  //   predicate: (route) => true,
+                                  // );
+
+                                  _cubit.register(
+                                    name: _nameController.text,
+                                    email: _emailController.text,
+                                    birthDate: DateTime.now(),
+                                    gender: gender,
+                                    phoneNumber: _phoneController.text,
+                                    password: _passwordController.text,
+                                  );
+                                }
+                              },
+                            ),
+                      Gap(30.h),
+                      Center(
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Avez vous un\n',
+                            style: TextStyle(
+                                color: AppColors.black.withOpacity(0.6)),
+                            children: [
+                              TextSpan(
+                                text: "compte ?  ",
+                                style: TextStyle(
+                                    color: AppColors.black.withOpacity(0.6)),
+                              ),
+                              TextSpan(
+                                text: "Connexion",
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: AppColors.primary,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    context.router.push(const LoginRoute());
+                                  },
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
+          },
+        ),
       ),
     );
   }

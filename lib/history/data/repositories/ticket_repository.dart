@@ -15,9 +15,12 @@ class TicketRepository {
 
   Future<List<TicketModel>?> fetchTicketsList(int userId) async {
     try {
-      Response response =
-          await dio.get('/tickets', queryParameters: {"user_id": userId});
-      // print("dada ${response.data}");
+      Response response = await dio.get('/tickets', queryParameters: {
+        "user_id": userId,
+      });
+      int total = response.data['total'] as int;
+      response = await dio
+          .get('/tickets', queryParameters: {"user_id": userId, "page": total});
       List<dynamic> tickets = response.data['data'] as List<dynamic>;
       List<TicketModel> ticketsList = tickets
           .map((item) => TicketModel.fromJson(item as Map<String, dynamic>))

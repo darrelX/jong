@@ -27,12 +27,13 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: padding16,
           right: padding16,
           top: padding16,
-          bottom: 180.h,
+          // bottom: 150.h,
         ),
+        margin: EdgeInsets.only(bottom: 80.h),
         width: context.width,
         child: RefreshIndicator(
           onRefresh: _cubit.fetchProducts,
@@ -45,7 +46,7 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
                   fontSize: 22,
                 ),
               ),
-              Gap(30.h),
+              Gap(20.h),
               Expanded(
                   child: (widget.state.products.isNotEmpty)
                       ? ListView.separated(

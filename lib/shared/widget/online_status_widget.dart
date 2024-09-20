@@ -4,9 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 
-class OfflineStatusWidget extends StatelessWidget {
+class OnlineStatusWidget extends StatelessWidget {
   final double width;
-  const OfflineStatusWidget({super.key, this.width = 300});
+  const OnlineStatusWidget({super.key, this.width = 300});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,13 @@ class OfflineStatusWidget extends StatelessWidget {
       width: width,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.red[400],
+        color: AppColors.green,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
           const Icon(
-            Icons.close,
+            Icons.check,
             color: Colors.white,
             size: 24,
           ),
@@ -29,13 +29,9 @@ class OfflineStatusWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Oops, Vous êtes hors ligne',
+                Text('Vous êtes a nouveau en ligne',
                     style: context.textTheme.bodyLarge!.copyWith(
                         color: AppColors.white, fontWeight: FontWeight.bold)),
-                Gap(4.h),
-                Text("Réessayez quand vous serez connecté.",
-                    style: context.textTheme.bodySmall!
-                        .copyWith(color: AppColors.white)),
               ],
             ),
           ),

@@ -11,36 +11,44 @@ class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit() : super(const TransactionInitial());
   final TransactionRepository repository = TransactionRepository();
   final _application = getIt.get<ApplicationCubit>();
+  int _id = 0;
   // final _application = getIt.get<ApplicationCubit>();
 
   dynamic deposit(String method, int amount, String phoneNumber) async {
+    emit(const TransactionInitial());
     try {
       final TransactionModel transactionModel = await repository.deposit(
           method: method,
           amount: amount,
           userId: _application.state.user!.id!,
           phoneNumber: phoneNumber);
+      _id = transactionModel.id!;
       // setUser();
-      if (transactionModel.status == 0) {
-        emit(TransactionPending(transactionModel: transactionModel));
+      if (transactionModel.status == 1) {
+        emit(TransactionSuccess());
       } else if (transactionModel.status == 2) {
         emit(const TransactionFailure(message: "Transaction echouee"));
+      } else if (transactionModel.status == 0) {
+        emit(const TransactionPending());
       }
       // return status['status'];
     } catch (e) {
-      print("test");
+      print("test ohhhh");
 
       emit(TransactionFailure(message: e.toString()));
+      rethrow;
     }
   }
 
-  checkStatut(int id) async {
+  checkStatut() async {
+    emit(const TransactionInitial());
+
     try {
-      final status = await repository.getStatus(id: id);
-      if (status == 1) {
+      final result = await repository.getStatus(id: _id);
+      if (result == 1) {
         emit(TransactionSuccess());
-      } else if (status == 2) {
-        emit(const TransactionFailure(message: "Transactioin echouee"));
+      } else if (result == 2) {
+        emit(const TransactionFailure(message: "Transaction echouee"));
       }
     } catch (e) {
       emit(TransactionFailure(message: e.toString()));

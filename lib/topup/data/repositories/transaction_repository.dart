@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:jong/service_locator.dart';
 import 'package:jong/topup/data/models/transaction_model.dart';
@@ -26,15 +25,13 @@ class TransactionRepository {
       });
       return TransactionModel.fromJson(response.data as Map<String, dynamic>);
     } catch (e) {
-      print("999");
       rethrow;
     }
   }
 
   Future<int> getStatus({required int id}) async {
     try {
-      final Response response = await dio.get('/deposits/$id'
-         );
+      final Response response = await dio.get('/deposits/$id');
       // print("number ${response.data['status']}");
       // final x = response.data[]
       return response.data['status'];

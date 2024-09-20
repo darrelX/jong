@@ -30,6 +30,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
   final GlobalKey<FormState> _formField = GlobalKey<FormState>();
   String? _error;
   final String _secretCode = "0000";
+  bool _isExpired = false;
 
   late final OtpBloc _bloc = context.read<OtpBloc>();
 
@@ -72,23 +73,25 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
         // centerTitle: true,
       ),
       body: BlocConsumer<OtpBloc, OtpState>(
-        // bloc: _bloc,
+        bloc: _bloc,
         listener: (context, state) {
           if (state is OtpVerificationFailure) {
             setState(() {
               _error = state.errorMessage;
             });
           }
+          if (state is OtpExpired) {
+            setState(() {
+              _isExpired = true;
+            });
+          }
           if (state is OtpVerificationSuccess) {
-            print("statex statex");
             widget.hasForgottenPassword
                 ? context.router.push(const NewPasswordRoute())
                 : context.router.push(const RegisterRoute());
           }
         },
         builder: (context, state) {
-          print("statex $state");
-
           if (state is OtpLoadingState) {
             return Container(
               decoration: const BoxDecoration(
@@ -186,34 +189,28 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                       ),
                       Gap(110.h),
                       Opacity(
-                        opacity: (state is! OtpExpired &&
-                                state is! OtpVerificationFailure &&
-                                state is! OtpVerificationSuccess)
-                            ? 0.5
-                            : 1,
+                        opacity: !_isExpired ? 0.5 : 1,
                         child: IgnorePointer(
-                          ignoring: state is! OtpExpired &&
-                              state is! OtpVerificationFailure &&
-                              state is! OtpVerificationSuccess,
+                          ignoring: !_isExpired,
                           child: AppButton(
                               bgColor: AppColors.primary,
                               loading: state is OtpVerifying,
                               text: "Renvoyer le code OTP",
                               onPressed: () {
                                 if (_formField.currentState!.validate()) {
-                                  _error = null;
-                                  _textEditingController.clear();
-                                  context.read<OtpBloc>().add(
-                                      OtpReset(phoneNumber: widget.number!));
-                                  if (state is OtpVerificationSuccess) {
-                                    setState(() {
+                                  setState(() {
+                                    _isExpired = !_isExpired;
+                                    _error = null;
+                                    _textEditingController.clear();
+                                    context.read<OtpBloc>().add(
+                                        OtpReset(phoneNumber: widget.number!));
+                                    if (state is OtpVerificationSuccess) {
                                       print("Success");
-                                    });
-                                  } else if (state is OtpVerificationFailure) {
-                                    setState(() {
+                                    } else if (state
+                                        is OtpVerificationFailure) {
                                       print("No Success");
-                                    });
-                                  }
+                                    }
+                                  });
                                 }
                                 // AppDialog.showDialog(
                                 //     context: context,
@@ -231,9 +228,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                       ),
                       Gap(20.h),
                       Visibility(
-                        visible: state is! OtpExpired &&
-                            state is! OtpVerificationFailure &&
-                            state is! OtpVerificationSuccess,
+                        visible: !_isExpired,
                         child: SizedBox(
                           width: 250.w,
                           child: RichText(

@@ -2,6 +2,8 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jong/shared/theme/app_colors.dart';
+import 'package:jong/shared/widget/offline_status_widget.dart';
+import 'package:jong/shared/widget/online_status_widget.dart';
 
 class AppSnackBar {
   static Flushbar? _flushbar;
@@ -34,6 +36,7 @@ class AppSnackBar {
 
   static Future showSuccess({
     required String message,
+    Widget? child,
     required BuildContext context,
     Function(Flushbar<dynamic>)? onTap,
     duration = const Duration(seconds: 3),
@@ -41,7 +44,6 @@ class AppSnackBar {
     if (_flushbar != null && _flushbar!.isShowing()) {
       await _flushbar!.dismiss();
     }
-
     _flushbar = Flushbar(
       onTap: onTap,
       messageText: Row(
@@ -67,6 +69,34 @@ class AppSnackBar {
       duration: duration,
     );
     if (!context.mounted) return;
+    return _flushbar!.show(context);
+  }
+
+  static Future showCheckConnectivity(
+      {required BuildContext context, required bool isConnected}) async {
+    if (_flushbar != null && _flushbar!.isShowing()) {
+      await _flushbar!.dismiss();
+    }
+    _flushbar = Flushbar(
+      // onTap: onTap,
+      messageText: Row(
+        children: [
+          Expanded(
+            child: !isConnected
+                ? const OfflineStatusWidget()
+                : const OnlineStatusWidget(),
+          ),
+        ],
+      ),
+      // margin: const EdgeInsets.only(top: 500),
+      borderRadius: BorderRadius.circular(8),
+      flushbarPosition: FlushbarPosition.TOP,
+      // icon: Image.asset("assets/images/app_icon.png"),
+      backgroundColor: AppColors.transparent,
+      duration: const Duration(seconds: 2),
+    );
+    if (!context.mounted) return;
+
     return _flushbar!.show(context);
   }
 }

@@ -51,13 +51,13 @@ class _ProductWidgetState extends State<ProductWidget> {
           boxShadow: const [
             BoxShadow(
               color: Color(0x1A191C32),
-              offset: Offset(0, 1),
+              offset: Offset(2, 1),
               blurRadius: 2,
               spreadRadius: 0,
             ),
             BoxShadow(
               color: Color(0x1A191C32),
-              offset: Offset(-7, 10),
+              offset: Offset(-4, 6),
               blurRadius: 2,
               spreadRadius: 0,
             ),

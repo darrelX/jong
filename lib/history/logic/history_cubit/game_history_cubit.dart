@@ -12,20 +12,37 @@ class GameHistoryCubit extends Cubit<GameHistoryState> {
   final GameHistoryRepository repository;
   final ApplicationCubit applicationCubit;
 
-  List<GameHistoryModel> _listGameHistory = [];
+  /// A flag indicating whether the maximum number of movies has been reached.
+  bool hasReachedMax = false;
+
+  /// The current page number for fetching popular movies.
+  int _page = 1;
+
+  final List<GameHistoryModel> _listGameHistory = [];
   GameHistoryCubit()
       : repository = GameHistoryRepository(),
         applicationCubit = getIt.get<ApplicationCubit>(),
         super(const GameHistoryStateInitial());
 
   fetch() async {
-    _listGameHistory.clear();
-    emit(const GameHistoryStateLoading());
+    if (state is! GameHistoryStateSuccess) {
+      emit(const GameHistoryStateLoading());
+    }
     try {
-      _listGameHistory = (await repository.fetchGameHistory(
-        userId: applicationCubit.state.user!.id!,
-      ))!;
-      emit(GameHistoryStateSuccess(listGameHistory: _listGameHistory));
+      // Checks if the maximum limit has been reached.
+      if (hasReachedMax) return;
+      final result = (await repository.fetchGameHistory(
+          userId: applicationCubit.state.user!.id!, page: _page));
+      _page++;
+
+      _listGameHistory.addAll(result.list
+          .where((movie) => _listGameHistory.contains(movie) == false)
+          .toList());
+      emit(GameHistoryStateSuccess(listGameHistory: _listGameHistory.toList()));
+
+      if (_page == result.total) {
+        hasReachedMax = true;
+      }
     } catch (e) {
       emit(GameHistoryStateFailure(message: e.toString()));
       rethrow;
@@ -36,8 +53,8 @@ class GameHistoryCubit extends Cubit<GameHistoryState> {
     emit(const GameHistoryStateLoading());
     try {
       final copy = (await repository.fetchGameHistory(
-          userId: applicationCubit.state.user!.id!, page: page))!;
-      _listGameHistory.addAll(copy);
+          userId: applicationCubit.state.user!.id!, page: page));
+      _listGameHistory.addAll(copy.list);
       emit(GameHistoryStateSuccess(listGameHistory: _listGameHistory));
     } catch (e) {
       emit(GameHistoryStateFailure(message: e.toString()));

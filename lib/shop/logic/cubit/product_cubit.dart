@@ -21,7 +21,7 @@ class ProductCubit extends Cubit<ProductState> {
     emit(const ProductLoadingState());
     try {
       _listProductModel =
-          await repository.fetchProductsList(application.state.user!.id!);
+          (await repository.fetchProductsList(application.state.user!.id!)).list;
 
       for (var article in _listProductModel) {
         _counters[article.id!] = 0;

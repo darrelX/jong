@@ -8,7 +8,7 @@ class GameHistoryModel {
   final int? total;
   final DateTime? createdAt;
 
-  GameHistoryModel({
+  const GameHistoryModel({
     required this.id,
     required this.userId,
     required this.gameId,
@@ -52,4 +52,31 @@ class GameHistoryModel {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'gameId': gameId,
+      'amount': amount,
+      'cote': cote,
+      'gain': gain,
+      'total': total,
+      'createdAt': createdAt?.toIso8601String(), // Convert DateTime to ISO 8601 format
+    };
+  }
+
+}
+
+class GameHistoryModels {
+  final List<GameHistoryModel> list;
+  final int total;
+
+  const GameHistoryModels({required this.list, required this.total});
+
+  factory GameHistoryModels.fromJson(int total, List<GameHistoryModel> list) {
+    return GameHistoryModels(list: list, total: total);
+  }
+
+  
 }

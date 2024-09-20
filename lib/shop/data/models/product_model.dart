@@ -27,3 +27,14 @@ class ProductModel {
 
   // Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 }
+
+class ProductModels {
+  final List<ProductModel> list;
+  final int total;
+
+  const ProductModels({required this.list, required this.total});
+
+  factory ProductModels.fromJson(List<ProductModel> list, int total) {
+    return ProductModels(list: list, total: total);
+  }
+}

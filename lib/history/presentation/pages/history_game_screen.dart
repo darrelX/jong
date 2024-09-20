@@ -20,7 +20,6 @@ class HistoryGameScreen extends StatefulWidget {
 class _HistoryGameScreenState extends State<HistoryGameScreen> {
   final GameHistoryCubit _cubit = GameHistoryCubit();
   final ScrollController _scrollController = ScrollController();
-  bool _hasMax = true;
   final int _page = 1;
 
   @override
@@ -33,8 +32,7 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent) {
-      print("hey");
-      _hasMax = false;
+      _cubit.fetch();
     }
   }
 
@@ -51,7 +49,6 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("hasmax $_hasMax");
     return Scaffold(
       appBar: AppBar(
         title: widget.title,
@@ -70,10 +67,12 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                       controller: _scrollController,
                       padding: EdgeInsets.symmetric(
                           horizontal: 10.w, vertical: 30.h),
-                      itemCount: state.listGameHistory.length + 1,
+                      itemCount: _cubit.hasReachedMax
+                          ? state.listGameHistory.length
+                          : state.listGameHistory.length + 1,
                       separatorBuilder: (context, i) => Gap(26.h),
                       itemBuilder: (context, index) {
-                        if (index <= state.listGameHistory.length) {
+                        if (index < state.listGameHistory.length) {
                           final gameHistory = state.listGameHistory[index];
                           return GameHistoryWidget(
                             amount: gameHistory.amount,
@@ -82,15 +81,11 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                             gain: gameHistory.gain,
                           );
                         }
-                        if (_hasMax == true) {
-                          return const SizedBox();
-                        }
-                        if (_hasMax == false) {
+                        if (!_cubit.hasReachedMax) {
                           return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                              child: CircularProgressIndicator());
                         }
-                        return null;
+                        return const SizedBox();
                       },
                     ),
                   ),

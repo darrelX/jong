@@ -9,6 +9,7 @@ abstract class AppColors {
   static const Color red = Color(0xffD44638);
   static const Color grey = Color(0xFFDADADA);
   static const Color icon = Color(0xFF9E9E9E);
+  static const Color transparent = Colors.transparent;
 
   static const ColorScheme colorScheme = ColorScheme(
     primary: primary,

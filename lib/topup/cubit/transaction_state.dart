@@ -14,10 +14,10 @@ final class TransactionInitial extends TransactionState {
 }
 
 final class TransactionPending extends TransactionState {
-  final TransactionModel? transactionModel;
-  const TransactionPending({this.transactionModel});
+  // final TransactionModel? transactionModel;
+  const TransactionPending();
   @override
-  List<Object> get props => [transactionModel!];
+  List<Object> get props => [];
 }
 
 final class TransactionFailure extends TransactionState {

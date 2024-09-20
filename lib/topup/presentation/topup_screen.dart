@@ -51,58 +51,53 @@ class _TopUpScreenState extends State<TopUpScreen> {
     super.dispose();
   }
 
-  void _handleTransactionState(TransactionState state) {
-    if (state is TransactionPending) {
-      setState(() {
-        _isLoading = true;
-      });
+  void _manageTransactionState(TransactionPending state) {
+    print("statuts statuts");
+    // _timeoutTimer?.cancel();
 
-      _timeoutTimer = Timer.periodic(const Duration(seconds: 50), (_) {
-        _timeoutTimer?.cancel();
-
-        _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-          // Vérification du statut de la transaction
-          _bloc.checkStatut(state.transactionModel!.id!);
-
-          if (state is TransactionSuccess || state is TransactionFailure) {
-            print("dar state 1");
-
-            setState(() {
-              _isLoading = false;
-              print(_isLoading);
-            });
-
-            // Gestion des cas de succès ou d'échec
-            if (state is TransactionSuccess) {
-              print("dar Success");
-              WidgetsBinding.instance.addPostFrameCallback((_) =>
-                  AppDialog.showDialog(
-                      context: context,
-                      child: const ValidationPayementWidget()));
-            } else if (state is TransactionFailure) {
-              print("dar Echec");
-              WidgetsBinding.instance.addPostFrameCallback((_) =>
-                  AppSnackBar.showError(
-                      message: "Transaction échouée", context: context));
-            }
-
-            // Annulation des timers
-            timer.cancel();
-            _timeoutTimer?.cancel();
-
-            // Vérification de timeout pour les transactions pendantes
-          }
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      // Vérification du statut de la transaction
+      _bloc.checkStatut();
+      if (state is TransactionSuccess || state is TransactionFailure) {
+        setState(() {
+          _isLoading = false;
+          print(_isLoading);
         });
-        print("darrel 2");
 
+        // Gestion des cas de succès ou d'échec
+        if (state is TransactionSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) =>
+              AppDialog.showDialog(
+                  context: context, child: const ValidationPayementWidget()));
+        } else if (state is TransactionFailure) {
+          WidgetsBinding.instance.addPostFrameCallback((_) =>
+              AppSnackBar.showError(
+                  message: "Transaction échouée", context: context));
+        }
+      }
+      // Annulation des timers
+      if (timer.tick == 4) {
         WidgetsBinding.instance.addPostFrameCallback((_) =>
             AppSnackBar.showError(
                 message: "Transaction échouée", context: context));
         setState(() {
           _isLoading = false;
         });
-        print("dar 3");
+        timer.cancel();
+      }
+    });
+  }
+
+  void _handleTransactionState(TransactionState state) {
+    if (state is TransactionPending) {
+      setState(() {
+        _isLoading = true;
       });
+      _manageTransactionState(state);
+    }
+    if (state is TransactionFailure) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => AppSnackBar.showError(
+          message: "Transaction échouée", context: context));
     }
   }
 
@@ -118,7 +113,6 @@ class _TopUpScreenState extends State<TopUpScreen> {
         },
         bloc: _bloc,
         builder: (context, state) {
-          print('state $state');
           return Stack(
             children: [
               IgnorePointer(
