@@ -28,7 +28,6 @@ bootstrap({
       WidgetsFlutterBinding.ensureInitialized();
       _setupApplication();
       setupLocator();
-
       runApp(MultiBlocProvider(providers: [
         BlocProvider<ProductCubit>(
           create: (context) => ProductCubit(),

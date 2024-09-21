@@ -53,6 +53,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // print('page ${controller.page!.round()}');
     return PopScope(
