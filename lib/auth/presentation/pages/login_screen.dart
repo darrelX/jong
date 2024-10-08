@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
 import 'package:jong/auth/logic/auth_cubit/auth_cubit.dart';
-import 'package:jong/shared/connectivity/bloc/network_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/routing/app_router.dart';
 import 'package:jong/shared/theme/app_colors.dart';

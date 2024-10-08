@@ -36,12 +36,20 @@ class TicketCubit extends Cubit<TicketState> {
     _treatedTickets.clear();
     _notTreatedTickets.clear();
     emit(TicketStateLoading(
-        treatedTickets: _treatedTickets, notTreatedTickets: _notTreatedTickets));
+        treatedTickets: _treatedTickets,
+        notTreatedTickets: _notTreatedTickets));
     try {
+      print("Darrel 1");
+
       List<TicketModel> ticketsList = (await ticketRepository
           .fetchTicketsList(_application.state.user!.id!))!;
 
+      print("Darrel $ticketsList");
+      print("Darrel 2");
+
       for (var ticket in ticketsList) {
+        print("Darrel ");
+
         if (ticket.status == true) {
           _treatedTickets.add(ticket);
         } else {

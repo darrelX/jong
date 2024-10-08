@@ -44,7 +44,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           : true,
       child: Container(
         height: 90.h,
-        width: double.infinity,
+        // width: 0,
         decoration: BoxDecoration(
           color: context.theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(15),
@@ -70,7 +70,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             Image.asset(
               widget.image,
             ),
-            const Gap(8),
+            Gap(20.h),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -133,14 +133,14 @@ class _ProductWidgetState extends State<ProductWidget> {
                         ),
                       ),
                     ),
-                    const Gap(8),
+                    Gap(8.w),
                     Text(
                       '${widget.state.counters[widget.id]}',
                       style: context.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Gap(8),
+                    Gap(8.w),
                     IgnorePointer(
                       ignoring:
                           widget.state.counters[widget.id]! < widget.quantity

@@ -33,7 +33,6 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
           top: padding16,
           // bottom: 150.h,
         ),
-        margin: EdgeInsets.only(bottom: 80.h),
         width: context.width,
         child: RefreshIndicator(
           onRefresh: _cubit.fetchProducts,
@@ -84,7 +83,8 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
                               ),
                             ],
                           ),
-                        )))
+                        ))),
+              Gap(90.h)
             ],
           ),
         ),

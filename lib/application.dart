@@ -6,8 +6,6 @@ import 'package:jong/auth/logic/otp_cubit/otp_bloc.dart';
 import 'package:jong/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:jong/shared/connectivity/bloc/network_cubit.dart';
-import 'package:jong/shared/widget/app_snackbar.dart';
-import 'package:provider/provider.dart';
 
 import 'service_locator.dart';
 import 'shared/routing/app_router.dart';
