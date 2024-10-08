@@ -12,11 +12,10 @@ import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/const.dart';
 
 class PreviewWidget extends StatelessWidget {
-  const PreviewWidget({
-    super.key,
-    this.padding = const EdgeInsets.all(padding16),
-  });
+  const PreviewWidget(
+      {super.key, this.padding = const EdgeInsets.all(padding16), this.widget});
   final EdgeInsetsGeometry? padding;
+  final Widget? widget;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class PreviewWidget extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const Gap(20),
+          Gap(20.h),
           Row(
             children: [
               Row(
@@ -71,7 +70,7 @@ class PreviewWidget extends StatelessWidget {
                       color: AppColors.white,
                     ),
                   ),
-                  const Gap(4),
+                  Gap(4.h),
                   Text(
                     "nkap",
                     style: context.textTheme.bodyLarge?.copyWith(
@@ -120,7 +119,8 @@ class PreviewWidget extends StatelessWidget {
                 ),
               )
             ],
-          )
+          ),
+          widget ?? const SizedBox()
         ],
       ),
     );

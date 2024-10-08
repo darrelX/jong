@@ -84,7 +84,9 @@ class _ShopHomeWidgetState extends State<ShopHomeWidget> {
                             ],
                           ),
                         ))),
-              Gap(90.h)
+              SizedBox(
+                height: context.height * 0.21,
+              )
             ],
           ),
         ),

@@ -16,9 +16,7 @@ class CheckoutWidget extends StatelessWidget {
         Text(
           "Checkout succesfull",
           textAlign: TextAlign.center,
-          style: context.textTheme.headlineMedium?.copyWith(
-            fontSize: 24,
-          ),
+          style: context.textTheme.headlineMedium?.copyWith(),
         ),
         Text(
           'A ticket has been created with your order in history',

@@ -56,7 +56,7 @@ class _ShopScreenState extends State<ShopScreen> {
           if (state is ProductUpdatedState) {
             return Scaffold(
                 body: DraggableBottomSheet(
-              minExtent: 175.h,
+              minExtent: context.height * 0.2,
               useSafeArea: false,
               curve: Curves.easeIn,
               previewWidget: PreviewWidget(),
@@ -66,7 +66,7 @@ class _ShopScreenState extends State<ShopScreen> {
               backgroundWidget: ShopHomeWidget(
                 state: state,
               ),
-              maxExtent: context.height * 0.8,
+              maxExtent: context.height * 0.7,
               onDragging: (pos) {},
             ));
           }
