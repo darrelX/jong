@@ -96,7 +96,7 @@ class BottomSheetWiget extends StatelessWidget {
                           height: 300,
                           context: context,
                           child: ValidationWidget(
-                            id: ticket.id!,
+                            id: ticket.uuid!,
                           ),
                         );
                       },

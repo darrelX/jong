@@ -50,8 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print(" darrel ${context.read<NetworkCubit>().state.status}");
-    // print(" darrel1 ${context.watch<NetworkCubit>().state.status}");
+
     return Scaffold(
       backgroundColor: AppColors.primary,
       appBar: AppBar(

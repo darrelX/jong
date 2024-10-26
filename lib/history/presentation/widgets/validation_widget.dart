@@ -23,7 +23,7 @@ class ValidationWidget extends StatelessWidget {
                 .copyWith(color: AppColors.grey, fontWeight: FontWeight.w900)),
         Gap(10.h),
         Text(id,
-            style: context.textTheme.displaySmall!.copyWith(
+            style: context.textTheme.bodyLarge!.copyWith(
                 color: AppColors.primary, fontWeight: FontWeight.w900)),
         Gap(30.h),
         Container(

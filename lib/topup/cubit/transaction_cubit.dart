@@ -33,8 +33,6 @@ class TransactionCubit extends Cubit<TransactionState> {
       }
       // return status['status'];
     } catch (e) {
-      print("test ohhhh");
-
       emit(TransactionFailure(message: e.toString()));
       rethrow;
     }

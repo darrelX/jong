@@ -9,7 +9,7 @@ part 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository repository = getIt.get<ProductRepository>();
-  final Map<String, int> _counters = {};
+  final Map<String, int> counters = {};
   List<ProductModel> _listProductModel = [];
   final ApplicationCubit application = getIt.get<ApplicationCubit>();
 
@@ -17,19 +17,20 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> fetchProducts() async {
     _listProductModel.clear();
-    _counters.clear();
+    counters.clear();
     emit(const ProductLoadingState());
     try {
       _listProductModel =
-          (await repository.fetchProductsList(application.state.user!.id!)).list;
+          (await repository.fetchProductsList(application.state.user!.id!))
+              .list;
 
       for (var article in _listProductModel) {
-        _counters[article.id!] = 0;
+        counters[article.id!] = 0;
       }
 
       print(_listProductModel);
       emit(ProductUpdatedState(
-          counters: _counters,
+          counters: counters,
           products: _listProductModel,
           getTotalPrice: getTotalPrice()));
     } catch (e) {
@@ -38,44 +39,43 @@ class ProductCubit extends Cubit<ProductState> {
   }
 
   void increment(String id, int quantity) {
-    if (_counters.containsKey(id) && _counters[id]! < quantity) {
-      _counters[id] = _counters[id]! + 1;
+    if (counters.containsKey(id) && counters[id]! < quantity) {
+      counters[id] = counters[id]! + 1;
     }
     emit(ProductUpdatedState(
-        counters: _counters,
+        counters: counters,
         products: _listProductModel,
         getTotalPrice: getTotalPrice()));
   }
 
   void decrement(String id) {
-    if (_counters.containsKey(id) && _counters[id]! > 0) {
-      _counters[id] = _counters[id]! - 1;
+    if (counters.containsKey(id) && counters[id]! > 0) {
+      counters[id] = counters[id]! - 1;
     }
     emit(ProductUpdatedState(
-        counters: _counters,
+        counters: counters,
         products: _listProductModel,
         getTotalPrice: getTotalPrice()));
   }
 
   Future<void> getBasketItems() async {
     final List basketItems = _listProductModel
-        .where((article) =>
-            _counters.containsKey("${article.id}") &&
-            _counters["${article.id}"]! > 0)
+        .where((article) => counters[article.id]! > 0)
         .map((article) => {
-              'id': "${article.id}",
-              'quantity': _counters["${article.id}"],
+              'id': article.id,
+              'quantity': counters[article.id],
             })
         .toList();
+    print("Darrel $basketItems");
 
     final Map<String, dynamic> result = {
       'user_id': application.state.user!.id!,
       'products': basketItems,
     };
     try {
+      if (result.isEmpty) return;
       await repository.createTicket(result, application.state.user!.id!);
     } catch (e) {
-      print(e.toString());
       rethrow;
     }
   }
@@ -84,9 +84,9 @@ class ProductCubit extends Cubit<ProductState> {
     double totalPrice = 0.0;
 
     for (var article in _listProductModel) {
-      String id = "${article.id}";
-      if (_counters.containsKey(id) && _counters[id]! > 0) {
-        totalPrice += article.price! * _counters[id]!;
+      String id = article.id!;
+      if (counters.containsKey(id) && counters[id]! > 0) {
+        totalPrice += article.price! * counters[id]!;
       }
     }
     return double.parse(totalPrice.toStringAsFixed(2));

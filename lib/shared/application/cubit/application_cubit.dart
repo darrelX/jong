@@ -29,7 +29,6 @@ class ApplicationCubit extends Cubit<ApplicationState> {
           amount: amount,
           userId: userId,
           phoneNumber: phoneNumber);
-      print("test");
       setUser();
       if (response['status'] == 0) {
         emit(const ApplicationStatePending());

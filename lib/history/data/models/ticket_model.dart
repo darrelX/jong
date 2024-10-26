@@ -5,6 +5,7 @@ class TicketModel {
   final String? userId;
   final double? totalAmount;
   final bool? status;
+  final String? uuid;
   final DateTime? createdAt; // New property
   final DateTime? updatedAt;
   final List<ProductTicketModel>? products;
@@ -13,6 +14,7 @@ class TicketModel {
   TicketModel(
       {required this.id,
       required this.totalAmount,
+      required this.uuid,
       this.total,
       required this.userId,
       this.status = false,
@@ -27,6 +29,7 @@ class TicketModel {
         totalAmount: double.parse(json['total_amount'].toString()) as double?,
         userId: (json['user_id'] as int).toString() as String?,
         status: json['status'] as bool?,
+        uuid: json['uuid'] as String,
         createdAt: DateTime.parse(json['created_at'] as String) as DateTime?,
         updatedAt: DateTime.parse(json['updated_at'] as String) as DateTime?,
         products: fetchProductTicketList(json['products'])

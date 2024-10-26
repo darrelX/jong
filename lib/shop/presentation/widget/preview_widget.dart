@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:jong/auth/logic/auth_cubit/auth_cubit.dart';
 import 'package:jong/service_locator.dart';
+import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/widget/app_dialog.dart';
 import 'package:jong/shared/widget/app_snackbar.dart';
@@ -21,6 +23,7 @@ class PreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // final instance = context.read<ProductProvider>();
     final ProductCubit cubit = getIt.get<ProductCubit>();
+    final ApplicationCubit _application = getIt.get<ApplicationCubit>();
 
     return Container(
       padding: padding,
@@ -86,20 +89,33 @@ class PreviewWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(radius20 - 1),
                 ),
                 onTap: () async {
-                  await cubit.getBasketItems().then((_) {
-                    AppDialog.showDialog(
-                      context: context,
-                      height: 300,
-                      child: const Padding(
-                        padding: EdgeInsets.all(padding16),
-                        child: CheckoutWidget(),
-                      ),
-                    );
-                  }).catchError((_) {
+                  try {
+                    if (cubit.getTotalPrice() == 0) {
+                      AppSnackBar.showError(
+                          message: "Veuillez selectionner vos boissons",
+                          context: context);
+                    } else if (cubit.getTotalPrice() >=
+                        _application.state.user!.balance!) {
+                      AppSnackBar.showError(
+                          message: "Solde insuffisant", context: context);
+                    } else {
+                      await cubit.getBasketItems();
+                      if (!context.mounted) return;
+                      return AppDialog.showDialog(
+                        context: context,
+                        height: 300,
+                        child: const Padding(
+                          padding: EdgeInsets.all(padding16),
+                          child: CheckoutWidget(),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (!context.mounted) return;
                     AppSnackBar.showError(
                         message: "Une erreur inconnue s'est produite",
                         context: context);
-                  });
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -21,7 +21,6 @@ class ProductRepository {
           .get('/products', queryParameters: {"user_id": userId, "page": 1});
       List<dynamic> productsJson = response.data['data'] as List<dynamic>;
       int totalPage = response.data['total'] as int;
-      print("darrel $totalPage");
 
       products.addAll(productsJson.map((item) {
         return ProductModel.fromJson(item as Map<String, dynamic>);
