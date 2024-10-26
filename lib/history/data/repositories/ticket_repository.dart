@@ -35,6 +35,13 @@ class TicketRepository {
     }
   }
 
+  Future<void> deleteTicket(int id) async {
+    try {
+      await dio.delete('/tickets/$id');
+    } catch (e) {
+      rethrow;
+    }
+  }
   // Future<List<ProductTicketModel>> fetchProductsTicket(String id) async{
 
   // }

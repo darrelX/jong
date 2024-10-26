@@ -39,13 +39,10 @@ class TicketCubit extends Cubit<TicketState> {
         treatedTickets: _treatedTickets,
         notTreatedTickets: _notTreatedTickets));
     try {
-
       List<TicketModel> ticketsList = (await ticketRepository
           .fetchTicketsList(_application.state.user!.id!))!;
 
-
       for (var ticket in ticketsList) {
-
         if (ticket.status == true) {
           _treatedTickets.add(ticket);
         } else {
@@ -61,6 +58,18 @@ class TicketCubit extends Cubit<TicketState> {
     } catch (e) {
       emit(TicketFailure(message: e.toString()));
       return;
+    }
+  }
+
+  Future<void> deleteTicket(int id) async {
+    try {
+      await ticketRepository.deleteTicket(id);
+      emit(TicketStateSuccess(
+          treatedTickets: _treatedTickets,
+          notTreatedTickets: _notTreatedTickets));
+    } catch (e) {
+      emit(TicketFailure(message: e.toString()));
+
     }
   }
 }

@@ -108,6 +108,7 @@ class TicketCategoryDropdown extends StatelessWidget {
                         total: tickets.length,
                         width: 400.w,
                         ticket: item,
+                        
                       )),
                 ],
               ),
