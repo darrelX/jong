@@ -7,12 +7,3 @@ Un projet innovant de développement d'applications de vente de boissons camerou
 Ce projet consiste à réaliser une application permettant aux utilisateurs d'acheter des boissons camerounaises dans divers bars partenaires. Les acheteurs peuvent ainsi accéder à une large sélection de boissons locales et profiter de la commodité d'achat directement depuis leur appareil mobile. De plus, l'application intègre un mini-jeu offrant la possibilité aux utilisateurs de multiplier leur argent virtuel, qu'ils peuvent ensuite utiliser pour acheter davantage de boissons.
 
 Le projet utilise **Flutter** pour le frontend, assurant une expérience utilisateur fluide et intuitive, tandis que **Laravel** est employé en backend pour gérer les données et assurer la stabilité et la sécurité des transactions.
-
-## Ressources pour bien démarrer
-
-Pour en savoir plus sur le développement d'applications Flutter, voici quelques ressources utiles :
-
-- [Lab: Écrire votre première application Flutter](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Exemples pratiques avec Flutter](https://docs.flutter.dev/cookbook)
-
-Pour obtenir de l'aide sur le développement Flutter, consultez la [documentation en ligne](https://docs.flutter.dev/), qui propose des tutoriels, des exemples, des conseils sur le développement mobile et une référence complète de l'API
