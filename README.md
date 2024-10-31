@@ -1,16 +1,18 @@
-# jong
+# Jong
 
-A new Flutter project.
+Un projet innovant de développement d'applications de vente de boissons camerounaises.
 
-## Getting Started
+## Description du projet
 
-This project is a starting point for a Flutter application.
+Ce projet consiste à réaliser une application permettant aux utilisateurs d'acheter des boissons camerounaises dans divers bars partenaires. Les acheteurs peuvent ainsi accéder à une large sélection de boissons locales et profiter de la commodité d'achat directement depuis leur appareil mobile. De plus, l'application intègre un mini-jeu offrant la possibilité aux utilisateurs de multiplier leur argent virtuel, qu'ils peuvent ensuite utiliser pour acheter davantage de boissons.
 
-A few resources to get you started if this is your first Flutter project:
+Le projet utilise **Flutter** pour le frontend, assurant une expérience utilisateur fluide et intuitive, tandis que **Laravel** est employé en backend pour gérer les données et assurer la stabilité et la sécurité des transactions.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Ressources pour bien démarrer
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Pour en savoir plus sur le développement d'applications Flutter, voici quelques ressources utiles :
+
+- [Lab: Écrire votre première application Flutter](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Exemples pratiques avec Flutter](https://docs.flutter.dev/cookbook)
+
+Pour obtenir de l'aide sur le développement Flutter, consultez la [documentation en ligne](https://docs.flutter.dev/), qui propose des tutoriels, des exemples, des conseils sur le développement mobile et une référence complète de l'API.
