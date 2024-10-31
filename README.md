@@ -15,4 +15,4 @@ Pour en savoir plus sur le développement d'applications Flutter, voici quelques
 - [Lab: Écrire votre première application Flutter](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Exemples pratiques avec Flutter](https://docs.flutter.dev/cookbook)
 
-Pour obtenir de l'aide sur le développement Flutter, consultez la [documentation en ligne](https://docs.flutter.dev/), qui propose des tutoriels, des exemples, des conseils sur le développement mobile et une référence complète de l'API.
+Pour obtenir de l'aide sur le développement Flutter, consultez la [documentation en ligne](https://docs.flutter.dev/), qui propose des tutoriels, des exemples, des conseils sur le développement mobile et une référence complète de l'API
