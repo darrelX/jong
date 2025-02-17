@@ -1,9 +1,10 @@
 # Jong
 
-Un projet innovant de développement d'applications de vente de boissons camerounaises.
+An innovative project for developing an application for selling Cameroonian beverages.
 
-## Description du projet
+### Project Description
 
-Ce projet consiste à réaliser une application permettant aux utilisateurs d'acheter des boissons camerounaises dans divers bars partenaires. Les acheteurs peuvent ainsi accéder à une large sélection de boissons locales et profiter de la commodité d'achat directement depuis leur appareil mobile. De plus, l'application intègre un mini-jeu offrant la possibilité aux utilisateurs de multiplier leur argent virtuel, qu'ils peuvent ensuite utiliser pour acheter davantage de boissons.
+This project aims to create an application that allows users to purchase Cameroonian beverages from various partner bars. Buyers can access a wide selection of local drinks and enjoy the convenience of purchasing directly from their mobile devices. Additionally, the app includes a mini-game that gives users the chance to multiply their virtual money, which they can then use to buy more drinks.
 
-Le projet utilise **Flutter** pour le frontend, assurant une expérience utilisateur fluide et intuitive, tandis que **Laravel** est employé en backend pour gérer les données et assurer la stabilité et la sécurité des transactions.
+The project uses Flutter for the frontend, ensuring a smooth and intuitive user experience, while Laravel is employed on the backend to manage data and ensure transaction stability and security.
+
