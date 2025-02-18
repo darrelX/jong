@@ -151,17 +151,17 @@ class TicketWidget extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          right: 20.r,
-          height: 50.r,
-          child: IconButton(
-            onPressed: () {
-              _cubit.deleteTicket(int.parse(ticket.id!));
-            },
-            icon: const Icon(Icons.delete),
-            color: AppColors.primary,
-          ),
-        ),
+        // Positioned(
+        //   right: 20.r,
+        //   height: 50.r,
+        //   child: IconButton(
+        //     onPressed: () {
+        //       _cubit.deleteTicket(int.parse(ticket.id!));
+        //     },
+        //     icon: const Icon(Icons.delete),
+        //     color: AppColors.primary,
+        //   ),
+        // ),
       ],
     );
   }

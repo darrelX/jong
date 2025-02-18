@@ -9,6 +9,7 @@ import 'package:jong/shared/application/cubit/application_cubit.dart';
 import 'package:jong/shared/extensions/context_extensions.dart';
 import 'package:jong/shared/theme/app_colors.dart';
 import 'package:jong/shared/utils/const.dart';
+import 'package:jong/shared/widget/app_button.dart';
 import 'package:jong/shared/widget/jong_app_bar.dart';
 
 import '../../../shared/routing/app_router.dart';
@@ -23,7 +24,6 @@ class ProfileScreen extends StatelessWidget {
       body: BlocBuilder<ApplicationCubit, ApplicationState>(
         bloc: getIt.get<ApplicationCubit>(),
         builder: (context, state) {
-
           return ListView(
             children: [
               Container(
@@ -124,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Color(0xffA7A7AB),
                 ),
               ),
-              const Gap(4),
+               Gap(4.h),
               ListTile(
                 onTap: () {
                   context.router.push(const TopUpRoute());
@@ -146,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Color(0xffA7A7AB),
                 ),
               ),
-              const Gap(4),
+               Gap(4.h),
               ListTile(
                 onTap: () {
                   context.router.popAndPush(HistoryGameRoute(
@@ -170,7 +170,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Color(0xffA7A7AB),
                 ),
               ),
-              const Gap(4),
+               Gap(4.h),
               ListTile(
                 onTap: () {
                   getIt.get<ApplicationCubit>().logout();
@@ -189,6 +189,22 @@ class ProfileScreen extends StatelessWidget {
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
+                ),
+              ),
+              Gap(20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: AppButton(
+                  text: "Supprimer le compte",
+                  textColor: AppColors.white,
+                  bgColor: AppColors.red,
+                  onPressed: () {
+                    getIt.get<ApplicationCubit>().logout();
+                    context.router.pushAndPopUntil(
+                      const LoginRoute(),
+                      predicate: (route) => false,
+                    );
+                  },
                 ),
               ),
             ],

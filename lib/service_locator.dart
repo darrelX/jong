@@ -35,7 +35,7 @@ void setupLocator() {
   // Dio
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(
-      baseUrl: 'https://jong-api.symphonisocial.com/api',
+      baseUrl: 'https://api.jonggame.com/api',
       connectTimeout: const Duration(seconds: 12),
       receiveTimeout: const Duration(seconds: 12),
       headers: {

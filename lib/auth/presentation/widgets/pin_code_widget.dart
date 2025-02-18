@@ -23,13 +23,13 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 290.w,
+      width: 300.w,
       // height: 0.h,
       child: Column(
         children: [
           PinCodeTextField(
             appContext: context,
-            length: 4,
+            length: 6,
             autoDisposeControllers: false,
             obscureText: false,
             animationType: AnimationType.fade,
@@ -37,7 +37,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
               shape: PinCodeFieldShape.box,
               borderRadius: BorderRadius.circular(5),
               fieldHeight: 80.h,
-              fieldWidth: 50.w,
+              fieldWidth: 40.w,
               activeFillColor: Colors.white,
               inactiveFillColor: Colors.white,
               selectedFillColor: Colors.white,

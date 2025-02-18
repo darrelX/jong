@@ -29,7 +29,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
   String? _currentText;
   final GlobalKey<FormState> _formField = GlobalKey<FormState>();
   String? _error;
-  final String _secretCode = "0000";
+  final String _secretCode = "000000";
   bool _isExpired = false;
 
   late final OtpBloc _bloc = context.read<OtpBloc>();
@@ -159,7 +159,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                       ),
                       Gap(30.h),
                       Text(
-                        'Nous avons envoyé un code au numero whatsApp ${widget.number!.split(' ').join().substring(0, 3)}*****${widget.number!.split(' ').join().substring(8)}',
+                        "Nous avons envoyé un code à l'adresse email",
                         style: context.textTheme.bodyLarge!
                             .copyWith(fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
@@ -179,7 +179,7 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                           setState(() {
                             _currentText = value;
                             print("currentx $_currentText");
-                            if (_currentText!.length >= 4) {
+                            if (_currentText!.length >= 6) {
                               _bloc.add(OtpSubmitted(
                                   otp: _currentText!,
                                   phoneNumber: widget.number!));
@@ -199,9 +199,6 @@ class _OtpInputScreenState extends State<OTPInputScreen> {
                               onPressed: () {
                                 if (_formField.currentState!.validate()) {
                                   setState(() {
-                                    _isExpired = !_isExpired;
-                                    _error = null;
-                                    _textEditingController.clear();
                                     context.read<OtpBloc>().add(
                                         OtpReset(phoneNumber: widget.number!));
                                     if (state is OtpVerificationSuccess) {
