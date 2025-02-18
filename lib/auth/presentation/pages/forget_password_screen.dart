@@ -47,15 +47,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        title: Text(
-          widget.title1,
-          style: context.textTheme.titleLarge!
-              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
-        ),
-        toolbarHeight: 110.h,
-      ),
+      backgroundColor: AppColors.white,
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text(
+      //     widget.title1,
+      //     style: context.textTheme.titleLarge!
+      //         .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+      //   ),
+      //   toolbarHeight: 110.h,
+      // ),
       body: Container(
         height: context.height,
         width: double.infinity,
@@ -65,7 +66,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ),
           color: Colors.white,
         ),
-        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -73,10 +74,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Gap(60.h),
+                Gap(110.h),
+
+                Text(
+                  widget.title1,
+                  textAlign: TextAlign.left,
+                  style: context.textTheme.displaySmall!.copyWith(
+                      color: AppColors.black, fontWeight: FontWeight.w900),
+                ),
+                Gap(20.h),
                 Text(
                   widget.title2,
-                  style: context.textTheme.titleLarge!
+                  style: context.textTheme.titleMedium!
                       .copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.left,
                 ),
@@ -132,10 +141,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       context.router.pushAndPopUntil(
                           predicate: (route) => true,
                           OTPInputRoute(
-                            number:
-                                _phoneController.value.text.replaceAll(' ', ''),
-                                hasForgottenPassword: widget.hasForgottenPassword
-                          ));
+                              number: _phoneController.value.text
+                                  .replaceAll(' ', ''),
+                              hasForgottenPassword:
+                                  widget.hasForgottenPassword));
                     }
                   },
                 ),

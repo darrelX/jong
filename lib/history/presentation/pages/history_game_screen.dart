@@ -20,7 +20,6 @@ class HistoryGameScreen extends StatefulWidget {
 class _HistoryGameScreenState extends State<HistoryGameScreen> {
   final GameHistoryCubit _cubit = GameHistoryCubit();
   final ScrollController _scrollController = ScrollController();
-  final int _page = 1;
 
   @override
   void initState() {
@@ -31,8 +30,9 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
-      _cubit.fetch();
+            _scrollController.position.maxScrollExtent &&
+        !_cubit.hasReachedMax) {
+      _cubit.fetch(); // Fetch more data when reaching the bottom
     }
   }
 
@@ -57,7 +57,38 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
       body: BlocBuilder<GameHistoryCubit, GameHistoryState>(
         bloc: _cubit,
         builder: (context, state) {
+          if (state is GameHistoryStateLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           if (state is GameHistoryStateSuccess) {
+            final listGameHistory = state.listGameHistory;
+
+            if (listGameHistory.isEmpty) {
+              // Cas où la liste est vide
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Aucun historique de jeu disponible pour le moment.",
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _onRefresh,
+                      child: Text(
+                        "Actualiser",
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
             return RefreshIndicator(
               onRefresh: () => _onRefresh(),
               child: Column(
@@ -68,12 +99,12 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 10.w, vertical: 30.h),
                       itemCount: _cubit.hasReachedMax
-                          ? state.listGameHistory.length
-                          : state.listGameHistory.length + 1,
+                          ? listGameHistory.length
+                          : listGameHistory.length + 1,
                       separatorBuilder: (context, i) => Gap(26.h),
                       itemBuilder: (context, index) {
-                        if (index < state.listGameHistory.length) {
-                          final gameHistory = state.listGameHistory[index];
+                        if (index < listGameHistory.length) {
+                          final gameHistory = listGameHistory[index];
                           return GameHistoryWidget(
                             amount: gameHistory.amount,
                             cote: gameHistory.cote,
@@ -93,6 +124,7 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
               ),
             );
           }
+
           if (state is GameHistoryStateFailure) {
             return Center(
               child: Column(
@@ -113,9 +145,8 @@ class _HistoryGameScreenState extends State<HistoryGameScreen> {
               ),
             );
           }
-          if (state is GameHistoryStateLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+
+          // Cas par défaut en cas d'état non pris en charge
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

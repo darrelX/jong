@@ -34,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
   // final bool _isChecked = false;
   // final _networkCubit = getIt.get<NetworkCubit>();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -50,18 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        title: Text(
-          "  Log In",
-          style: context.textTheme.displaySmall!
-              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
-        ),
-        toolbarHeight: 110.h,
-        // centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: _cubit,
         listener: (context, state) {
@@ -106,15 +94,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Gap(40.h),
+                    Gap(110.h),
                     Text(
-                      "Bienvenue",
-                      style: context.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                      textAlign: TextAlign.center,
+                      "Log In",
+                      style: context.textTheme.displaySmall!.copyWith(
+                          color: AppColors.black, fontWeight: FontWeight.w900),
                     ),
-                    Gap(8.h),
+
+                    Gap(20.h),
                     Text(
                       "Pour rester en contact avec nous, veuillez vous connecter avec vos informations personnelles.",
                       style: context.textTheme.bodyLarge?.copyWith(
@@ -122,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: AppColors.black.withOpacity(0.6)),
                       textAlign: TextAlign.start,
                     ),
-                    Gap(70.h),
+                    Gap(90.h),
                     AppInput(
                       controller: _phoneController,
                       // label: 'Tel',
@@ -155,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    Gap(70.h),
+                    Gap(100.h),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.end,
                     //   children: [
@@ -195,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     ),
-                    Gap(80.h),
+                    Gap(40.h),
                     Center(
                       child: Text.rich(
                         TextSpan(
@@ -219,7 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context.router.push(ForgetPasswordRoute(
                                       title1: "Creer un compte",
                                       hasForgottenPassword: false,
-                                      title2: "Creer un compte",
+                                      title2:
+                                          "Bienvenue sur Jong, l'application pour gagner de la bière et se faire des amis autour de votre passion commune.",
                                       description:
                                           "Bienvenue dans l'application Jong"));
                                 },

@@ -60,12 +60,37 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (state is TicketStateLoading) {
           return Center(
             child: Transform.scale(
-              scale: 2, // Réduire de moitié la taille du widget
+              scale: 2,
               child: const CircularProgressIndicator(),
             ),
           );
         }
+
         if (state is TicketStateSuccess) {
+          final treatedTickets = state.treatedTickets;
+          final notTreatedTickets = state.notTreatedTickets;
+
+          if ((treatedTickets.isEmpty && notTreatedTickets.isEmpty)) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Aucun ticket disponible pour le moment."),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _onRefresh,
+                    child: Text(
+                      "Actualiser",
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return Scaffold(
             body: RefreshIndicator(
               onRefresh: _onRefresh,
@@ -74,32 +99,29 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   width: double.maxFinite,
                   padding: EdgeInsets.symmetric(horizontal: 5.w),
                   height: MediaQuery.of(context).size.height - 70.h,
-                  // decoration: const BoxDecoration(
-                  //   color: Colors.transparent,
-                  //   // borderRadius: BorderRadius.circular(15),
-                  //   // border: Border.all(width: 0.05),
-                  // ),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         Gap(20.h),
-                        TicketCategoryDropdown(
-                          onPressed: _toggleFirstDropdown,
-                          title: "Tickets non traités",
-                          isDropOpen: _isFirstDropdownOpen,
-                          totalTickets: state.treatedTickets.length,
-                          tickets: state.treatedTickets,
-                          status: false,
-                        ),
-                        Gap(30.h),
-                        TicketCategoryDropdown(
-                          onPressed: _toggleSecondDropdown,
-                          title: "Tickets traités",
-                          status: true,
-                          isDropOpen: _isSecondDropdownOpen,
-                          totalTickets: state.notTreatedTickets.length,
-                          tickets: state.notTreatedTickets,
-                        ),
+                        if (treatedTickets.isNotEmpty)
+                          TicketCategoryDropdown(
+                            onPressed: _toggleFirstDropdown,
+                            title: "Tickets non traités",
+                            isDropOpen: _isFirstDropdownOpen,
+                            totalTickets: treatedTickets.length,
+                            tickets: treatedTickets,
+                            status: false,
+                          ),
+                        if (treatedTickets.isNotEmpty) Gap(30.h),
+                        if (notTreatedTickets.isNotEmpty)
+                          TicketCategoryDropdown(
+                            onPressed: _toggleSecondDropdown,
+                            title: "Tickets traités",
+                            status: true,
+                            isDropOpen: _isSecondDropdownOpen,
+                            totalTickets: notTreatedTickets.length,
+                            tickets: notTreatedTickets,
+                          ),
                         Gap(49.h),
                       ],
                     ),
@@ -109,6 +131,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           );
         }
+
         if (state is TicketFailure) {
           return Center(
             child: Column(
@@ -129,6 +152,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           );
         }
+
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -37,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int _currentPage = 0;
   String pwd = '';
   int gender = 1;
+  bool? _isValid = false;
 
   final AuthCubit _cubit = AuthCubit();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -63,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
@@ -94,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
           builder: (context, state) {
             return Container(
-                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(20)),
@@ -105,25 +106,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Gap(40.h),
+                      Gap(30.h),
                       Text(
                         "Creer un compte",
-                        style: context.textTheme.headlineLarge?.copyWith(
+                        style: context.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.w900,
                         ),
                         textAlign: TextAlign.left,
                       ),
                       Gap(20.h),
                       Text(
-                        "Remplissez les champs ci-dessous pour commencer",
+                        "En créant un compte, vous acceptez la politique de confidentialité et les conditions d'utilisation de Jong",
                         style: context.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w900,
                             color: AppColors.black.withOpacity(0.6)),
                         textAlign: TextAlign.left,
                       ),
-                      Gap(60.h),
+                      Gap(40.h),
                       SizedBox(
-                        height: 280.h,
+                        height: 240.h,
                         child: Form(
                           key: _formKey,
                           child: PageView(
@@ -135,8 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   AppInput(
                                     controller: _nameController,
                                     // label: 'E-mail',
-                                    hint: 'Name',
-                                    keyboardType: TextInputType.name,
+                                    hint: 'Entrer votre nom',
+                                    suffixIcon: const Icon(Icons.person),
                                     autofillHints: const [
                                       AutofillHints.name,
                                     ],
@@ -146,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     ],
                                   ),
-                                  Gap(30.h),
+                                  Gap(20.h),
                                   AppInput(
                                     controller: _emailController,
                                     // label: 'E-mail',
@@ -155,6 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     autofillHints: const [
                                       AutofillHints.email,
                                     ],
+                                    suffixIcon: const Icon(Icons.email),
                                     validators: [
                                       FormBuilderValidators.required(
                                         errorText: 'E-mail is required',
@@ -164,10 +166,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     ],
                                   ),
-                                  Gap(30.h),
+                                  Gap(20.h),
                                   AppInput(
                                     controller: _phoneController,
                                     hint: 'Tel',
+                                    suffixIcon: const Icon(Icons.phone),
                                     keyboardType: TextInputType.phone,
                                     validators: [
                                       FormBuilderValidators.required(
@@ -225,7 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     suffixIcon: const Icon(
                                         Icons.keyboard_arrow_down_outlined),
                                   ),
-                                  Gap(30.h),
+                                  Gap(20.h),
                                   AppInput(
                                     controller: _passwordController,
                                     hint: 'Password',
@@ -245,7 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     ],
                                   ),
-                                  Gap(30.h),
+                                  Gap(20.h),
                                   AppInput(
                                     controller: _confirmPasswordController,
                                     hint: 'Confirm password',
@@ -271,9 +274,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      Gap(20.h),
+                      Gap(30.h),
+                      _currentPage == 0
+                          ? const SizedBox.shrink()
+                          : Row(
+                              children: [
+                                Checkbox(
+                                    value: _isValid,
+                                    onChanged: (value) => setState(() {
+                                          _isValid = value;
+                                        })),
+                                Expanded(
+                                  child: Text(
+                                      "En créant un compte, vous acceptez la politique de confidentialité et les conditions de Jong.",
+                                      maxLines: 3,
+                                      textAlign: TextAlign.left,
+                                      style: context.textTheme.bodyLarge
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w900,
+                                              color: AppColors.black
+                                                  .withOpacity(0.6))),
+                                ),
+                              ],
+                            ),
+                      Gap(50.h),
                       _currentPage == 0
                           ? AppButton(
+                              height: 45.h,
                               bgColor: AppColors.primary,
                               text: "Suivant",
                               onPressed: () {
@@ -284,27 +311,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                             )
-                          : AppButton(
-                              loading: state is RegisterLoading,
-                              bgColor: AppColors.primary,
-                              text: "Validation",
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  // context.router.pushAndPopUntil(
-                                  //   const OTPInputRoute(),
-                                  //   predicate: (route) => true,
-                                  // );
+                          : Opacity(
+                              opacity: _isValid! ? 1 : 0.5,
+                              child: IgnorePointer(
+                                ignoring: !_isValid!,
+                                child: AppButton(
+                                  loading: state is RegisterLoading,
+                                  height: 45.h,
+                                  bgColor: AppColors.primary,
+                                  text: "Validation",
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      // context.router.pushAndPopUntil(
+                                      //   const OTPInputRoute(),
+                                      //   predicate: (route) => true,
+                                      // );
 
-                                  _cubit.register(
-                                    name: _nameController.text,
-                                    email: _emailController.text,
-                                    birthDate: DateTime.now(),
-                                    gender: gender,
-                                    phoneNumber: _phoneController.text,
-                                    password: _passwordController.text,
-                                  );
-                                }
-                              },
+                                      _cubit.register(
+                                        name: _nameController.text,
+                                        email: _emailController.text,
+                                        birthDate: DateTime.now(),
+                                        gender: gender,
+                                        phoneNumber: _phoneController.text,
+                                        password: _passwordController.text,
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
                             ),
                       Gap(30.h),
                       Center(

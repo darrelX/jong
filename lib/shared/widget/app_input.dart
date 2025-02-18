@@ -138,7 +138,6 @@ class _AppInputState extends State<AppInput> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  
                   "${widget.label}",
                   style: context.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w600,
@@ -159,7 +158,6 @@ class _AppInputState extends State<AppInput> {
           ),
           child: TextFormField(
             controller: widget.controller,
-            
             style: TextStyle(
               height: 1.8.h,
               fontWeight: FontWeight.w500,
@@ -219,8 +217,9 @@ class _AppInputState extends State<AppInput> {
               fillColor: const Color.fromRGBO(240, 244, 245, 10),
               hintText: widget.hint,
               hintStyle: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 15.sp,
+                // fontWeight: FontWeight.w300,
+                color: Colors.grey.shade700,
+                fontSize: 15.r,
                 fontStyle: widget.isItalic ? FontStyle.italic : null,
               ),
               suffixIcon:
